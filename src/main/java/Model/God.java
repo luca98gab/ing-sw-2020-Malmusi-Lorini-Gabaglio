@@ -14,6 +14,6 @@ public class God {
 
     public God() {
         name = "";
-        ability = "";
+        ability =  "";
     }
 }
