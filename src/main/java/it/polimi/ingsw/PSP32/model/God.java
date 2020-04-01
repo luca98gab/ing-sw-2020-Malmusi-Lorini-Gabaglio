@@ -1,4 +1,4 @@
-package Model;
+package it.polimi.ingsw.PSP32.model;
 
 public class God {
     private String name;
@@ -12,8 +12,8 @@ public class God {
         return name;
     }
 
-    public God() {
-        name = "";
-        ability =  "";
+    public God(String name, String ability) {
+        this.name = name;
+        this.ability =  ability;
     }
 }

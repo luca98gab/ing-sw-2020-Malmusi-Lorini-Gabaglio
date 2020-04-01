@@ -1,4 +1,4 @@
-package Model;
+package it.polimi.ingsw.PSP32.model;
 
 public class Player {
     private Pawn pawn1;
@@ -18,18 +18,12 @@ public class Player {
     public String getName() {
         return name;
     }
-/*
-    public Player(String color, String name, God power){
-        pawn1 = new Pawn();
-        pawn2 = new Pawn();
 
-    }
- */
-    public Player(){
-        pawn1 = null;
-        pawn2 = null;
-        color = "";
-        power = null;
-        name = "";
+    public Player(String name, String color, God power){
+        pawn1 = new Pawn(0,0);
+        pawn2 = new Pawn(0,0);;
+        this.color = color;
+        this.power = power;
+        this.name = name;
     }
 }

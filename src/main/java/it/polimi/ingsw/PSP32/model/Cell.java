@@ -1,33 +1,37 @@
-package Model;
+package it.polimi.ingsw.PSP32.model;
 
 public class Cell {
     private int floor;
-    private Pawn isFull;
+    private Pawn pawnHere;
     private Boolean hasDome;
 
     public int getFloor() {
         return floor;
     }
 
-    public Pawn fullState() {
-        return isFull;
-    }
-
     public Boolean getHasDome() {
         return hasDome;
     }
 
-    public void modifyFloor(int floor) {
+    public Pawn getIsFull() {
+        return pawnHere;
+    }
+
+    public void setFloor(int floor) {
         this.floor = floor;
     }
 
+    public void setHasDome(Boolean hasDome) {
+        this.hasDome = hasDome;
+    }
+
     public void setIsFull(Pawn isFull) {
-        this.isFull = isFull;
+        this.pawnHere = isFull;
     }
 
     public Cell() {
         floor = 0;
-        isFull = null;
+        pawnHere = null;
         hasDome = false;
     }
 }
