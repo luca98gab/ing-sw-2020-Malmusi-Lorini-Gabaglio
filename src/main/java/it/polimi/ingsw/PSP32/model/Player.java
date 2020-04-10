@@ -11,6 +11,10 @@ public class Player {
         return color;
     }
 
+    public void setGod(God power){
+        this.power = power;
+    }
+
     public God getGod(){
         return power;
     }

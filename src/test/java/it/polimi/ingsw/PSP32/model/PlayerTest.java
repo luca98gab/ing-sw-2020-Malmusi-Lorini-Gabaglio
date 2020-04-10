@@ -10,10 +10,12 @@ public class PlayerTest {
 
     Player player1 = null;
     God myGod = null;
+    God myGod2 = null;
 
     @Before
     public void setup() {
         myGod = new God("Apollo", "Abilità di Apollo");
+        myGod2 = new God("Atena", "Abilità di Atena");
         player1 = new Player("Giorgio", "Blu", myGod);
     }
 
@@ -29,6 +31,12 @@ public class PlayerTest {
         assertEquals(player1.getColor(), "Blu");
         assertSame(player1.getGod(), myGod);
         assertEquals(player1.getGod().getName(), "Apollo");
+    }
+
+    @Test
+    public void setGod_correctI_correctO() {
+        player1.setGod(myGod2);
+        assertEquals(player1.getGod().getName(), "Atena");
     }
 
 }
