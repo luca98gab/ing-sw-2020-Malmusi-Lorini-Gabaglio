@@ -14,7 +14,7 @@ public class CellTest {
     @Before
     public void setup() {
         cell1 = new Cell();
-        pawn1 = new Pawn(5, 0);
+        pawn1 = new Pawn(5, 0, 0, null);
     }
 
     @After

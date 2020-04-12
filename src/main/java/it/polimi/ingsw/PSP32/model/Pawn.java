@@ -3,6 +3,7 @@ package it.polimi.ingsw.PSP32.model;
 public class Pawn {
     private int x;
     private int y;
+    private int id;
     private Player player;
 
     public int getX() {
@@ -11,6 +12,14 @@ public class Pawn {
 
     public int getY() {
         return y;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     /**
@@ -23,9 +32,10 @@ public class Pawn {
         this.y = y;
     }
 
-    public Pawn(int x, int y) {
+    public Pawn(int x, int y, int id, Player player) {
         this.x = x;
         this.y = y;
-        player = null;
+        this.id = id;
+        this.player = player;
     }
 }

@@ -12,7 +12,7 @@ public class PawnTest {
 
     @Before
     public void setup() {
-        pawn1 = new Pawn(0, 1);
+        pawn1 = new Pawn(0, 1, 0, null);
     }
 
     @After
