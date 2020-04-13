@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Santorini" />
         <module name="ing-sw-2020-Malmusi-Lorini-Gabaglio" />
+        <module name="project" />
       </profile>
     </annotationProcessing>
   </component>
