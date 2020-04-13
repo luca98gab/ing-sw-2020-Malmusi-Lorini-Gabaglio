@@ -8,20 +8,27 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.Client;
-import it.polimi.ingsw.PSP32.model.Game;
-import it.polimi.ingsw.PSP32.model.God;
-import it.polimi.ingsw.PSP32.model.Pawn;
-import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.model.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 import java.io.IOException;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class Cli implements Runnable {
+
+    public static final String RESET = "\u001B[0m";
+    public static final String BLACK = "\u001B[30m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String PURPLE = "\u001B[35m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String WHITE = "\u001B[37m";
 
     public static void main( String[] args ) {
         Cli cli = new Cli();
@@ -60,6 +67,24 @@ public class Cli implements Runnable {
 
         System.out.print("Insert color: ");
         String color = checkForValidStringInput(false, false, 1, 10);
+
+        if (color.matches("\\b(?i)(?:red|rosso|r)\\b")){
+            color = RED;
+        } else if (color.matches("\\b(?i)(?:green|verde|g)\\b")){
+            color = GREEN;
+        } else if (color.matches("\\b(?i)(?:yellow|giallo|y)\\b")){
+            color = YELLOW;
+        } else if (color.matches("\\b(?i)(?:blue|blu|b)\\b")){
+            color = BLUE;
+        } else if (color.matches("\\b(?i)(?:purple|viola|p)\\b")){
+            color = PURPLE;
+        } else if (color.matches("\\b(?i)(?:cyan|ciano|c|azzurro)\\b")){
+            color = CYAN;
+        } else if (color.matches("\\b(?i)(?:black|nero)\\b")){
+            color = BLACK;
+        } else if (color.matches("\\b(?i)(?:white|bianco|w)\\b")){
+            color = WHITE;
+        }
 
         Player player = new Player(str, color, null);
         System.out.println();
@@ -122,11 +147,11 @@ public class Cli implements Runnable {
      */
     private static void printPlayerInfo(Player[] players, Boolean printPawns){
         for (int i = 0; i < players.length; i++){
-            System.out.println("\n\nPLAYER " + (i+1) + " INFO:\n" +
-                    "\nName: " + players[i].getName() +
-                    "\nColor: " + players[i].getColor() +
-                    "\nGod: " + players[i].getGod().getName() +
-                    ": " + players[i].getGod().getAbility());
+            System.out.println(RESET + players[i].getColor() + "\n\nPLAYER " + (i+1) + " INFO:\n" +
+                    "\nName: " + players[i].getName());
+            if (players[i].getGod()!=null){
+                System.out.println("God: " + players[i].getGod().getName() + ": " + players[i].getGod().getAbility());
+            }
             if (printPawns.equals(true)){
                 for (int j = 0; j < players[i].getPawns().length; j++){
                     System.out.println("Pawn " + (j+1) + ": " +  (players[i].getPawns()[j].getX()+1) + "," +  (players[i].getPawns()[j].getY()+1));
@@ -150,7 +175,7 @@ public class Cli implements Runnable {
 
         God[] allGodsList = allGods();
 
-        System.out.print("PLAYER 1: ");
+        System.out.print(RESET + playersList[0].getColor() + "PLAYER 1: ");
         System.out.println(playersList[0].getName().toUpperCase());
 
         System.out.println("\nSelect " + playersList.length + " cards from the following ones:\n");
@@ -167,7 +192,7 @@ public class Cli implements Runnable {
         }
 
         for (int j = 0; j < playersList.length-1; j++){
-            System.out.print("\n\nPLAYER " + (j+2) + ": ");
+            System.out.print(RESET + playersList[j+1].getColor() + "\n\nPLAYER " + (j+2) + ": ");
             System.out.println(playersList[j+1].getName().toUpperCase());
             System.out.println("\nAvailable Gods:\n");
             for (int i = 0; i < playersList.length-j; i++){
@@ -182,7 +207,7 @@ public class Cli implements Runnable {
             }
         }
 
-        System.out.print("\n\nPLAYER 1: ");
+        System.out.print(RESET + playersList[0].getColor() + "\n\nPLAYER 1: ");
         System.out.println(playersList[0].getName().toUpperCase());
         System.out.println("\nYour God is:");
         System.out.println(allGodsList[gods[0]].getName() + " --> " + allGodsList[gods[0]].getAbility());
@@ -197,7 +222,7 @@ public class Cli implements Runnable {
      * @param max : max acceptable int value in input
      * @return int : the valid value
      */
-    public static int checkForValidIntInput(int min, int max){
+    private static int checkForValidIntInput(int min, int max){
         Scanner scanner = new Scanner(System.in);
         String str;
 
@@ -221,7 +246,7 @@ public class Cli implements Runnable {
      * @param maxLength max length of the word
      * @return  String : valid value from input
      */
-    public static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength){
+    private static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength){
         String str;
         Scanner scanner = new Scanner(System.in);
         str = scanner.nextLine();
@@ -259,9 +284,9 @@ public class Cli implements Runnable {
      *
      * @param game : current Game object
      */
-    public static void firstPawnPositioning(Game game){
+    private static void firstPawnPositioning(Game game){
         for (int i = 0; i < game.getPlayerList().length; i++){
-            System.out.print("\n\nPLAYER " + (i+1) + ": ");
+            System.out.print(RESET + game.getPlayerList()[i].getColor() + "\n\nPLAYER " + (i+1) + ": ");
             System.out.println(game.getPlayerList()[i].getName().toUpperCase());
 
             for (int j = 0; j < 2; j++) {
@@ -282,6 +307,634 @@ public class Cli implements Runnable {
         }
     }
 
+    /** Prints info related to the specified cell
+     *
+     * @param game current game
+     * @param x cell x
+     * @param y cell y
+     */
+    private static void printCellInfo(Game game, int x, int y){
+        System.out.println("\n\nCell [" + (x+1) + "," + (y+1) + "]:");
+        if (game.getMap()[x][y].getIsFull()!=null){
+            System.out.println("-Occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName() +
+                    " " + game.getMap()[x][y].getIsFull().getId());
+        } else System.out.println("-Empty");
+        System.out.println("Floor: " + game.getMap()[x][y].getFloor());
+        System.out.println("Dome: " + game.getMap()[x][y].getHasDome());
+    }
+
+    /** Method to print the board. Floors and players
+     *
+     * @param game Game : current game
+     */
+    private static void printBoardColored(Game game){
+        System.out.println(RESET + "\n+   1  2  3  4  5   +\n");
+        for (int i = 0; i < 5; i++){
+            System.out.print(RESET + (i+1) + "   ");
+            for (int j = 0; j < 5; j++){
+                if (game.getMap()[j][i].getHasDome().equals(false)){
+                    if (game.getMap()[j][i].getIsFull()==null){
+                        System.out.print(RESET + game.getMap()[j][i].getFloor() + "  ");
+                    } else {
+                        System.out.print(game.getMap()[j][i].getIsFull().getPlayer().getColor() + game.getMap()[j][i].getFloor());
+                        if (game.getMap()[j][i].getIsFull().getId() == 1){
+                            System.out.print("' ");
+                        } else System.out.print("\" ");
+                    }
+
+                } else System.out.print(RESET + "@  ");
+            }
+            System.out.println(RESET + " |\n");
+        }
+        System.out.println(RESET + "+   -  -  -  -  -   +");
+    }
+
+    /** Method to print the board. Floors or/and players
+     *
+     * @param game Game : current game
+     * @param printFloors Boolean : true to print floors
+     * @param printPlayers Boolean : true to print players
+     */
+    private static void printBoard(Game game, Boolean printFloors, Boolean printPlayers){
+
+        if (printFloors.equals(true)) {
+            System.out.println(RESET + "+   1  2  3  4  5   +\n");
+            for (int i = 0; i < 5; i++){
+                System.out.print((i+1) + "   ");
+                for (int j = 0; j < 5; j++){
+                    if (game.getMap()[j][i].getHasDome().equals(false)){
+                        System.out.print(game.getMap()[j][i].getFloor() + "  ");
+
+                    } else System.out.print("@  ");
+                }
+                System.out.println(" |\n");
+            }
+            System.out.println("+   -  -  -  -  -   +\n");
+        }
+
+        if (printPlayers.equals(true)) {
+            System.out.println(RESET + "+   1  2  3  4  5   +\n");
+            for (int i = 0; i < 5; i++){
+                System.out.print((i+1) + "   ");
+                for (int j = 0; j < 5; j++){
+                    if (game.getMap()[j][i].getIsFull()==null){
+                        System.out.print(RESET + "#  ");
+                    } else System.out.print(game.getMap()[j][i].getIsFull().getPlayer().getColor() +
+                            game.getMap()[j][i].getIsFull().getPlayer().getName().charAt(0) + "  ");
+                }
+                System.out.println(RESET + " |\n");
+            }
+            System.out.println("+   -  -  -  -  -   +\n");
+        }
+    }
+
+    private static Boolean getValidMove(Game game, Pawn pawn){
+        System.out.print("\nWhere to move?\nX: ");
+        int x = checkForValidIntInput(Math.max(1, pawn.getX()), Math.min(5, pawn.getX()+2))-1;
+        System.out.print("Y: ");
+        int y = checkForValidIntInput(Math.max(1, pawn.getY()), Math.min(5, pawn.getY()+2))-1;
+        Boolean valid = false;
+        int esc = 1;
+        if (x == pawn.getX() && y == pawn.getY()){
+            valid = false;
+            System.out.println("INVALID MOVE: You are already there!");
+        } else if (game.getMap()[x][y].getIsFull()!=null){
+            valid = false;
+            System.out.println("INVALID MOVE: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+        } else if (game.getMap()[x][y].getFloor() > 1 + game.getMap()[pawn.getX()][pawn.getY()].getFloor()){
+            valid = false;
+            System.out.println("INVALID MOVE: You cannot climb 2 floors in 1 move!");
+        } else if (game.getMap()[x][y].getHasDome().equals(true)){
+            valid = false;
+            System.out.println("INVALID MOVE: Selected cell has a dome on it!");
+        } else valid = true;
+        while (!valid && esc == 1){
+            System.out.print("\nDo you still want to move this pawn? [1 = Yes, 2 = No] : ");
+            esc = checkForValidIntInput(1, 2);
+            if (esc == 2) break;
+            System.out.print("\nWhere to move?\nX: ");
+            x = checkForValidIntInput(Math.max(1, pawn.getX()) , Math.min(5, pawn.getX()+2))-1;
+            System.out.print("Y: ");
+            x = checkForValidIntInput(Math.max(1, pawn.getY()) , Math.min(5, pawn.getY()+2))-1;
+            if (x==pawn.getX() && y==pawn.getY()){
+                valid = false;
+                System.out.println("INVALID MOVE: You are already there!");
+            } else if (game.getMap()[x][y].getIsFull()!=null){
+                valid = false;
+                System.out.println("INVALID MOVE: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+            } else if (game.getMap()[x][y].getFloor() > 1 + game.getMap()[pawn.getX()][pawn.getY()].getFloor()){
+                valid = false;
+                System.out.println("INVALID MOVE: You cannot climb 2 floors in 1 move!");
+            } else if (game.getMap()[x][y].getHasDome().equals(true)){
+                valid = false;
+                System.out.println("INVALID MOVE: Selected cell has a dome on it!");
+            } else valid = true;
+        }
+        if (esc == 1){
+            movePawnSecure(game, pawn, x, y);
+            return true;
+        } else return false;
+    }
+
+    private static Boolean getValidMoveViaArrows(Game game, Pawn pawn){
+        System.out.print("\nWhere to move?\nUse Number Keypad or QWEASDZXC keys: ");
+        int x=0, y=0;
+        switch (checkForValidStringInput(true, false , 1, 1)){
+            case "1":
+            case "z":
+                x = pawn.getX()-1;
+                y = pawn.getY()+1;
+                break;
+            case "2":
+            case "x":
+                x = pawn.getX();
+                y = pawn.getY()+1;
+                break;
+            case "3":
+            case "c":
+                x = pawn.getX()+1;
+                y = pawn.getY()+1;
+                break;
+            case "4":
+            case "a":
+                x = pawn.getX()-1;
+                y = pawn.getY();
+                break;
+            case "6":
+            case "d":
+                x = pawn.getX()+1;
+                y = pawn.getY();
+                break;
+            case "7":
+            case "q":
+                x = pawn.getX()-1;
+                y = pawn.getY()-1;
+                break;
+            case "8":
+            case "w":
+                x = pawn.getX();
+                y = pawn.getY()-1;
+                break;
+            case "9":
+            case "e":
+                x = pawn.getX()+1;
+                y = pawn.getY()-1;
+                break;
+        }
+        Boolean valid;
+        int esc = 1;
+        if (x < 0 || y < 0 || x > 4 || y > 4){
+            valid = false;
+            System.out.println("INVALID MOVE: Out of board!");
+        } else if (x == pawn.getX() && y == pawn.getY()){
+            valid = false;
+            System.out.println("INVALID MOVE: You are already there!");
+        } else if (game.getMap()[x][y].getIsFull()!=null){
+            valid = false;
+            System.out.println("INVALID MOVE: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+        } else if (game.getMap()[x][y].getFloor() > 1 + game.getMap()[pawn.getX()][pawn.getY()].getFloor()){
+            valid = false;
+            System.out.println("INVALID MOVE: You cannot climb 2 floors in 1 move!");
+        } else if (game.getMap()[x][y].getHasDome().equals(true)){
+            valid = false;
+            System.out.println("INVALID MOVE: Selected cell has a dome on it!");
+        } else valid = true;
+        while (!valid && esc == 1){
+            System.out.print("\nDo you still want to move this pawn? [1 = Yes, 2 = No] : ");
+            esc = checkForValidIntInput(1, 2);
+            if (esc == 2) break;
+            System.out.print("\nWhere to move?\nUse Number Keypad or QWEASDZXC keys: ");
+            switch (checkForValidStringInput(true, false , 1, 1)){
+                case "1":
+                case "z":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()+1;
+                    break;
+                case "2":
+                case "x":
+                    x = pawn.getX();
+                    y = pawn.getY()+1;
+                    break;
+                case "3":
+                case "c":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()+1;
+                    break;
+                case "4":
+                case "a":
+                    x = pawn.getX()-1;
+                    y = pawn.getY();
+                    break;
+                case "6":
+                case "d":
+                    x = pawn.getX()+1;
+                    y = pawn.getY();
+                    break;
+                case "7":
+                case "q":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()-1;
+                    break;
+                case "8":
+                case "w":
+                    x = pawn.getX();
+                    y = pawn.getY()-1;
+                    break;
+                case "9":
+                case "e":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()-1;
+                    break;
+            }
+            if (x < 0 || y < 0 || x > 4 || y > 4){
+                valid = false;
+                System.out.println("INVALID MOVE: Out of board!");
+            } else if (x==pawn.getX() && y==pawn.getY()){
+                valid = false;
+                System.out.println("INVALID MOVE: You are already there!");
+            } else if (game.getMap()[x][y].getIsFull()!=null){
+                valid = false;
+                System.out.println("INVALID MOVE: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+            } else if (game.getMap()[x][y].getFloor() > 1 + game.getMap()[pawn.getX()][pawn.getY()].getFloor()){
+                valid = false;
+                System.out.println("INVALID MOVE: You cannot climb 2 floors in 1 move!");
+            } else if (game.getMap()[x][y].getHasDome().equals(true)){
+                valid = false;
+                System.out.println("INVALID MOVE: Selected cell has a dome on it!");
+            } else valid = true;
+        }
+        if (esc == 1){
+            movePawnSecure(game, pawn, x, y);
+            return true;
+        } else return false;
+    }
+
+    private static void movePawnSecure(Game game, Pawn pawn, int x, int y){
+        game.getMap()[pawn.getX()][pawn.getY()].setIsFull(null);
+        game.getMap()[x][y].setIsFull(pawn);
+        pawn.moves(x, y);
+        return;
+    }
+
+    private static Pawn userWantsToMove(Game game, Player player){
+        for (int j = 0; j < player.getPawns().length; j++){
+            System.out.println("Pawn " + (j+1) + ": [" + (player.getPawns()[j].getX()+1)
+                    + "," + (player.getPawns()[j].getY()+1) + "]");
+        }
+        Boolean moved = false;
+        int choice;
+        do {
+            System.out.print("\nChoose pawn: ");
+            choice = checkForValidIntInput(1, 2)-1;
+            //moved = getValidMove(game, player.getPawns()[choice]);
+            moved = getValidMoveViaArrows(game, player.getPawns()[choice]);
+        } while (moved.equals(false));
+        return player.getPawns()[choice];
+    }
+
+    private static void userWantsToBuild(Game game, Pawn pawn){
+        System.out.print(pawn.getPlayer().getColor() + "\nWhere to build?\nX: ");
+        int x = checkForValidIntInput(Math.max(1, pawn.getX()) , Math.min(5, pawn.getX()+2))-1;
+        System.out.print("Y: ");
+        int y = checkForValidIntInput(Math.max(1, pawn.getY()) , Math.min(5, pawn.getY()+2))-1;
+        Boolean valid = false;
+        if (x == pawn.getX() && y == pawn.getY()){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: You are there!");
+        } else if (game.getMap()[x][y].getIsFull()!=null){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+        } else if (game.getMap()[x][y].getHasDome().equals(true)){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: Selected cell has a dome on it!");
+        } else valid = true;
+        while (!valid){
+            System.out.print("\nWhere to build?\nX: ");
+            x = checkForValidIntInput(Math.max(1, pawn.getX()) , Math.min(5, pawn.getX()+2))-1;
+            System.out.print("Y: ");
+            y = checkForValidIntInput(Math.max(1, pawn.getY()) , Math.min(5, pawn.getY()+2))-1;
+            valid = false;
+            if (x == pawn.getX() && y == pawn.getY()){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: You are there!");
+            } else if (game.getMap()[x][y].getIsFull()!=null){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+            } else if (game.getMap()[x][y].getHasDome().equals(true)){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: Selected cell has a dome on it!");
+            } else valid = true;
+        }
+
+
+        game.getMap()[x][y].setFloor(game.getMap()[x][y].getFloor()+1);
+        if (game.getMap()[x][y].getFloor() == 4) game.getMap()[x][y].setHasDome(true);
+        return;
+    }
+
+    private static void userWantsToBuildViaArrows(Game game, Pawn pawn){
+        System.out.print(pawn.getPlayer().getColor() + "\nWhere to build?\nUse Number Keypad or QWEASDZXC keys: ");
+        int x=0, y=0;
+        switch (checkForValidStringInput(true, false , 1, 1)){
+            case "1":
+            case "z":
+                x = pawn.getX()-1;
+                y = pawn.getY()+1;
+                break;
+            case "2":
+            case "x":
+                x = pawn.getX();
+                y = pawn.getY()+1;
+                break;
+            case "3":
+            case "c":
+                x = pawn.getX()+1;
+                y = pawn.getY()+1;
+                break;
+            case "4":
+            case "a":
+                x = pawn.getX()-1;
+                y = pawn.getY();
+                break;
+            case "6":
+            case "d":
+                x = pawn.getX()+1;
+                y = pawn.getY();
+                break;
+            case "7":
+            case "q":
+                x = pawn.getX()-1;
+                y = pawn.getY()-1;
+                break;
+            case "8":
+            case "w":
+                x = pawn.getX();
+                y = pawn.getY()-1;
+                break;
+            case "9":
+            case "e":
+                x = pawn.getX()+1;
+                y = pawn.getY()-1;
+                break;
+        }
+        Boolean valid = false;
+        if (x == pawn.getX() && y == pawn.getY()){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: You are there!");
+        } else if (game.getMap()[x][y].getIsFull()!=null){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+        } else if (game.getMap()[x][y].getHasDome().equals(true)){
+            valid = false;
+            System.out.println("INVALID BUILD LOCATION: Selected cell has a dome on it!");
+        } else valid = true;
+        while (!valid){
+            System.out.print("\nWhere to build?\nUse Number Keypad or QWEASDZXC keys: ");
+            switch (checkForValidStringInput(true, false , 1, 1)){
+                case "1":
+                case "z":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()+1;
+                    break;
+                case "2":
+                case "x":
+                    x = pawn.getX();
+                    y = pawn.getY()+1;
+                    break;
+                case "3":
+                case "c":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()+1;
+                    break;
+                case "4":
+                case "a":
+                    x = pawn.getX()-1;
+                    y = pawn.getY();
+                    break;
+                case "6":
+                case "d":
+                    x = pawn.getX()+1;
+                    y = pawn.getY();
+                    break;
+                case "7":
+                case "q":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()-1;
+                    break;
+                case "8":
+                case "w":
+                    x = pawn.getX();
+                    y = pawn.getY()-1;
+                    break;
+                case "9":
+                case "e":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()-1;
+                    break;
+            }
+            if (x == pawn.getX() && y == pawn.getY()){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: You are there!");
+            } else if (game.getMap()[x][y].getIsFull()!=null){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: Selected cell is occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName());
+            } else if (game.getMap()[x][y].getHasDome().equals(true)){
+                valid = false;
+                System.out.println("INVALID BUILD LOCATION: Selected cell has a dome on it!");
+            } else valid = true;
+        }
+
+
+        game.getMap()[x][y].setFloor(game.getMap()[x][y].getFloor()+1);
+        if (game.getMap()[x][y].getFloor() == 4) game.getMap()[x][y].setHasDome(true);
+        return;
+    }
+
+    private static void standardTurn(Game game, int i){
+
+        System.out.print(game.getPlayerList()[i].getColor() + "\n\nTURN OF PLAYER " + (i+1) + ": ");
+        System.out.println(game.getPlayerList()[i].getName().toUpperCase());
+        String cmd;
+        Pawn movedPawn = null;
+
+        checkHasLost(game, game.getPlayerList()[i]);
+
+        do {
+            System.out.println("\nAvailable commands: Move (m) - PlayerInfo (i) - PrintBoard (p)");
+            System.out.print("Command: ");
+            cmd = checkForValidStringInput(false, false, 1, 3);
+            switch (cmd) {
+                case "m":
+                    movedPawn = userWantsToMove(game, game.getPlayerList()[i]);
+                    printBoardColored(game);
+                    break;
+                case "i":
+                    Player[] myPlayer = new Player[1];
+                    myPlayer[0] = game.getPlayerList()[i];
+                    printPlayerInfo(myPlayer, true);
+                    break;
+
+                case "p":
+                    printBoardColored(game);
+                    break;
+            }
+        } while (!cmd.equals("m"));
+
+        checkHasWon(game, movedPawn);
+
+        do {
+            System.out.println(game.getPlayerList()[i].getColor() + "\nAvailable commands: Build (b) - MyPlayerInfo (i) - PrintBoard (p)");
+            System.out.print("Command: ");
+            cmd = checkForValidStringInput(false, false, 1, 3);
+            switch (cmd) {
+                case "b":
+                    userWantsToBuildViaArrows(game, movedPawn);
+                    printBoardColored(game);
+                    break;
+                case "i":
+                    Player[] myPlayer = new Player[1];
+                    myPlayer[0] = game.getPlayerList()[i];
+                    printPlayerInfo(myPlayer, true);
+                    break;
+
+                case "p":
+                    printBoardColored(game);
+                    break;
+            }
+        } while (!cmd.equals("b"));
+    }
+
+    private static void checkHasLost(Game game, Player player){
+        int movablePawns = 0;
+        for (int j = 0; j < player.getPawns().length; j++){
+            if (checkCanMoveE(game, player.getPawns()[j]) || checkCanMoveW(game, player.getPawns()[j]) ||
+                    checkCanMoveN(game, player.getPawns()[j]) || checkCanMoveS(game, player.getPawns()[j]) ||
+                    checkCanMoveSE(game, player.getPawns()[j]) || checkCanMoveNE(game, player.getPawns()[j]) ||
+                    checkCanMoveSW(game, player.getPawns()[j]) || checkCanMoveNW(game, player.getPawns()[j])){
+                movablePawns++;
+            }
+        }
+        if (movablePawns == 0){
+            System.out.println("YOU LOST");
+            while (true);
+        }
+    }
+
+    private static void checkHasWon(Game game, Pawn pawn){
+        if (game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3) {
+            System.out.println("YOU WON");
+            endGame(pawn.getPlayer());
+        }
+    }
+
+    private static void endGame(Player player){
+        int num = player.getName().length();
+        System.out.println(player.getColor());
+        for (int i = 0; i < num+10; i++){
+            System.out.print("#");
+        }
+        for (int i = 0; i < num+10; i++){
+            System.out.print("#");
+        }
+        System.out.println("## " + player.getName().toUpperCase() + " WON ##");
+        for (int i = 0; i < num+10; i++){
+            System.out.print("#");
+        }
+        for (int i = 0; i < num+10; i++){
+            System.out.print("#");
+        }
+
+        while (true);
+
+    }
+
+    private static Boolean checkCanMoveW(Game game, Pawn pawn){
+        if (pawn.getX()>0){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveE(Game game, Pawn pawn){
+        if (pawn.getX()<4){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveN(Game game, Pawn pawn){
+        if (pawn.getY()>0){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()][pawn.getY()-1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveS(Game game, Pawn pawn){
+        if (pawn.getY()<4){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()][pawn.getY()+1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveNW(Game game, Pawn pawn){
+        if (pawn.getX()>0 && pawn.getY()>0){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()-1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveNE(Game game, Pawn pawn){
+        if (pawn.getX()<4 && pawn.getY()>0){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()-1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveSE(Game game, Pawn pawn){
+        if (pawn.getX()<4 && pawn.getY()<4){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()+1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkCanMoveSW(Game game, Pawn pawn){
+        if (pawn.getX()>0 && pawn.getY()<4){
+            Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+            Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()+1];
+            if (newCell.getIsFull() == null && newCell.getFloor() < currentCell.getFloor()+2 && newCell.getHasDome().equals(false)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void run() {
@@ -293,19 +946,28 @@ public class Cli implements Runnable {
 
         Game game = new Game(playerNum);
 
+
         game.setPlayerList(createPlayerList(playerNum)); //creates a list containing the players in the game
 
-        godPicking(game.getPlayerList()); //every player picks his card
+        //godPicking(game.getPlayerList()); //every player picks his card
 
-        //printPlayerInfo(game.getPlayerList(), false); //prints every player info
+        printPlayerInfo(game.getPlayerList(), false); //prints every player info
 
         firstPawnPositioning(game); //places pawns on the board for every player
 
-        printPlayerInfo(game.getPlayerList(), true); //prints every player info
+        //printPlayerInfo(game.getPlayerList(), true); //prints every player info
+
+        printBoardColored(game);
+
+
+        do {
+            for (int i = 0; i < game.getPlayerNum(); i++){
+                standardTurn(game, i);
+            }
+        } while (true);
+
 
     }
-
-
 
 }
 
