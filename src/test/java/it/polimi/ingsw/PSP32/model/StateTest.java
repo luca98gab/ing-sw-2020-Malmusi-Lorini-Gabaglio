@@ -4,19 +4,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class StateTest {
 
     State state = null;
-    Player[] players = new Player[3];
+    ArrayList<Player> players = new Player[3];
     Game game1 = null;
 
     @Before
     public void setup() {
-        players[0] = new Player("Giorgio", "Blu", null);
-        players[1] = new Player("Davide", "Rosso", null);
-        players[2] = new Player("Luca", "Verde", null);
+        players.set(0, new Player("Giorgio", "Blu", null));
+        players.set(1, new Player("Davide", "Rosso", null));
+        players.set(2, new Player("Luca", "Verde", null));
 
         game1 = new Game(3);
         game1.setPlayerList(players);

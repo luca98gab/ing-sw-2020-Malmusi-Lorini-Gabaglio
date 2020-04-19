@@ -1,12 +1,23 @@
 package it.polimi.ingsw.PSP32.model;
 
+import java.util.ArrayList;
+
 public class Game {
     private Cell[][] map;
     private int playerNum;
-    private Player[] playerList;
+    private ArrayList<Player> playerList;
+    private Boolean athenaFlag;
 
     public int getPlayerNum() {
         return playerNum;
+    }
+
+    public Boolean getAthenaFlag() {
+        return athenaFlag;
+    }
+
+    public void setAthenaFlag(Boolean athenaFlag) {
+        this.athenaFlag = athenaFlag;
     }
 
     /**
@@ -15,29 +26,29 @@ public class Game {
      * @return The next player
      */
     public Player getWhosNext(Player p) {
-        if (playerList.length == 2) {
-            if (p == playerList[0]) return playerList[1];
-            else return playerList[0];
+        if (playerList.size() == 2) {
+            if (p == playerList.get(0)) return playerList.get(1);
+            else return playerList.get(0);
         } else {
-            if (p == playerList[0]) return playerList[1];
-            else if (p == playerList[1]) return playerList[2];
-            else return playerList[0];
+            if (p == playerList.get(0)) return playerList.get(1);
+            else if (p == playerList.get(1)) return playerList.get(2);
+            else return playerList.get(0);
         }
     }
 
     public Player getPlayer(int n) {
-        return playerList[n];
+        return playerList.get(n);
     }
 
     public Cell[][] getMap() {
         return map;
     }
 
-    public Player[] getPlayerList() {
+    public ArrayList<Player> getPlayerList() {
         return playerList;
     }
 
-    public void setPlayerList(Player[] playerList) {
+    public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
 
@@ -50,5 +61,6 @@ public class Game {
         }
         playerNum = n;
         playerList = null;
+        athenaFlag = false;
     }
 }
