@@ -1,7 +1,7 @@
 package it.polimi.ingsw.PSP32.controller;
 
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.view.Cli;
+import it.polimi.ingsw.PSP32.view.LocalCli;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -28,7 +28,7 @@ public class Logic {
 
         if (player.getGod().getName().equals("Athena")) game.setAthenaFlag(false);
 
-        Cli.printTurnInfo(player);
+        LocalCli.printTurnInfo(player);
 
         if (checkHasLost(game, player).equals(false)){
 
@@ -45,17 +45,17 @@ public class Logic {
 
     private static Game gameSetup(){
 
-        Game game = new Game(Cli.getNumOfPlayers());
+        Game game = new Game(LocalCli.getNumOfPlayers());
 
         game.setPlayerList(createPlayerList(game.getPlayerNum())); //creates a list containing the players in the game
 
         godPicking(game.getPlayerList()); //every player picks his card
 
-        Cli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
+        LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
 
         firstPawnPositioning(game); //places pawns on the board for every player
 
-        Cli.printBoardColored(game);
+        LocalCli.printBoardColored(game);
 
         return game;
     }
@@ -67,10 +67,10 @@ public class Logic {
      * @return Player[playerNum] type: Array containing the players
      */
     private static ArrayList<Player> createPlayerList(int playerNum){
-        ArrayList<Player> playersList = new ArrayList<Player>();
+        ArrayList<Player> playersList = new ArrayList<>();
 
         for (int i = 0; i < playerNum; i++) {
-            playersList.add(Cli.createPlayer(i));
+            playersList.add(LocalCli.createPlayer(i));
         }
         return playersList;
     }
@@ -90,18 +90,18 @@ public class Logic {
 
         God[] allGodsList = allGods();
 
-        God[] gameGods = Cli.gameGodsPicking(playersList, allGodsList);
+        God[] gameGods = LocalCli.gameGodsPicking(playersList, allGodsList);
         ArrayList<God> remainingGods = new ArrayList<God>(Arrays.asList(gameGods));
 
         for (int j = 1; j < playersList.size(); j++){
-            God selection = Cli.ownGodSelection(playersList.get(j), remainingGods);
+            God selection = LocalCli.ownGodSelection(playersList.get(j), remainingGods);
             playersList.get(j).setGod(selection);
             remainingGods.remove(selection);
         }
 
         playersList.get(0).setGod(remainingGods.get(0));
 
-        Cli.player1GodAssignment(playersList.get(0), remainingGods.get(0));
+        LocalCli.player1GodAssignment(playersList.get(0), remainingGods.get(0));
 
     }
 
@@ -155,10 +155,10 @@ public class Logic {
 
     private static void firstPawnPositioning(Game game){
         for (int i = 0; i < game.getPlayerList().size(); i++){
-            Cli.printTurnInfo(game.getPlayerList().get(i));
+            LocalCli.printTurnInfo(game.getPlayerList().get(i));
 
             for (int j = 0; j < 2; j++) {
-                int[] coordinates = Cli.getPawnInitialPosition(game);
+                int[] coordinates = LocalCli.getPawnInitialPosition(game);
                 int x = coordinates[0];
                 int y = coordinates[1];
                 game.getPlayerList().get(i).getPawns()[j] = new Pawn(x, y, j+1, game.getPlayerList().get(i));
@@ -178,15 +178,15 @@ public class Logic {
         Pawn activePawn = null;
         Cell startPosition;
         do {
-            activePawn = Cli.getActivePawn(game, player);
+            activePawn = LocalCli.getActivePawn(game, player);
             startPosition = game.getMap()[activePawn.getX()][activePawn.getY()];
-            if (god.equals("Prometheus") && Cli.wantsToUsePower(player)){
+            if (god.equals("Prometheus") && LocalCli.wantsToUsePower(player)){
 
-                Cell cell = Cli.getBuildLocationViaArrows(game, activePawn, null);
+                Cell cell = LocalCli.getBuildLocationViaArrows(game, activePawn, null);
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
 
-                Cli.printBoardColored(game);
+                LocalCli.printBoardColored(game);
 
                 Boolean changedFlag;
                 if (game.getAthenaFlag().equals(true)) {
@@ -196,13 +196,13 @@ public class Logic {
                     game.setAthenaFlag(true);
                 }
 
-                Cli.waitForMoveCommand(game, activePawn, false, false);
-                move = Cli.getValidMoveViaArrows(game, activePawn, null, false);
+                LocalCli.waitForMoveCommand(game, activePawn, false, false);
+                move = LocalCli.getValidMoveViaArrows(game, activePawn, null, false);
 
                 if (changedFlag.equals(true)) game.setAthenaFlag(false);
 
-            } else if (Cli.waitForMoveCommand(game, activePawn, true, false).equals(true)){
-                move = Cli.getValidMoveViaArrows(game, activePawn, null, true);
+            } else if (LocalCli.waitForMoveCommand(game, activePawn, true, false).equals(true)){
+                move = LocalCli.getValidMoveViaArrows(game, activePawn, null, true);
             }
         } while (move==null);
 
@@ -217,15 +217,15 @@ public class Logic {
             }
         } else movePawnSecure(game, activePawn, move[0], move[1]);
 
-        Cli.printBoardColored(game);
+        LocalCli.printBoardColored(game);
 
         if (god.equals("Artemis")) {
-            if (Cli.waitForMoveCommand(game, activePawn, false, true).equals(true)){
-                move = Cli.getValidMoveViaArrows(game, activePawn, startPosition, true);
+            if (LocalCli.waitForMoveCommand(game, activePawn, false, true).equals(true)){
+                move = LocalCli.getValidMoveViaArrows(game, activePawn, startPosition, true);
             }
             if (move!=null) {
                 movePawnSecure(game, activePawn, move[0], move[1]);
-                Cli.printBoardColored(game);
+                LocalCli.printBoardColored(game);
             }
         } else if (god.equals("Athena")){
             if (game.getMap()[activePawn.getX()][activePawn.getY()].getFloor()-startPosition.getFloor()<1){
@@ -283,10 +283,10 @@ public class Logic {
         String god = pawn.getPlayer().getGod().getName();
 
         Boolean wantsDome;
-        if (god.equals("Atlas")) wantsDome=Cli.waitForBuildCommand(game, pawn, true, false);
-        else wantsDome=Cli.waitForBuildCommand(game, pawn, false, false);
+        if (god.equals("Atlas")) wantsDome= LocalCli.waitForBuildCommand(game, pawn, true, false);
+        else wantsDome= LocalCli.waitForBuildCommand(game, pawn, false, false);
 
-        Cell cell = Cli.getBuildLocationViaArrows(game, pawn, null);
+        Cell cell = LocalCli.getBuildLocationViaArrows(game, pawn, null);
 
         if (wantsDome){
             cell.setHasDome(true);
@@ -295,22 +295,22 @@ public class Logic {
             if (cell.getFloor() == 4) cell.setHasDome(true);
         }
 
-        Cli.printBoardColored(game);
+        LocalCli.printBoardColored(game);
 
         if (god.equals("Demeter")) {
             Cell restriction = cell;
-            if (Cli.waitForBuildCommand(game, pawn, false, true).equals(false)){
-                cell = Cli.getBuildLocationViaArrows(game, pawn, restriction);
+            if (LocalCli.waitForBuildCommand(game, pawn, false, true).equals(false)){
+                cell = LocalCli.getBuildLocationViaArrows(game, pawn, restriction);
             }
             if (cell!=null) {
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
-                Cli.printBoardColored(game);
+                LocalCli.printBoardColored(game);
             }
         } else if (god.equals("Hephaestus")) {
-            if (cell.getFloor()<3 && Cli.askBuildTwice(pawn.getPlayer())){
+            if (cell.getFloor()<3 && LocalCli.askBuildTwice(pawn.getPlayer())){
                 cell.setFloor(cell.getFloor()+1);
-                Cli.printBoardColored(game);
+                LocalCli.printBoardColored(game);
             }
         }
 
@@ -325,7 +325,7 @@ public class Logic {
     private static void checkHasWon(Game game, Pawn pawn, Cell startCell){
         if (game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3 ||
                 (pawn.getPlayer().getGod().getName().equals("Pan") && startCell.getFloor()-game.getMap()[pawn.getX()][pawn.getY()].getFloor()==2)) {
-            Cli.endGameGraphics(pawn.getPlayer());
+            LocalCli.endGameGraphics(pawn.getPlayer());
             while (true);
         }
     }
@@ -347,7 +347,7 @@ public class Logic {
                 return true;
             } else {
                 game.getPlayerList().remove(player);
-                Cli.endGameGraphics(game.getPlayerList().get(0));
+                LocalCli.endGameGraphics(game.getPlayerList().get(0));
                 while (true);
             }
 

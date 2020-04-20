@@ -1,6 +1,8 @@
 package it.polimi.ingsw.PSP32.server;
 
+import it.polimi.ingsw.PSP32.client.Message;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.VirtualCli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,29 +10,27 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+
+import static it.polimi.ingsw.PSP32.server.Server.*;
 
 
 public class ClientHandler implements Runnable
 {
   private Socket client;
-  private Player player = null;
-  private Boolean first;
-  private List<assignPlayerObserver> observers = new ArrayList<>();
-  private int playernum = 0;
-
-  public void addObserver(assignPlayerObserver observer){
-    synchronized (observers){
-      observers.add(observer);
-    }
-  }
+  private final Boolean first;
+  private ObjectOutputStream output;
+  private ObjectInputStream input;
 
 
-  ClientHandler(Socket client, Boolean first)
-  {
+
+
+  ClientHandler(Socket client, Boolean first) throws IOException {
     this.client = client;
     this.first = first;
   }
+
+
 
 
   @Override
@@ -43,94 +43,66 @@ public class ClientHandler implements Runnable
     }
   }
 
+  public int toClientInt(String methodName, ArrayList<Object> parameters) throws IOException {
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+    int i=0;
+    try {
+      Object incoming = input.readObject();
+      i = ((int) incoming);
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from client");
+    }
+    return i;
+  }
+  public int toClientInt(String methodName) throws IOException {
+    return toClientInt(methodName, null);
+  }
+
+  public Player toClientPlayer(String methodName, ArrayList<Object> parameters) throws IOException {
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+    Player player = null;
+    try {
+      Object incoming = input.readObject();
+      player = ((Player) incoming);
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from client");
+    }
+    return player;
+  }
+  public Player toClientPlayer(String methodName) throws IOException {
+    return toClientPlayer(methodName, null);
+  }
+
+
 
   private void handleClientConnection() throws IOException
   {
     System.out.println("Connected to " + client.getInetAddress());
 
-    ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
-    ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+    output = new ObjectOutputStream(client.getOutputStream());
+    input = new ObjectInputStream(client.getInputStream());
 
 
-    if (first==true){
-      String str = "Insert number of players: ";
-      output.writeObject(str);
+    if (first){
+      Server.playerNum = toClientInt("getNumOfPlayers");
 
-      do {
-        try {
-          Object incomingString = input.readObject();
-          playernum = Integer.parseInt((String) incomingString);
-        } catch (ClassNotFoundException | ClassCastException e) {
-          System.out.println("invalid stream from client");
-        }
-      } while (playernum==0);
-    }
-
-
-    String str = "Insert name: ";
-    output.writeObject(str);
-
-
-    String name = null;
-
-
-
-    do {
-      try {
-        Object incomingString = input.readObject();
-        name = (String)incomingString;
-      } catch (ClassNotFoundException | ClassCastException e) {
-        System.out.println("invalid stream from client");
+      synchronized(lockNum){
+        //set ready flag to true (so isReady returns true)
+        lockNum.notifyAll();
       }
-    } while ("".equals(name));
 
-    System.out.println(name);
-
-    str = "Insert color: ";
-    output.writeObject(str);
-
-    String color = null;
-
-    do {
-      try {
-        Object incomingString = input.readObject();
-        color = (String)incomingString;
-      } catch (ClassNotFoundException | ClassCastException e) {
-        System.out.println("invalid stream from client");
-      }
-    } while ("".equals(color));
-
-    System.out.println(color);
-
-    player = new Player(name, color, null);
-
-
-
-
-
-
-
-
-
-    //client.close();
-  }
-  private void createPlayer(String name, String color){
-    player = new Player(name, color, null);
-    List<assignPlayerObserver> observers_copy;
-    synchronized (observers) {
-      observers_copy = new ArrayList<>(observers);
     }
-    for (assignPlayerObserver oss1: observers_copy){
-      oss1.verifyPlayer(player);
+
+    Player player = toClientPlayer("createPlayer");
+
+    Server.players.add(player);
+
+    synchronized(lockPlayer){
+      //set ready flag to true (so isReady returns true)
+      lockPlayer.notifyAll();
     }
-  }
-
-  public Player getPlayer() {
-    return player;
-  }
-
-  public int getPlayernum() {
-    return playernum;
   }
 
 

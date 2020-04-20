@@ -7,20 +7,14 @@
 
 package it.polimi.ingsw.PSP32.view;
 
-import it.polimi.ingsw.PSP32.client.Client;
 import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.model.*;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.IOException;
-import java.util.ArrayList; // import the ArrayList class
 
 
-public class Cli implements Runnable {
+public class VirtualCli implements Runnable {
 
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
@@ -32,9 +26,25 @@ public class Cli implements Runnable {
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
 
-    public static void main( String[] args ) {
-        Cli cli = new Cli();
-        cli.run();
+    public static void main() {
+        VirtualCli localCli = new VirtualCli();
+        localCli.run();
+    }
+
+    private static void out(String string){
+        System.out.print(string);
+    }
+    private static void out(int i){
+        out(Integer.toString(i));
+    }
+    private static void outln(String string){
+        out(string + "\n");
+    }
+    private static void outln(){
+        outln("");
+    }
+    private static void outln(int i){
+        outln(Integer.toString(i));
     }
 
 
@@ -42,7 +52,7 @@ public class Cli implements Runnable {
 
     public static int getNumOfPlayers(){
 
-        System.out.print("\n\nSANTORINI by Gio-Poco-Davim" + "\n\n" + "New game." + "\n\n" + "Insert number of players: ");
+        out("\n\nSANTORINI by Gio-Poco-Davim" + "\n\n" + "New game." + "\n\n" + "Insert number of players: ");
 
         return checkForValidIntInput(2, 3, null);
     }
@@ -53,16 +63,12 @@ public class Cli implements Runnable {
      *
      * @return Player type: object of the newly created player
      */
-    public static Player createPlayer(int i){
+    public static Player createPlayer(){
 
-        System.out.print("\nPLAYER ");
-        System.out.println(i+1);
-
-
-        System.out.print("Insert name: ");
+        out("Insert name: ");
         String str = checkForValidStringInput(false, true, 1, 20, null);
 
-        System.out.print("Insert color: ");
+        out("Insert color: ");
         String color = checkForValidStringInput(false, false, 1, 10, null);
 
         if (color.matches("\\b(?i)(?:red|rosso|r)\\b")){
@@ -86,33 +92,33 @@ public class Cli implements Runnable {
 
 
         Player player = new Player(str, color, null);
-        System.out.println();
+        outln();
 
         return player;
     }
 
     public static God[] gameGodsPicking(ArrayList<Player> playersList, God[] allGodsList){
 
-        System.out.print(RESET + playersList.get(0).getColor() + "PLAYER 1: ");
-        System.out.println(playersList.get(0).getName().toUpperCase());
+        out(RESET + playersList.get(0).getColor() + "PLAYER 1: ");
+        outln(playersList.get(0).getName().toUpperCase());
 
-        System.out.println("\nSelect " + playersList.size() + " cards from the following ones:\n");
+        outln("\nSelect " + playersList.size() + " cards from the following ones:\n");
         for (int i = 0; i < allGodsList.length; i++) {
-            System.out.println(i+1 + " " + allGodsList[i].getName() + " --> " + allGodsList[i].getAbility());
+            outln(i+1 + " " + allGodsList[i].getName() + " --> " + allGodsList[i].getAbility());
         }
 
         God [] gameGods = new God[playersList.size()];
-        System.out.println();
+        outln();
 
         for (int i = 0; i < playersList.size(); i++){
-            System.out.print("Select God " + (i+1) + ": ");
+            out("Select God " + (i+1) + ": ");
             Boolean valid=true;
             do {
                 gameGods[i] = allGodsList[checkForValidIntInput(1, allGodsList.length, null)-1];
                 for (int j = 0; j < i; j++){
                     if (gameGods[j].equals(gameGods[i])){
                         valid = false;
-                        System.out.print("God already in use. Select God " + (i+1) + ": ");
+                        out("God already in use. Select God " + (i+1) + ": ");
                     } else valid = true;
                 }
             } while (!valid);
@@ -122,13 +128,13 @@ public class Cli implements Runnable {
     }
 
     public static God ownGodSelection(Player player, ArrayList<God> gameGods){
-        System.out.print(RESET + player.getColor() + "\n\nPLAYER: ");
-        System.out.println(player.getName().toUpperCase());
-        System.out.println("\nAvailable Gods:\n");
+        out(RESET + player.getColor() + "\n\nPLAYER: ");
+        outln(player.getName().toUpperCase());
+        outln("\nAvailable Gods:\n");
         for (int i = 0; i < gameGods.size(); i++){
-            System.out.println((i+1) + ": " + gameGods.get(i).getName() + " --> " + gameGods.get(i).getAbility());
+            outln((i+1) + ": " + gameGods.get(i).getName() + " --> " + gameGods.get(i).getAbility());
         }
-        System.out.print("\nSelect your god: ");
+        out("\nSelect your god: ");
         int choiceIndex = checkForValidIntInput(1, gameGods.size(), null)-1;
 
         God choice = gameGods.get(choiceIndex);
@@ -137,15 +143,15 @@ public class Cli implements Runnable {
     }
 
     public static int[] getPawnInitialPosition(Game game){
-        System.out.print("Select a cell for your pawn.\nX = ");
+        out("Select a cell for your pawn.\nX = ");
         int x = checkForValidIntInput(1, 5, null)-1;
-        System.out.print("Y = ");
+        out("Y = ");
         int y = checkForValidIntInput(1, 5, null)-1;
         while (game.getMap()[x][y].getIsFull()!=null){
-            System.out.print("\nSelected cell is already occupied: " + game.getMap()[x][y].getIsFull().getPlayer().getName() +
+            out("\nSelected cell is already occupied: " + game.getMap()[x][y].getIsFull().getPlayer().getName() +
                     " " + game.getMap()[x][y].getIsFull().getId() + ". Select another cell for your pawn.\nX = ");
             x = checkForValidIntInput(1, 5, null)-1;
-            System.out.print("Y = ");
+            out("Y = ");
             y = checkForValidIntInput(1, 5, null)-1;
         }
         int[] position = new int[2];
@@ -157,11 +163,11 @@ public class Cli implements Runnable {
 
     public static Pawn getActivePawn(Game game, Player player){
         for (int j = 0; j < player.getPawns().length; j++){
-            System.out.println("Pawn " + (j+1) + ": [" + (player.getPawns()[j].getX()+1)
+            outln("Pawn " + (j+1) + ": [" + (player.getPawns()[j].getX()+1)
                     + "," + (player.getPawns()[j].getY()+1) + "]");
         }
 
-        System.out.print("\nChoose pawn: ");
+        out("\nChoose pawn: ");
         return player.getPawns()[checkForValidIntInput(1, 2, null)-1];
     }
 
@@ -171,7 +177,7 @@ public class Cli implements Runnable {
         Boolean valid = false;
         Boolean esc = false;
         do {
-            System.out.print(pawn.getPlayer().getColor() + "\nWhere to move?\nUse Number Keypad or QWEASDZXC keys: ");
+            out(pawn.getPlayer().getColor() + "\nWhere to move?\nUse Number Keypad or QWEASDZXC keys: ");
             switch (checkForValidStringInput(true, false , 1, 1, "INVALID MOVE")){
                 case "1":
                 case "z":
@@ -222,9 +228,9 @@ public class Cli implements Runnable {
                     valid = Logic.checkCanMoveNE(game, pawn, restriction);
                     break;
             }
-            if (!valid) System.out.println("INVALID MOVE");
+            if (!valid) outln("INVALID MOVE");
             if (!valid && canChangePawn){
-                System.out.print("\nDo you still want to move this pawn? [Y/N] : ");
+                out("\nDo you still want to move this pawn? [Y/N] : ");
                 esc = !checkForValidYNInput(null);
             }
         } while (!valid && !esc);
@@ -241,7 +247,7 @@ public class Cli implements Runnable {
         int x=0, y=0;
         Boolean valid = false;
         do {
-            System.out.print(pawn.getPlayer().getColor() + "\nWhere to build?\nUse Number Keypad or QWEASDZXC keys: ");
+            out(pawn.getPlayer().getColor() + "\nWhere to build?\nUse Number Keypad or QWEASDZXC keys: ");
             switch (checkForValidStringInput(true, false , 1, 1, "INVALID LOCATION")){
                 case "1":
                 case "z":
@@ -292,19 +298,19 @@ public class Cli implements Runnable {
                     valid = Logic.checkCanBuildNE(game, pawn, restriction);
                     break;
             }
-            if (!valid) System.out.println("INVALID LOCATION");
+            if (!valid) outln("INVALID LOCATION");
         } while (!valid);
 
         return game.getMap()[x][y];
     }
 
     public static Boolean askBuildTwice(Player player){
-        System.out.print(player.getColor() + "\nDo you want to build again on the same cell? [Y/N]: ");
+        out(player.getColor() + "\nDo you want to build again on the same cell? [Y/N]: ");
         return checkForValidYNInput(null);
     }
 
     public static Boolean wantsToUsePower(Player player){
-        System.out.print(player.getColor() + "\nDo you want to use your power? [Y/N]: ");
+        out(player.getColor() + "\nDo you want to use your power? [Y/N]: ");
         return checkForValidYNInput(null);
     }
 
@@ -327,7 +333,7 @@ public class Cli implements Runnable {
         str = scanner.nextLine();
 
         while (!str.matches("^[0-9]+$") || Integer.parseInt(str) < min || Integer.parseInt(str) > max){
-            System.out.print("Input not valid (Integer number requested - min " + min + " - max " + max + ")." +
+            out("Input not valid (Integer number requested - min " + min + " - max " + max + ")." +
                     customErrorMessage);
             str = scanner.nextLine();
         }
@@ -353,25 +359,25 @@ public class Cli implements Runnable {
 
         if (canContainNumbers.equals(false) && canContainSymbols.equals(false)){
             while ((str == null) || !str.matches("[a-zA-Z]+") || str.equals(" ") || (str.length() < minLength) || (str.length() > maxLength)){
-                System.out.print("Input not valid (No Numbers - No Symbols - min " + minLength + " characters - max " + maxLength + " characters)." +
+                out("Input not valid (No Numbers - No Symbols - min " + minLength + " characters - max " + maxLength + " characters)." +
                         customErrorMessage);
                 str = scanner.nextLine();
             }
         } else if (canContainNumbers.equals(true) && canContainSymbols.equals(false)){
             while (str == null || str.matches("[!@#$%&*()_+=|<>?{}\\[\\]~-]") || str.equals(" ") || str.length() < minLength || str.length() > maxLength){
-                System.out.print("Input not valid (No Symbols - min " + minLength + " characters - max " + maxLength + " characters)." +
+                out("Input not valid (No Symbols - min " + minLength + " characters - max " + maxLength + " characters)." +
                         customErrorMessage);
                 str = scanner.nextLine();
             }
         } else if (canContainNumbers.equals(true) && canContainSymbols.equals(true)){
             while (str == null || str.equals(" ") || str.length() < minLength || str.length() > maxLength){
-                System.out.print("Input not valid (min " + minLength + " characters - max " + maxLength + " characters)." +
+                out("Input not valid (min " + minLength + " characters - max " + maxLength + " characters)." +
                         "\nInsert a new one: ");
                 str = scanner.nextLine();
             }
         } else if (canContainNumbers.equals(false) && canContainSymbols.equals(true)){
             while (str == null || str.matches(".*\\d.*") || str.equals(" ") || str.length() < minLength || str.length() > maxLength){
-                System.out.print("Input not valid (No Numbers - min " + minLength + " characters - max " + maxLength + " characters)." +
+                out("Input not valid (No Numbers - min " + minLength + " characters - max " + maxLength + " characters)." +
                         customErrorMessage);
                 str = scanner.nextLine();
             }
@@ -387,7 +393,7 @@ public class Cli implements Runnable {
         if (customErrorMessage == null) customErrorMessage = "\nInsert a new one: ";
 
         while ((str == null) || (!str.matches("\\b(?i)(?:yes|si|y)\\b") && !str.matches("\\b(?i)(?:no|n)\\b"))){
-            System.out.print("Input not valid" + customErrorMessage);
+            out("Input not valid" + customErrorMessage);
             str = scanner.nextLine();
         }
         if (str.matches("\\b(?i)(?:yes|si|y)\\b")) return true;
@@ -402,15 +408,15 @@ public class Cli implements Runnable {
     // output methods
 
     public static void player1GodAssignment(Player player, God god){
-        System.out.print(RESET + player.getColor() + "\n\nPLAYER 1: ");
-        System.out.println(player.getName().toUpperCase());
-        System.out.println("\nYour God is:");
-        System.out.println(god.getName() + " --> " + god.getAbility());
+        out(RESET + player.getColor() + "\n\nPLAYER 1: ");
+        outln(player.getName().toUpperCase());
+        outln("\nYour God is:");
+        outln(god.getName() + " --> " + god.getAbility());
     }
 
     public static void printTurnInfo(Player player){
-        System.out.print(RESET + player.getColor() + "\n\nPLAYER: ");
-        System.out.println(player.getName().toUpperCase());
+        out(RESET + player.getColor() + "\n\nPLAYER: ");
+        outln(player.getName().toUpperCase());
     }
 
     /** Prints info related to the specified cell
@@ -420,13 +426,13 @@ public class Cli implements Runnable {
      * @param y cell y
      */
     private static void printCellInfo(Game game, int x, int y){
-        System.out.println("\n\nCell [" + (x+1) + "," + (y+1) + "]:");
+        outln("\n\nCell [" + (x+1) + "," + (y+1) + "]:");
         if (game.getMap()[x][y].getIsFull()!=null){
-            System.out.println("-Occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName() +
+            outln("-Occupied by " + game.getMap()[x][y].getIsFull().getPlayer().getName() +
                     " " + game.getMap()[x][y].getIsFull().getId());
-        } else System.out.println("-Empty");
-        System.out.println("Floor: " + game.getMap()[x][y].getFloor());
-        System.out.println("Dome: " + game.getMap()[x][y].getHasDome());
+        } else outln("-Empty");
+        outln("Floor: " + game.getMap()[x][y].getFloor());
+        outln("Dome: " + game.getMap()[x][y].getHasDome());
     }
 
     /** Method to print the board. Floors and players
@@ -434,25 +440,25 @@ public class Cli implements Runnable {
      * @param game Game : current game
      */
     public static void printBoardColored(Game game){
-        System.out.println(RESET + "\n+   1  2  3  4  5   +\n");
+        outln(RESET + "\n+   1  2  3  4  5   +\n");
         for (int i = 0; i < 5; i++){
-            System.out.print(RESET + (i+1) + "   ");
+            out(RESET + (i+1) + "   ");
             for (int j = 0; j < 5; j++){
                 if (game.getMap()[j][i].getHasDome().equals(false)){
                     if (game.getMap()[j][i].getIsFull()==null){
-                        System.out.print(RESET + game.getMap()[j][i].getFloor() + "  ");
+                        out(RESET + game.getMap()[j][i].getFloor() + "  ");
                     } else {
-                        System.out.print(game.getMap()[j][i].getIsFull().getPlayer().getColor() + game.getMap()[j][i].getFloor());
+                        out(game.getMap()[j][i].getIsFull().getPlayer().getColor() + game.getMap()[j][i].getFloor());
                         if (game.getMap()[j][i].getIsFull().getId() == 1){
-                            System.out.print("' ");
-                        } else System.out.print("\" ");
+                            out("' ");
+                        } else out("\" ");
                     }
 
-                } else System.out.print(RESET + "@  ");
+                } else out(RESET + "@  ");
             }
-            System.out.println(RESET + " |\n");
+            outln(RESET + " |\n");
         }
-        System.out.println(RESET + "+   -  -  -  -  -   +");
+        outln(RESET + "+   -  -  -  -  -   +");
     }
 
     public static void endGameGraphics(Player player){
@@ -460,22 +466,22 @@ public class Cli implements Runnable {
                 YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK,
                 RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE};
         int num = player.getName().length();
-        System.out.println(player.getColor());
+        outln(player.getColor());
         for (int i = 0; i < num+11; i++){
-            System.out.print(colors[i] + "#");
+            out(colors[i] + "#");
         }
-        System.out.println();
+        outln();
         for (int i = 0; i < num+11; i++){
-            System.out.print(colors[i+4] + "#");
+            out(colors[i+4] + "#");
         }
-        System.out.println();
-        System.out.println("## " + player.getColor() + player.getName().toUpperCase() + " WINS" + RESET + " ##");
+        outln();
+        outln("## " + player.getColor() + player.getName().toUpperCase() + " WINS" + RESET + " ##");
         for (int i = 0; i < num+11; i++){
-            System.out.print(colors[i+2] + "#");
+            out(colors[i+2] + "#");
         }
-        System.out.println();
+        outln();
         for (int i = 0; i < num+11; i++){
-            System.out.print(colors[i+6] + "#");
+            out(colors[i+6] + "#");
         }
 
     }
@@ -487,15 +493,15 @@ public class Cli implements Runnable {
      */
     public static void printPlayerInfo(ArrayList<Player> players, Boolean printPawns){
         for (int i = 0; i < players.size(); i++){
-            System.out.println(RESET + players.get(i).getColor() + "\n\nPLAYER " + (i+1) + " INFO:\n" +
+            outln(RESET + players.get(i).getColor() + "\n\nPLAYER " + (i+1) + " INFO:\n" +
                     "\nName: " + players.get(i).getName());
             if (players.get(i).getGod()!=null){
-                System.out.println("God: " + players.get(i).getGod().getName() + ": " + players.get(i).getGod().getAbility());
+                outln("God: " + players.get(i).getGod().getName() + ": " + players.get(i).getGod().getAbility());
             }
             if (printPawns.equals(true)){
                 for (int j = 0; j < players.get(i).getPawns().length; j++){
                     Pawn pawn = players.get(i).getPawns()[j];
-                    System.out.println("Pawn " + (j+1) + ": " +  (pawn.getX()+1) + "," +  (pawn.getY()+1));
+                    outln("Pawn " + (j+1) + ": " +  (pawn.getX()+1) + "," +  (pawn.getY()+1));
                 }
             }
         }
@@ -511,8 +517,8 @@ public class Cli implements Runnable {
         if (allowEsc) text2 = "- Esc (e) ";
         String cmd;
         do {
-            System.out.println(pawn.getPlayer().getColor() + "\nAvailable commands: Build (b) " + text1 + text2 + "- MyPlayerInfo (i) - PrintBoard (p)");
-            System.out.print("Command: ");
+            outln(pawn.getPlayer().getColor() + "\nAvailable commands: Build (b) " + text1 + text2 + "- MyPlayerInfo (i) - PrintBoard (p)");
+            out("Command: ");
             cmd = checkForValidStringInput(false, false, 1, 3, null);
             switch (cmd) {
                 case "b":
@@ -525,13 +531,13 @@ public class Cli implements Runnable {
                 case "e":
                 case "d":
                     if (canBuildDome) return true;
-                    else System.out.println("NOT VALID");
+                    else outln("NOT VALID");
                     break;
                 case "p":
                     printBoardColored(game);
                     break;
                 default:
-                    System.out.println("NOT VALID");
+                    outln("NOT VALID");
                     break;
             }
         } while (true);
@@ -544,8 +550,8 @@ public class Cli implements Runnable {
         if (allowEsc) text2 = "- Esc (e) ";
         String cmd;
         do {
-            System.out.println(pawn.getPlayer().getColor() + "\nAvailable commands: Move (m) " + text1 + text2 + "- PlayerInfo (i) - PrintBoard (p)");
-            System.out.print("Command: ");
+            outln(pawn.getPlayer().getColor() + "\nAvailable commands: Move (m) " + text1 + text2 + "- PlayerInfo (i) - PrintBoard (p)");
+            out("Command: ");
             cmd = checkForValidStringInput(false, false, 1, 3, null);
             switch (cmd) {
                 case "m":
@@ -564,11 +570,11 @@ public class Cli implements Runnable {
                     if (allowSwitch || allowEsc){
                         return false;
                     } else {
-                        System.out.println("NOT VALID");
+                        outln("NOT VALID");
                         break;
                     }
                 default:
-                    System.out.println("NOT VALID");
+                    outln("NOT VALID");
                     break;
             }
         } while (true);
