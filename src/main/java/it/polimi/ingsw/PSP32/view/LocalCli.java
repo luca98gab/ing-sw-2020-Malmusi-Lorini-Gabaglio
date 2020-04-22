@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList; // import the ArrayList class
 
 
-public class Cli implements Runnable {
+public class LocalCli implements Runnable {
 
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
@@ -33,7 +33,7 @@ public class Cli implements Runnable {
     public static final String WHITE = "\u001B[37m";
 
     public static void main( String[] args ) {
-        Cli cli = new Cli();
+        LocalCli cli = new LocalCli();
         cli.run();
     }
 
@@ -270,7 +270,7 @@ public class Cli implements Runnable {
         else return move;
     }
 
-    /**Method to ask to the the player where he wants to build, than calls a check method to validate the request
+    /** Method to ask to the the player where he wants to build, than calls a check method to validate the request
      *
      * @param game: Game
      * @param pawn: Pawn selected pawn
@@ -664,7 +664,7 @@ public class Cli implements Runnable {
     @Override
     public void run() {
 
-        Logic.startGame();
+
 
     }
 
