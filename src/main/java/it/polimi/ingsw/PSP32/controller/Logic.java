@@ -1,6 +1,8 @@
 package it.polimi.ingsw.PSP32.controller;
 
 import it.polimi.ingsw.PSP32.model.*;
+import it.polimi.ingsw.PSP32.server.ClientHandler;
+import it.polimi.ingsw.PSP32.server.Server;
 import it.polimi.ingsw.PSP32.view.LocalCli;
 
 import java.io.BufferedReader;
@@ -10,12 +12,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Logic {
+public class Logic{
 
     //game sequence related methods
 
-    public static void startGame(){
-        Game game = gameSetup();
+    public static void startGame(Game game) throws IOException {
 
         do {
             for (int i = 0; i < game.getPlayerList().size(); i++){
@@ -43,7 +44,7 @@ public class Logic {
 
     //startup methods
 
-    private static Game gameSetup(){
+    private static Game gameSetup() throws IOException {
 
         Game game = new Game(LocalCli.getNumOfPlayers());
 
@@ -51,7 +52,14 @@ public class Logic {
 
         godPicking(game.getPlayerList()); //every player picks his card
 
-        LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
+        /** NON VA
+         *          for (int i = 0; i < game.getPlayerList().size(); i++){
+         *             game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
+         *             //LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
+         *         }
+         */
+
+
 
         firstPawnPositioning(game); //places pawns on the board for every player
 
@@ -86,22 +94,32 @@ public class Logic {
      *
      * @param playersList : type Player[] array containing the players in the game
      */
-    private static void godPicking(ArrayList<Player> playersList){
+    public static void godPicking(ArrayList<Player> playersList) throws IOException {
 
         God[] allGodsList = allGods();
 
-        God[] gameGods = LocalCli.gameGodsPicking(playersList, allGodsList);
-        ArrayList<God> remainingGods = new ArrayList<God>(Arrays.asList(gameGods));
+        God[] gameGods = playersList.get(0).getRelatedClient().toClientGetGodArray("gameGodsPicking", playersList, allGodsList);
+        //God[] gameGods = LocalCli.gameGodsPicking(playersList, allGodsList);
+        ArrayList<God> remainingGods = new ArrayList<>(Arrays.asList(gameGods));
 
         for (int j = 1; j < playersList.size(); j++){
-            God selection = LocalCli.ownGodSelection(playersList.get(j), remainingGods);
+            God selection = playersList.get(j).getRelatedClient().toClientGetGodArray("ownGodSelection", playersList.get(j), remainingGods)[0];
+            //God selection = LocalCli.ownGodSelection(playersList.get(j), remainingGods);
+
+            for (int i = 0; i < remainingGods.size(); i++){
+                if (remainingGods.get(i).equals(selection)){
+                    remainingGods.remove(remainingGods.get(i));
+                }
+            }
             playersList.get(j).setGod(selection);
-            remainingGods.remove(selection);
+
+
         }
 
         playersList.get(0).setGod(remainingGods.get(0));
 
-        LocalCli.player1GodAssignment(playersList.get(0), remainingGods.get(0));
+        playersList.get(0).getRelatedClient().toClientVoid("player1GodAssignment", playersList.get(0), remainingGods.get(0));
+        //LocalCli.player1GodAssignment(playersList.get(0), remainingGods.get(0));
 
     }
 
@@ -153,12 +171,18 @@ public class Logic {
         return null;
     }
 
-    private static void firstPawnPositioning(Game game){
+    public static void firstPawnPositioning(Game game) throws IOException {
         for (int i = 0; i < game.getPlayerList().size(); i++){
-            LocalCli.printTurnInfo(game.getPlayerList().get(i));
+
+            ClientHandler client = game.getPlayerList().get(i).getRelatedClient();
+
+            client.toClientVoid("printTurnInfo", game.getPlayerList().get(i));
+
+//            LocalCli.printTurnInfo(game.getPlayerList().get(i));
 
             for (int j = 0; j < 2; j++) {
-                int[] coordinates = LocalCli.getPawnInitialPosition(game);
+                int[] coordinates = client.toClientGetIntArray("getPawnInitialPosition", game);
+//                int[] coordinates = LocalCli.getPawnInitialPosition(game);
                 int x = coordinates[0];
                 int y = coordinates[1];
                 game.getPlayerList().get(i).getPawns()[j] = new Pawn(x, y, j+1, game.getPlayerList().get(i));

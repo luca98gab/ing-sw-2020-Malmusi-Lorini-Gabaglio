@@ -587,7 +587,7 @@ public class VirtualCli implements Runnable {
     @Override
     public void run() {
 
-        Logic.startGame();
+        //Logic.startGame();
 
     }
 

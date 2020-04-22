@@ -1,12 +1,14 @@
 package it.polimi.ingsw.PSP32.server;
 
 import it.polimi.ingsw.PSP32.client.Message;
+import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
 import it.polimi.ingsw.PSP32.view.VirtualCli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import static it.polimi.ingsw.PSP32.server.Server.*;
 
 public class ClientHandler implements Runnable
 {
-  private Socket client;
+  private final Socket client;
   private final Boolean first;
   private ObjectOutputStream output;
   private ObjectInputStream input;
@@ -25,7 +27,7 @@ public class ClientHandler implements Runnable
 
 
 
-  ClientHandler(Socket client, Boolean first) throws IOException {
+  ClientHandler(Socket client, Boolean first) {
     this.client = client;
     this.first = first;
   }
@@ -43,7 +45,7 @@ public class ClientHandler implements Runnable
     }
   }
 
-  public int toClientInt(String methodName, ArrayList<Object> parameters) throws IOException {
+  public int toClientGetInt(String methodName, ArrayList<Object> parameters) throws IOException {
     Message message = new Message(methodName, parameters);
     output.writeObject(message);
     int i=0;
@@ -55,11 +57,11 @@ public class ClientHandler implements Runnable
     }
     return i;
   }
-  public int toClientInt(String methodName) throws IOException {
-    return toClientInt(methodName, null);
+  public int toClientGetInt(String methodName) throws IOException {
+    return toClientGetInt(methodName, null);
   }
 
-  public Player toClientPlayer(String methodName, ArrayList<Object> parameters) throws IOException {
+  public Player toClientGetPlayer(String methodName, ArrayList<Object> parameters) throws IOException {
     Message message = new Message(methodName, parameters);
     output.writeObject(message);
     Player player = null;
@@ -71,8 +73,77 @@ public class ClientHandler implements Runnable
     }
     return player;
   }
-  public Player toClientPlayer(String methodName) throws IOException {
-    return toClientPlayer(methodName, null);
+  public Player toClientGetPlayer(String methodName) throws IOException {
+    return toClientGetPlayer(methodName, null);
+  }
+
+  public ArrayList toClientGetArrayList(String methodName, ArrayList<Object> parameters) throws IOException {
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+    ArrayList arrayList = null;
+    try {
+      Object incoming = input.readObject();
+      arrayList = ((ArrayList) incoming);
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from client");
+    }
+    return arrayList;
+  }
+  public ArrayList toClientGetArrayList(String methodName) throws IOException {
+    return toClientGetArrayList(methodName, null);
+  }
+
+  public God[] toClientGetGodArray(String methodName, Object par1, Object par2) throws IOException {
+    ArrayList<Object> parameters = new ArrayList<>();
+    parameters.add(par1);
+    parameters.add(par2);
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+    God[] godArray = null;
+    try {
+      Object incoming = input.readObject();
+      godArray = ((God[]) incoming);
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from client");
+    }
+    return godArray;
+  }
+  public God[] toClientGetGodArray(String methodName) throws IOException {
+    return toClientGetGodArray(methodName, null, null);
+  }
+
+
+  public void toClientVoid(String methodName, Object par1, Object par2) throws IOException {
+    ArrayList<Object> parameters = new ArrayList<>();
+    parameters.add(par1);
+    parameters.add(par2);
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+  }
+  public void toClientVoid(String methodName) throws IOException {
+    toClientVoid(methodName, null, null);
+  }
+  public void toClientVoid(String methodName, Object par) throws IOException {
+    toClientVoid(methodName, par, null);
+  }
+
+  public int[] toClientGetIntArray(String methodName, Object par1, Object par2) throws IOException {
+    ArrayList<Object> parameters = new ArrayList<>();
+    parameters.add(par1);
+    parameters.add(par2);
+    Message message = new Message(methodName, parameters);
+    output.writeObject(message);
+    int[] intArray = null;
+    try {
+      Object incoming = input.readObject();
+      intArray = ((int[]) incoming);
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from client");
+    }
+    return intArray;
+  }
+  public int[] toClientGetIntArray(String methodName, Object par) throws IOException {
+    return toClientGetIntArray(methodName, par, null);
   }
 
 
@@ -86,7 +157,7 @@ public class ClientHandler implements Runnable
 
 
     if (first){
-      Server.playerNum = toClientInt("getNumOfPlayers");
+      Server.playerNum = toClientGetInt("getNumOfPlayers");
 
       synchronized(lockNum){
         //set ready flag to true (so isReady returns true)
@@ -95,7 +166,8 @@ public class ClientHandler implements Runnable
 
     }
 
-    Player player = toClientPlayer("createPlayer");
+    Player player = toClientGetPlayer("createPlayer");
+    player.setRelatedClient(this);
 
     Server.players.add(player);
 
@@ -103,6 +175,12 @@ public class ClientHandler implements Runnable
       //set ready flag to true (so isReady returns true)
       lockPlayer.notifyAll();
     }
+
+
+    while (true){
+      //answer to client
+    }
+
   }
 
 

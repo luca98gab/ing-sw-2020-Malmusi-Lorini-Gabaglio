@@ -1,6 +1,8 @@
 package it.polimi.ingsw.PSP32.model;
 
-public class Pawn {
+import java.io.Serializable;
+
+public class Pawn implements Serializable {
     private int x;
     private int y;
     private int id;

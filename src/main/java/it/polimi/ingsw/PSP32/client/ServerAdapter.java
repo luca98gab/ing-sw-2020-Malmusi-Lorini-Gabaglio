@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.*;
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.view.*;
@@ -61,7 +62,7 @@ public class ServerAdapter
 
   public void answerToServer() throws ExecutionException, InterruptedException {
 
-    Object incomingObject = executionQueue.submit(() -> (Object) inputStm.readObject()).get();
+    Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
     switch (message.getMethodName()){
       case "getNumOfPlayers":
@@ -72,7 +73,31 @@ public class ServerAdapter
         Player p = VirtualCli.createPlayer();
         requestSendObject(p);
         break;
+      case "gameGodsPicking":
+        God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));
+        requestSendObject(g);
+        break;
+      case "ownGodSelection":
+        God[] god = {VirtualCli.ownGodSelection(((Player) message.getParameters().get(0)), ((ArrayList<God>) message.getParameters().get(1)))};
+        requestSendObject(god);
+        break;
+      case "player1GodAssignment":
+        VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));
+        break;
+      case "printPlayerInfo":
+        VirtualCli.printPlayerInfo(((ArrayList<Player>) message.getParameters().get(0)), ((Boolean) message.getParameters().get(1)));
+        break;
+      case "printTurnInfo":
+        VirtualCli.printTurnInfo((Player) message.getParameters().get(0));
+        break;
+      case "getPawnInitialPosition":
+        int[] position = VirtualCli.getPawnInitialPosition((Game) message.getParameters().get(0));
+        requestSendObject(position);
+        break;
+      case "printBoardColored":
+        VirtualCli.printBoardColored((Game) message.getParameters().get(0));
     }
+    message = null;
 
   }
 

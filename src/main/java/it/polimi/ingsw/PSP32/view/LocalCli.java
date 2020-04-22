@@ -102,8 +102,6 @@ public class LocalCli implements Runnable {
 
     public static God[] gameGodsPicking(ArrayList<Player> playersList, God[] allGodsList){
 
-        out(RESET + playersList.get(0).getColor() + "PLAYER 1: ");
-        outln(playersList.get(0).getName().toUpperCase());
 
         outln("\nSelect " + playersList.size() + " cards from the following ones:\n");
         for (int i = 0; i < allGodsList.length; i++) {
@@ -590,7 +588,7 @@ public class LocalCli implements Runnable {
     @Override
     public void run() {
 
-        Logic.startGame();
+        //Logic.startGame();
 
     }
 

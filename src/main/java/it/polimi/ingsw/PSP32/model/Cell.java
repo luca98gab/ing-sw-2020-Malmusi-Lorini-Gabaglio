@@ -1,6 +1,8 @@
 package it.polimi.ingsw.PSP32.model;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     private int floor;
     private Pawn pawnHere;
     private Boolean hasDome;

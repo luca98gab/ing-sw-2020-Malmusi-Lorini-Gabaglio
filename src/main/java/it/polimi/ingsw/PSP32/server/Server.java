@@ -1,6 +1,9 @@
 package it.polimi.ingsw.PSP32.server;
 
+import it.polimi.ingsw.PSP32.model.Game;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.LocalCli;
+import it.polimi.ingsw.PSP32.controller.Logic;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,6 +20,9 @@ public class Server implements Runnable {
   public static int playerNum = 0;
   public static final Object lockNum = new Object();
   public static final Object lockPlayer = new Object();
+  public static final Object lock = new Object();
+
+
 
   @Override
   public void run() {
@@ -81,8 +87,32 @@ public class Server implements Runnable {
     new Thread(new UnwantedClientHandler(socket)).start();
 
 
+    Game game = new Game(playerNum);
+
+    game.setPlayerList(new ArrayList<>(players));
 
 
+    try {
+      Logic.godPicking(game.getPlayerList()); //every player picks his card
+      Logic.firstPawnPositioning(game);
+      for (int i = 0; i < game.getPlayerList().size(); i++){
+        game.getPlayerList().get(i).getRelatedClient().toClientVoid("printBoardColored", game);
+      }
+      game.getPlayerList().get(0).getRelatedClient().toClientVoid("printBoardColored", game);
+
+      //LocalCli.printBoardColored(game);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+   // for (int i = 0; i < game.getPlayerList().size(); i++){
+     // try {
+       // game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
+      //} catch (IOException e) {
+       // e.printStackTrace();
+     // }
+      //LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
+   // }
 
 
 

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.PSP32.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
     private Cell[][] map;
     private int playerNum;
     private ArrayList<Player> playerList;
