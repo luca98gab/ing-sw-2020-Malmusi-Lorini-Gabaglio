@@ -67,19 +67,19 @@ public class ServerAdapter
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         int n = VirtualCli.getNumOfPlayers();
-        requestSendObject(n);
+        sendResultMessage(n);
         break;
       case "createPlayer":
         Player p = VirtualCli.createPlayer();
-        requestSendObject(p);
+        sendResultMessage(p);
         break;
       case "gameGodsPicking":
         God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));
-        requestSendObject(g);
+        sendResultMessage(g);
         break;
       case "ownGodSelection":
         God[] god = {VirtualCli.ownGodSelection(((Player) message.getParameters().get(0)), ((ArrayList<God>) message.getParameters().get(1)))};
-        requestSendObject(god);
+        sendResultMessage(god);
         break;
       case "player1GodAssignment":
         VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));
@@ -92,19 +92,61 @@ public class ServerAdapter
         break;
       case "getPawnInitialPosition":
         int[] position = VirtualCli.getPawnInitialPosition((Game) message.getParameters().get(0));
-        requestSendObject(position);
+        sendResultMessage(position);
         break;
       case "printBoardColored":
         VirtualCli.printBoardColored((Game) message.getParameters().get(0));
+        break;
+      case "getActivePawn":
+        Pawn pawn=VirtualCli.getActivePawn((Game) message.getParameters().get(0), (Player) message.getParameters().get(1) );
+        sendResultMessage(pawn);
+        break;
+      case "wantsToUsePower":
+        Boolean bool1=VirtualCli.wantsToUsePower((Player) message.getParameters().get(0));
+        sendResultMessage(bool1);
+        break;
+      case "waitForBuildCommand":
+        Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
+        sendResultMessage(bool2);
+        break;
+      case "getBuildLocationViaArrows":
+        Cell cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
+        sendResultMessage(cell);
+        break;
+      case "waitForMoveCommand":
+        Boolean bool3=VirtualCli.waitForMoveCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
+        sendResultMessage(bool3);
+        break;
+      case "getValidMoveViaArrows":
+        int[] move=VirtualCli.getValidMoveViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1), (Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3));
+        sendResultMessage(move);
+        break;
+      case "askBuildTwice":
+        Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));
+        sendResultMessage(bool4);
+        break;
+      case "checkHasWon":
+        VirtualCli.endGameGraphics((Player) message.getParameters().get(0));
+        break;
     }
-    message = null;
-
   }
-
   public void requestSendObject(Object object)
   {
     executionQueue.submit(() -> {
       try {
+        outputStm.reset();
+        outputStm.writeObject(object);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  public void sendResultMessage(Object object) {
+    executionQueue.submit(() -> {
+      try {
+        outputStm.reset();
+        Message message = new Message(null, null, "Result", object);
         outputStm.writeObject(object);
       } catch (IOException e) {
         e.printStackTrace();

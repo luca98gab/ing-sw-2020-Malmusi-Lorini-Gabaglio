@@ -5,6 +5,7 @@ import it.polimi.ingsw.PSP32.server.ClientHandler;
 import it.polimi.ingsw.PSP32.server.Server;
 import it.polimi.ingsw.PSP32.view.LocalCli;
 
+import javax.swing.text.StyledEditorKit;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,11 +26,12 @@ public class Logic{
         } while (true);
     }
 
-    private static void turn(Game game, Player player){
+    private static void turn(Game game, Player player) throws IOException {
 
         if (player.getGod().getName().equals("Athena")) game.setAthenaFlag(false);
 
-        LocalCli.printTurnInfo(player);
+        player.getRelatedClient().toClientVoid("printTurnInfo", player);
+ //       LocalCli.printTurnInfo(player);
 
         if (checkHasLost(game, player).equals(false)){
 
@@ -98,15 +100,15 @@ public class Logic{
 
         God[] allGodsList = allGods();
 
-        God[] gameGods = playersList.get(0).getRelatedClient().toClientGetGodArray("gameGodsPicking", playersList, allGodsList);
+        God[] gameGods = (God []) playersList.get(0).getRelatedClient().toClientGetObject("gameGodsPicking", playersList, allGodsList);
         //God[] gameGods = LocalCli.gameGodsPicking(playersList, allGodsList);
         ArrayList<God> remainingGods = new ArrayList<>(Arrays.asList(gameGods));
 
         for (int j = 1; j < playersList.size(); j++){
-            God selection = playersList.get(j).getRelatedClient().toClientGetGodArray("ownGodSelection", playersList.get(j), remainingGods)[0];
+            God selection = ((God [])playersList.get(j).getRelatedClient().toClientGetObject("ownGodSelection", playersList.get(j), remainingGods))[0];
             //God selection = LocalCli.ownGodSelection(playersList.get(j), remainingGods);
 
-            for (int i = 0; i < remainingGods.size(); i++){
+        for (int i = 0; i < remainingGods.size(); i++){
                 if (remainingGods.get(i).equals(selection)){
                     remainingGods.remove(remainingGods.get(i));
                 }
@@ -181,7 +183,7 @@ public class Logic{
 //            LocalCli.printTurnInfo(game.getPlayerList().get(i));
 
             for (int j = 0; j < 2; j++) {
-                int[] coordinates = client.toClientGetIntArray("getPawnInitialPosition", game);
+                int[] coordinates = (int []) client.toClientGetObject("getPawnInitialPosition", game);
 //                int[] coordinates = LocalCli.getPawnInitialPosition(game);
                 int x = coordinates[0];
                 int y = coordinates[1];
@@ -195,22 +197,24 @@ public class Logic{
 
     //move phase methods
 
-    private static Pawn movePhase(Game game, Player player){
+    private static Pawn movePhase(Game game, Player player) throws IOException {
 
         String god = player.getGod().getName();
         int[] move = null;
         Pawn activePawn = null;
         Cell startPosition;
         do {
-            activePawn = LocalCli.getActivePawn(game, player);
+            //LocalCli.getActivePawn(game, player)
+            activePawn = (Pawn) player.getRelatedClient().toClientGetObject("getActivePawn", game, player);
             startPosition = game.getMap()[activePawn.getX()][activePawn.getY()];
-            if (god.equals("Prometheus") && LocalCli.wantsToUsePower(player)){
-
-                Cell cell = LocalCli.getBuildLocationViaArrows(game, activePawn, null);
+            //LocalCli.wantsToUsePower(player)
+            if (god.equals("Prometheus") && ((Boolean) player.getRelatedClient().toClientGetObject("wantsToUsePower", player))){
+            //LocalCli.getBuildLocationViaArrows(game, activePawn, null)
+                Cell cell = ((Cell) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
 
-                LocalCli.printBoardColored(game);
+                player.getRelatedClient().toClientVoid("printBoardColored", game);
 
                 Boolean changedFlag;
                 if (game.getAthenaFlag().equals(true)) {
@@ -220,13 +224,13 @@ public class Logic{
                     game.setAthenaFlag(true);
                 }
 
-                LocalCli.waitForMoveCommand(game, activePawn, false, false);
-                move = LocalCli.getValidMoveViaArrows(game, activePawn, null, false);
+                player.getRelatedClient().toClientGetObject("waitForMoveCommand", game, activePawn, false, false);
+                move = (int []) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, false);
 
                 if (changedFlag.equals(true)) game.setAthenaFlag(false);
 
-            } else if (LocalCli.waitForMoveCommand(game, activePawn, true, false).equals(true)){
-                move = LocalCli.getValidMoveViaArrows(game, activePawn, null, true);
+            } else if ((Boolean) player.getRelatedClient().toClientGetObject("waitForMoveCommand",game, activePawn, true, false)){
+                move = (int []) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, true);
             }
         } while (move==null);
 
@@ -241,15 +245,16 @@ public class Logic{
             }
         } else movePawnSecure(game, activePawn, move[0], move[1]);
 
-        LocalCli.printBoardColored(game);
+        player.getRelatedClient().toClientVoid("printBoardColored", game);
 
         if (god.equals("Artemis")) {
-            if (LocalCli.waitForMoveCommand(game, activePawn, false, true).equals(true)){
-                move = LocalCli.getValidMoveViaArrows(game, activePawn, startPosition, true);
+           // LocalCli.waitForMoveCommand(game, activePawn, false, true).equals(true)
+            if ((Boolean) player.getRelatedClient().toClientGetObject("waitForMoveCommand",game, activePawn, false, true).equals(true)){
+                move = (int []) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows",game, activePawn, startPosition, true);
             }
             if (move!=null) {
                 movePawnSecure(game, activePawn, move[0], move[1]);
-                LocalCli.printBoardColored(game);
+                player.getRelatedClient().toClientVoid("printBoardColored", game);
             }
         } else if (god.equals("Athena")){
             if (game.getMap()[activePawn.getX()][activePawn.getY()].getFloor()-startPosition.getFloor()<1){
@@ -303,14 +308,15 @@ public class Logic{
 
     //build phase methods
 
-    private static void buildPhase(Game game, Pawn pawn){
+    private static void buildPhase(Game game, Pawn pawn) throws IOException {
         String god = pawn.getPlayer().getGod().getName();
 
+        ClientHandler client = pawn.getPlayer().getRelatedClient();
         Boolean wantsDome;
-        if (god.equals("Atlas")) wantsDome= LocalCli.waitForBuildCommand(game, pawn, true, false);
-        else wantsDome= LocalCli.waitForBuildCommand(game, pawn, false, false);
+        if (god.equals("Atlas")) wantsDome= (Boolean) client.toClientGetObject("waitForBuildCommand",game, pawn, true, false);
+        else wantsDome= (Boolean) client.toClientGetObject("waitForBuildCommand",game, pawn, false, false);
 
-        Cell cell = LocalCli.getBuildLocationViaArrows(game, pawn, null);
+        Cell cell = (Cell) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, null);
 
         if (wantsDome){
             cell.setHasDome(true);
@@ -319,23 +325,22 @@ public class Logic{
             if (cell.getFloor() == 4) cell.setHasDome(true);
         }
 
-        LocalCli.printBoardColored(game);
+        client.toClientVoid("printBoardColored", game);
 
         if (god.equals("Demeter")) {
             Cell restriction = cell;
-            if (LocalCli.waitForBuildCommand(game, pawn, false, true).equals(false)){
-                cell = LocalCli.getBuildLocationViaArrows(game, pawn, restriction);
+            if ((Boolean) client.toClientGetObject("waitForBuildCommand", game, pawn, false, true).equals(false)){
+                cell = (Cell) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
             }
             if (cell!=null) {
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
-                LocalCli.printBoardColored(game);
+                client.toClientVoid("printBoardColored", game);
             }
         } else if (god.equals("Hephaestus")) {
-            if (cell.getFloor()<3 && LocalCli.askBuildTwice(pawn.getPlayer())){
+            if (cell.getFloor()<3 && (Boolean) client.toClientGetObject("askBuildTwice" , pawn.getPlayer())){
                 cell.setFloor(cell.getFloor()+1);
-                LocalCli.printBoardColored(game);
-            }
+                client.toClientVoid("printBoardColored", game);            }
         }
 
 
@@ -346,15 +351,15 @@ public class Logic{
 
     //methods to check things
 
-    private static void checkHasWon(Game game, Pawn pawn, Cell startCell){
+    private static void checkHasWon(Game game, Pawn pawn, Cell startCell) throws IOException {
         if (game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3 ||
                 (pawn.getPlayer().getGod().getName().equals("Pan") && startCell.getFloor()-game.getMap()[pawn.getX()][pawn.getY()].getFloor()==2)) {
-            LocalCli.endGameGraphics(pawn.getPlayer());
+            pawn.getPlayer().getRelatedClient().toClientVoid("endGameGraphics", pawn.getPlayer());
             while (true);
         }
     }
 
-    private static Boolean checkHasLost(Game game, Player player){
+    private static Boolean checkHasLost(Game game, Player player) throws IOException {
         int movablePawns = 0;
         for (int j = 0; j < player.getPawns().length; j++){
             if (checkCanMoveE(game, player.getPawns()[j], null) || checkCanMoveW(game, player.getPawns()[j], null) ||
@@ -371,7 +376,7 @@ public class Logic{
                 return true;
             } else {
                 game.getPlayerList().remove(player);
-                LocalCli.endGameGraphics(game.getPlayerList().get(0));
+                player.getRelatedClient().toClientVoid("endGameGraphics" ,game.getPlayerList().get(0));
                 while (true);
             }
 
