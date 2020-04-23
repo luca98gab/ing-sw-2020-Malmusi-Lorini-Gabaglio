@@ -6,14 +6,16 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.*;
+
+import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.view.*;
 
 public class ServerAdapter
 {
   private Socket server;
-  private ObjectOutputStream outputStm;
-  private ObjectInputStream inputStm;
+  private static ObjectOutputStream outputStm;
+  private static ObjectInputStream inputStm;
   private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
 
 
@@ -60,10 +62,11 @@ public class ServerAdapter
     return executionQueue.submit(() -> (String)inputStm.readObject());
   }
 
-  public void answerToServer() throws ExecutionException, InterruptedException {
+  public void answerToServer() throws ExecutionException, InterruptedException, IOException {
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
+    if (message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         int n = VirtualCli.getNumOfPlayers();
@@ -110,7 +113,7 @@ public class ServerAdapter
         sendResultMessage(bool2);
         break;
       case "getBuildLocationViaArrows":
-        Cell cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
+        int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
         sendResultMessage(cell);
         break;
       case "waitForMoveCommand":
@@ -147,13 +150,42 @@ public class ServerAdapter
       try {
         outputStm.reset();
         Message message = new Message(null, null, "Result", object);
-        outputStm.writeObject(object);
+        outputStm.writeObject(message);
       } catch (IOException e) {
         e.printStackTrace();
       }
     });
   }
 
+  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
+    ArrayList<Object> parameters = new ArrayList<>();
+    parameters.add(par1);
+    parameters.add(par2);
+    parameters.add(par3);
+    parameters.add(par4);
+    Message outboundMessage = new Message(methodName, parameters, "Request", null);
+    outputStm.reset();
+    outputStm.writeObject(outboundMessage);
+    Object object = null;
+    try {
+      Message inboundMessage = (Message) inputStm.readObject();
+      if (inboundMessage.getTypeOfMessage().equals("Result")){
+        object = inboundMessage.getResult();
+      }
+    } catch (ClassNotFoundException | ClassCastException e) {
+      System.out.println("invalid stream from server");
+    }
+    return object;
+  }
+  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3) throws IOException {
+    return toServerGetObject(methodName, par1, par2, par3, null);
+  }
+  public static Object toServerGetObject(String methodName, Object par1, Object par2) throws IOException {
+    return toServerGetObject(methodName, par1, par2, null, null);
+  }
+  public static Object toServerGetObject(String methodName, Object par) throws IOException {
+    return toServerGetObject(methodName, par, null, null, null);
+  }
 }
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP32.server;
 
+import it.polimi.ingsw.PSP32.client.Message;
 import it.polimi.ingsw.PSP32.model.Player;
 
 import java.io.IOException;
@@ -45,7 +46,8 @@ public class UnwantedClientHandler implements Runnable
     ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
 
     String str = "Lobby is full\n";
-    output.writeObject(str);
+    Message message = new Message(null, null, "StringInfoToPrint", str);
+    output.writeObject(message);
 
     client.close();
   }

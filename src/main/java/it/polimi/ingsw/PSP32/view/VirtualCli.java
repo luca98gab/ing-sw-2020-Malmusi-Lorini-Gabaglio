@@ -7,9 +7,11 @@
 
 package it.polimi.ingsw.PSP32.view;
 
+import it.polimi.ingsw.PSP32.client.ServerAdapter;
 import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -171,7 +173,7 @@ public class VirtualCli implements Runnable {
         return player.getPawns()[checkForValidIntInput(1, 2, null)-1];
     }
 
-    public static int[] getValidMoveViaArrows(Game game, Pawn pawn, Cell restriction, Boolean canChangePawn){
+    public static int[] getValidMoveViaArrows(Game game, Pawn pawn, Cell restriction, Boolean canChangePawn) throws IOException {
 
         int x=0, y=0;
         Boolean valid = false;
@@ -183,49 +185,49 @@ public class VirtualCli implements Runnable {
                 case "z":
                     x = pawn.getX()-1;
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanMoveSW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveSW", game, pawn, restriction);
                     break;
                 case "2":
                 case "x":
                     x = pawn.getX();
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanMoveS(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveS", game, pawn, restriction);
                     break;
                 case "3":
                 case "c":
                     x = pawn.getX()+1;
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanMoveSE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveSE", game, pawn, restriction);
                     break;
                 case "4":
                 case "a":
                     x = pawn.getX()-1;
                     y = pawn.getY();
-                    valid = Logic.checkCanMoveW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveW", game, pawn, restriction);
                     break;
                 case "6":
                 case "d":
                     x = pawn.getX()+1;
                     y = pawn.getY();
-                    valid = Logic.checkCanMoveE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveE", game, pawn, restriction);
                     break;
                 case "7":
                 case "q":
                     x = pawn.getX()-1;
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanMoveNW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveNW", game, pawn, restriction);
                     break;
                 case "8":
                 case "w":
                     x = pawn.getX();
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanMoveN(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveN", game, pawn, restriction);
                     break;
                 case "9":
                 case "e":
                     x = pawn.getX()+1;
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanMoveNE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanMoveNE", game, pawn, restriction);
                     break;
             }
             if (!valid) outln("INVALID MOVE");
@@ -243,7 +245,7 @@ public class VirtualCli implements Runnable {
         else return move;
     }
 
-    public static Cell getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction){
+    public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction) throws IOException {
         int x=0, y=0;
         Boolean valid = false;
         do {
@@ -253,55 +255,55 @@ public class VirtualCli implements Runnable {
                 case "z":
                     x = pawn.getX()-1;
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanBuildSW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSW", game, pawn, restriction);
                     break;
                 case "2":
                 case "x":
                     x = pawn.getX();
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanBuildS(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildS", game, pawn, restriction);
                     break;
                 case "3":
                 case "c":
                     x = pawn.getX()+1;
                     y = pawn.getY()+1;
-                    valid = Logic.checkCanBuildSE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSE", game, pawn, restriction);
                     break;
                 case "4":
                 case "a":
                     x = pawn.getX()-1;
                     y = pawn.getY();
-                    valid = Logic.checkCanBuildW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildW", game, pawn, restriction);
                     break;
                 case "6":
                 case "d":
                     x = pawn.getX()+1;
                     y = pawn.getY();
-                    valid = Logic.checkCanBuildE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildE", game, pawn, restriction);
                     break;
                 case "7":
                 case "q":
                     x = pawn.getX()-1;
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanBuildNW(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNW", game, pawn, restriction);
                     break;
                 case "8":
                 case "w":
                     x = pawn.getX();
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanBuildN(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildN", game, pawn, restriction);
                     break;
                 case "9":
                 case "e":
                     x = pawn.getX()+1;
                     y = pawn.getY()-1;
-                    valid = Logic.checkCanBuildNE(game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNE", game, pawn, restriction);
                     break;
             }
             if (!valid) outln("INVALID LOCATION");
         } while (!valid);
 
-        return game.getMap()[x][y];
+        return new int[]{x, y};
     }
 
     public static Boolean askBuildTwice(Player player){
@@ -440,9 +442,9 @@ public class VirtualCli implements Runnable {
      * @param game Game : current game
      */
     public static void printBoardColored(Game game){
-        outln(RESET + "\n+   1  2  3  4  5   +\n");
+        outln(RESET + "\n+   -  -  -  -  -   +\n");
         for (int i = 0; i < 5; i++){
-            out(RESET + (i+1) + "   ");
+            out(RESET + "|   ");
             for (int j = 0; j < 5; j++){
                 if (game.getMap()[j][i].getHasDome().equals(false)){
                     if (game.getMap()[j][i].getIsFull()==null){

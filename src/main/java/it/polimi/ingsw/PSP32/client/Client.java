@@ -68,7 +68,7 @@ public class Client implements Runnable
     while (true){
       try {
         serverAdapter.answerToServer();
-      } catch ( ExecutionException | InterruptedException e) {
+      } catch (ExecutionException | InterruptedException | IOException e) {
         System.out.println("non va");
       }
     }

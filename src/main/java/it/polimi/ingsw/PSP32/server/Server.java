@@ -96,12 +96,10 @@ public class Server implements Runnable {
       Logic.godPicking(game.getPlayerList()); //every player picks his card
       for(int i=0; i < game.getPlayerList().size(); i++) {
         game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
-        LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
       }
       Logic.firstPawnPositioning(game);
-      for (int i = 0; i < game.getPlayerList().size(); i++){
-        game.getPlayerList().get(i).getRelatedClient().toClientVoid("printBoardColored", game);
-      }
+      Logic.toAllClientsVoid(game, "printBoardColored", game);
+
 
       Logic.startGame(game);
 
