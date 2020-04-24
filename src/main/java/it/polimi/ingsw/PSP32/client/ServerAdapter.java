@@ -66,7 +66,7 @@ public class ServerAdapter
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
-    if (message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
+    if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         int n = VirtualCli.getNumOfPlayers();
@@ -128,8 +128,11 @@ public class ServerAdapter
         Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));
         sendResultMessage(bool4);
         break;
-      case "checkHasWon":
+      case "endGameGraphics":
         VirtualCli.endGameGraphics((Player) message.getParameters().get(0));
+        break;
+      case "removedPlayerGraphics":
+        VirtualCli.removedPlayerGraphics((Player) message.getParameters().get(0));
         break;
     }
   }

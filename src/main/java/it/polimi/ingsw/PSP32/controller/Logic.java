@@ -20,13 +20,15 @@ public class Logic{
     public static void startGame(Game game) throws IOException {
 
         do {
-            for (int i = 0; i < game.getPlayerList().size(); i++){
-                turn(game, game.getPlayerList().get(i));
+            for (int i = 0; i < game.getPlayerList().size();){
+                if (turn(game, game.getPlayerList().get(i)).equals(false)){
+                    i++;
+                }
             }
         } while (true);
     }
 
-    private static void turn(Game game, Player player) throws IOException {
+    private static Boolean turn(Game game, Player player) throws IOException {
 
         if (player.getGod().getName().equals("Athena")) game.setAthenaFlag(false);
 
@@ -38,7 +40,8 @@ public class Logic{
             Pawn activePawn = movePhase(game, player);
 
             buildPhase(game, activePawn);
-        }
+        } else return true;
+        return false;
 
     }
 
@@ -216,7 +219,9 @@ public class Logic{
             //LocalCli.wantsToUsePower(player)
             if (god.equals("Prometheus") && ((Boolean) player.getRelatedClient().toClientGetObject("wantsToUsePower", player))){
             //LocalCli.getBuildLocationViaArrows(game, activePawn, null)
-                Cell cell = ((Cell) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
+
+                int[] cellCoordinates = ((int[]) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
+                Cell cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
 
@@ -338,7 +343,8 @@ public class Logic{
         if (god.equals("Demeter")) {
             Cell restriction = cell;
             if (((Boolean) client.toClientGetObject("waitForBuildCommand", game, pawn, false, true)).equals(false)){
-                cell = (Cell) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
+                cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
+                cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
             }
             if (cell!=null) {
                 cell.setFloor(cell.getFloor()+1);
@@ -355,6 +361,9 @@ public class Logic{
 
     }
 
+
+
+    //comm methods
     private static void toAllClientsVoid(Game game, String methodName, Object par1, Object par2) throws IOException {
         for (int i = 0; i < game.getPlayerList().size(); i++){
             game.getPlayerList().get(i).getRelatedClient().toClientVoid(methodName, par1, par2);
@@ -375,7 +384,8 @@ public class Logic{
     private static void checkHasWon(Game game, Pawn pawn, Cell startCell) throws IOException {
         if (game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3 ||
                 (pawn.getPlayer().getGod().getName().equals("Pan") && startCell.getFloor()-game.getMap()[pawn.getX()][pawn.getY()].getFloor()==2)) {
-            pawn.getPlayer().getRelatedClient().toClientVoid("endGameGraphics", pawn.getPlayer());
+            toAllClientsVoid(game, "endGameGraphics", pawn.getPlayer());
+            //pawn.getPlayer().getRelatedClient().toClientVoid("endGameGraphics", pawn.getPlayer());
             while (true);
         }
     }
@@ -392,7 +402,7 @@ public class Logic{
         }
         if (movablePawns == 0){
             if (game.getPlayerList().size()==3){
-                System.out.println("YOU LOST - Player removed from the game");
+                toAllClientsVoid(game, "removedPlayerGraphics", player);
                 game.getPlayerList().remove(player);
                 return true;
             } else {

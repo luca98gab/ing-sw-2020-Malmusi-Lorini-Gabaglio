@@ -28,7 +28,7 @@ public class VirtualCli implements Runnable {
     public static final String CYAN = "\u001B[36m";
     public static final String WHITE = "\u001B[37m";
 
-    public static void main() {
+    public static void main( String[] args ) {
         VirtualCli localCli = new VirtualCli();
         localCli.run();
     }
@@ -456,7 +456,7 @@ public class VirtualCli implements Runnable {
                         } else out("\" ");
                     }
 
-                } else out(RESET + "@  ");
+                } else out(RESET + "●  ");
             }
             outln(RESET + " |\n");
         }
@@ -486,6 +486,10 @@ public class VirtualCli implements Runnable {
             out(colors[i+6] + "#");
         }
 
+    }
+
+    public static void removedPlayerGraphics(Player player){
+        System.out.println(player.getName().toUpperCase() + " LOST - Player removed from the game");
     }
 
     /** Method that prints the info related to the players in the game (Name, Color, God Name, God Power, Pawns)
@@ -532,7 +536,7 @@ public class VirtualCli implements Runnable {
                     break;
                 case "e":
                 case "d":
-                    if (canBuildDome) return true;
+                    if (canBuildDome || allowEsc) return true;
                     else outln("NOT VALID");
                     break;
                 case "p":
@@ -586,10 +590,14 @@ public class VirtualCli implements Runnable {
 
 
 
+
+
     @Override
     public void run() {
 
-        //Logic.startGame();
+        Game game = new Game(2);
+        game.getMap()[0][0].setHasDome(true);
+        printBoardColored(game);
 
     }
 

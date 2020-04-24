@@ -8,7 +8,26 @@ public class SwingLayoutTest {
 
   public static void main(String[] args) {
     JFrame window = new JFrame("Prova");
-    
+
+    //JPanel for initial setup
+
+    JPanel InitialSetup = new JPanel();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //JPanel for the board screen
     JPanel panel = new JPanel();
     
     panel.setLayout(new BorderLayout());

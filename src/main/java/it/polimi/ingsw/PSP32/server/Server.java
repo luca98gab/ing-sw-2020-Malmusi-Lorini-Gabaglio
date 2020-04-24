@@ -108,7 +108,6 @@ public class Server implements Runnable {
       e.printStackTrace();
     }
 
-
     while (true);
 
   }
