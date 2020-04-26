@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Server implements Runnable {
@@ -21,6 +22,7 @@ public class Server implements Runnable {
   public static final Object lockNum = new Object();
   public static final Object lockPlayer = new Object();
   public static final Object lock = new Object();
+  public static AtomicInteger flagForSync = new AtomicInteger();
 
 
 
@@ -35,6 +37,8 @@ public class Server implements Runnable {
       return;
     }
 
+    flagForSync.set(0);
+
 
     try {
       /* accepts connections; for every connection we accept,
@@ -48,16 +52,18 @@ public class Server implements Runnable {
       System.out.println("connection dropped");
     }
 
-    synchronized(lockNum){
-      try {
-        lockNum.wait();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+
+    if (flagForSync.get() == 0) {
+      synchronized (lockNum) {
+        try {
+          lockNum.wait();
+        } catch(InterruptedException e){
+          e.printStackTrace();
+        }
       }
     }
 
-
-
+      flagForSync.getAndDecrement();
 
     for (int i = 1; i < playerNum; ){
       try {
@@ -74,8 +80,8 @@ public class Server implements Runnable {
       }
     }
 
-    for (int i = 0; i < playerNum; i++){
-      synchronized(lockPlayer){
+    while(flagForSync.get()<playerNum) {
+      synchronized (lockPlayer) {
         try {
           lockPlayer.wait();
         } catch (InterruptedException e) {

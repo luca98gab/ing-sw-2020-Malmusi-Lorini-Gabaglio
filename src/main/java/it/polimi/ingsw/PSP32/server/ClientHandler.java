@@ -287,10 +287,13 @@ public class ClientHandler implements Runnable
 
       synchronized(lockNum){
         //set ready flag to true (so isReady returns true)
+        Server.flagForSync.set(1);
         lockNum.notifyAll();
       }
 
     }
+
+
 
     Player player = (Player) toClientGetObject("createPlayer");
     player.setRelatedClient(this);
@@ -299,6 +302,7 @@ public class ClientHandler implements Runnable
 
     synchronized(lockPlayer){
       //set ready flag to true (so isReady returns true)
+      Server.flagForSync.getAndIncrement();
       lockPlayer.notifyAll();
     }
 
