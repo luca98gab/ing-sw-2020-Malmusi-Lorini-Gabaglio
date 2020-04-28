@@ -49,30 +49,6 @@ public class Logic{
 
     //startup methods
 
-    private static Game gameSetup() throws IOException {
-
-        Game game = new Game(LocalCli.getNumOfPlayers());
-
-        game.setPlayerList(createPlayerList(game.getPlayerNum())); //creates a list containing the players in the game
-
-        godPicking(game.getPlayerList()); //every player picks his card
-
-        /** NON VA
-         *          for (int i = 0; i < game.getPlayerList().size(); i++){
-         *             game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
-         *             //LocalCli.printPlayerInfo(game.getPlayerList(), false); //prints every player info
-         *         }
-         */
-
-
-
-        firstPawnPositioning(game); //places pawns on the board for every player
-
-        LocalCli.printBoardColored(game);
-
-        return game;
-    }
-
     /** Method to create and fill the list of players when starting the game.
      * Calls the createPlayer() method to create the object related to every single player in the game.
      *

@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Server implements Runnable {
@@ -21,8 +22,7 @@ public class Server implements Runnable {
   public static int playerNum = 0;
   public static final Object lockNum = new Object();
   public static final Object lockPlayer = new Object();
-  public static final Object lock = new Object();
-  public static final Object lockWaitEveryone = new Object();
+  public static AtomicInteger flagForSync = new AtomicInteger();
 
 
 
@@ -38,6 +38,8 @@ public class Server implements Runnable {
       return;
     }
 
+    flagForSync.set(0);
+
 
     try {
       /* accepts connections; for every connection we accept,
@@ -51,14 +53,17 @@ public class Server implements Runnable {
       System.out.println("connection dropped");
     }
 
-    synchronized(lockNum){
-      try {
-        lockNum.wait();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+    synchronized (lockNum) {
+      if (flagForSync.get() == 0) {
+        try {
+          lockNum.wait();
+        } catch(InterruptedException e){
+          e.printStackTrace();
+        }
       }
     }
 
+    flagForSync.set(0);
 
 
 
@@ -75,24 +80,18 @@ public class Server implements Runnable {
       } catch (IOException e) {
         System.out.println("connection dropped");
       }
-    }
-    synchronized (lockPlayer) {
-      try {
-        lockPlayer.wait();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+      synchronized (lockPlayer){
+        if (flagForSync.get() == 0) {
+          try {
+            lockPlayer.wait();
+          } catch(InterruptedException e){
+            e.printStackTrace();
+          }
+        }
       }
-
+      flagForSync.set(0);
     }
- //   for (int i = 0; i < playerNum; i++){
-   //   synchronized(lockPlayer){
-   //     try {
-    //      lockPlayer.wait();
-      //  } catch (InterruptedException e) {
-       //   e.printStackTrace();
-        //}
-      //}
-    //}
+
 
     new Thread(new UnwantedClientHandler(socket)).start();
 
