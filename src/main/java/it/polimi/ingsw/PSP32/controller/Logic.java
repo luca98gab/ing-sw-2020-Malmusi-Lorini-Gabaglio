@@ -1,5 +1,6 @@
 package it.polimi.ingsw.PSP32.controller;
 
+import it.polimi.ingsw.PSP32.client.Message;
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.server.ClientHandler;
 import it.polimi.ingsw.PSP32.server.Server;
@@ -29,7 +30,6 @@ public class Logic{
     }
 
     private static Boolean turn(Game game, Player player) throws IOException {
-
         if (player.getGod().getName().equals("Athena")) game.setAthenaFlag(false);
 
         player.getRelatedClient().toClientVoid("printTurnInfo", player);
@@ -103,11 +103,18 @@ public class Logic{
 
         God[] allGodsList = allGods();
 
+        for (int i=1; i<playersList.size(); i++)
+            playersList.get(i).getRelatedClient().toClientVoid("waitGodsPicking", playersList.get(0).getName(), playersList.get(0).getColor());
         God[] gameGods = (God []) playersList.get(0).getRelatedClient().toClientGetObject("gameGodsPicking", playersList, allGodsList);
         //God[] gameGods = LocalCli.gameGodsPicking(playersList, allGodsList);
         ArrayList<God> remainingGods = new ArrayList<>(Arrays.asList(gameGods));
 
         for (int j = 1; j < playersList.size(); j++){
+            for(int z = 0; z< playersList.size(); z++) {
+                if (z != j)
+                    playersList.get(z).getRelatedClient().toClientVoid("waitOwnGodSelection", playersList.get(j).getName(), playersList.get(j).getColor());
+            }
+
             God selection = ((God [])playersList.get(j).getRelatedClient().toClientGetObject("ownGodSelection", playersList.get(j), remainingGods))[0];
             //God selection = LocalCli.ownGodSelection(playersList.get(j), remainingGods);
 
@@ -203,6 +210,13 @@ public class Logic{
 
     private static Pawn movePhase(Game game, Player player) throws IOException {
 
+        for (int i=0; i<game.getPlayerList().size(); i++){
+            if (!player.equals(game.getPlayer(i)))
+
+            game.getPlayer(i).getRelatedClient().toClientVoid("waitTurnMessage", player.getName(), player.getColor()    );
+
+
+        }
         String god = player.getGod().getName();
         int[] move = null;
         int activePawnId;
@@ -342,7 +356,7 @@ public class Logic{
 
         if (god.equals("Demeter")) {
             Cell restriction = cell;
-            if (((Boolean) client.toClientGetObject("waitForBuildCommand", game, pawn, false, true)).equals(false)){
+            if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true).equals(false)){
                 cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
                 cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
             }

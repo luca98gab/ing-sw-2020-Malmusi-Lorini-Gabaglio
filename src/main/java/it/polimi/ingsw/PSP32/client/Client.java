@@ -1,10 +1,10 @@
 package it.polimi.ingsw.PSP32.client;
 
+import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
 
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -15,7 +15,8 @@ import java.util.concurrent.TimeoutException;
 
 public class Client implements Runnable
 {
-  public static void main( String[] args )
+
+  public static void main(String[] args )
   {
     Client client = new Client();
     client.run();
@@ -68,10 +69,12 @@ public class Client implements Runnable
     while (true){
       try {
         serverAdapter.answerToServer();
-      } catch (ExecutionException | InterruptedException | IOException e) {
-        System.out.println("non va");
+
+      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
+        return;
       }
     }
+
 
     /**
      * String receivedMessage = null;
@@ -91,4 +94,6 @@ public class Client implements Runnable
 
 
   }
+
+
 }

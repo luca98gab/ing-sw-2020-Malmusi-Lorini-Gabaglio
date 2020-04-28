@@ -10,10 +10,12 @@ package it.polimi.ingsw.PSP32.view;
 import it.polimi.ingsw.PSP32.client.ServerAdapter;
 import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.model.*;
+import it.polimi.ingsw.PSP32.server.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class VirtualCli implements Runnable {
@@ -65,31 +67,46 @@ public class VirtualCli implements Runnable {
      *
      * @return Player type: object of the newly created player
      */
-    public static Player createPlayer(){
+    public static Player createPlayer(CopyOnWriteArrayList<Player> playerList, int num ) throws IOException {
+        String str;
+        Boolean boolName=true;
 
-        out("Insert name: ");
-        String str = checkForValidStringInput(false, true, 1, 20, null);
 
-        out("Insert color: ");
-        String color = checkForValidStringInput(false, false, 1, 10, null);
+        do {
+            out("Insert name: ");
+            str = checkForValidStringInput(false, true, 1, 20, null);
+            boolName = checkExistingName(playerList, str);
+            if (!boolName) out("The name is already taken \n\n");
+        }while(!boolName);
 
-        if (color.matches("\\b(?i)(?:red|rosso|r)\\b")){
-            color = RED;
-        } else if (color.matches("\\b(?i)(?:green|verde|g)\\b")){
-            color = GREEN;
-        } else if (color.matches("\\b(?i)(?:yellow|giallo|y)\\b")){
-            color = YELLOW;
-        } else if (color.matches("\\b(?i)(?:blue|blu|b)\\b")){
-            color = BLUE;
-        } else if (color.matches("\\b(?i)(?:purple|viola|p)\\b")){
-            color = PURPLE;
-        } else if (color.matches("\\b(?i)(?:cyan|ciano|c|azzurro)\\b")){
-            color = CYAN;
-        } else if (color.matches("\\b(?i)(?:black|nero)\\b")){
-            color = BLACK;
-        } else if (color.matches("\\b(?i)(?:white|bianco|w)\\b")){
-            color = WHITE;
-        }
+        Boolean boolColor;
+        String color;
+
+        do {
+            out("Choose a color  " + BLUE + "B (Blue)" + RED + "  R (Red)" + GREEN + "  G (Green)" + RESET + ": ");
+            color = checkForValidStringInput(false, false, 1, 10, null);
+            if (color.matches("\\b(?i)(?:red|rosso|r)\\b")) {
+                color = RED;
+            } else if (color.matches("\\b(?i)(?:green|verde|g)\\b")) {
+                color = GREEN;
+            } else if (color.matches("\\b(?i)(?:blue|blu|b)\\b")) {
+                color = BLUE;
+            } else {
+                out("Color not recognized \n\n");
+                color = "NO";
+            }
+            if (color.equals("NO"))
+                boolColor = false;
+            else {
+
+                boolColor = checkExistingColor(playerList, color);
+                if (!boolColor) out("The color is already taken \n\n");
+            }
+        }while(!boolColor);
+
+        if (playerList.size()<num-1)
+            out("\nWaiting for other players to join... \n");
+
 
 
 
@@ -402,6 +419,24 @@ public class VirtualCli implements Runnable {
         else return false;
     }
 
+    public static Boolean checkExistingName(CopyOnWriteArrayList<Player> playerList, String name) {
+        name = name.toUpperCase();
+        for (int i = 0; i < playerList.size(); i++) {
+            if (name.equals(playerList.get(i).getName().toUpperCase()))
+                return false;
+        }
+        return true;
+    }
+
+    public static Boolean checkExistingColor(CopyOnWriteArrayList<Player> playerList, String color) {
+        for (int i = 0; i < playerList.size(); i++) {
+            if (color.equals(playerList.get(i).getColor()))
+                return false;
+        }
+        return true;
+    }
+
+
 
 
 
@@ -456,7 +491,7 @@ public class VirtualCli implements Runnable {
                         } else out("\" ");
                     }
 
-                } else out(RESET + "●  ");
+                } else out(RESET + "@  ");
             }
             outln(RESET + " |\n");
         }

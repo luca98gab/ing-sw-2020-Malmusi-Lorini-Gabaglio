@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Lock;
 
 
 import static it.polimi.ingsw.PSP32.server.Server.*;
@@ -23,6 +25,7 @@ public class ClientHandler implements Runnable
   private final Boolean first;
   private ObjectOutputStream output;
   private ObjectInputStream input;
+  public static volatile int i=0;
 
 
 
@@ -40,7 +43,7 @@ public class ClientHandler implements Runnable
   {
     try {
       handleClientConnection();
-    } catch (IOException e) {
+    } catch (IOException | InterruptedException e) {
       System.out.println("client " + client.getInetAddress() + " connection dropped");
     }
   }
@@ -239,7 +242,7 @@ public class ClientHandler implements Runnable
             break;
           case "checkCanBuildNE":
             valid = Logic.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
-            break;
+          break;
         }
         Message outboundMessageInner = null;
         if (valid!=null){
@@ -272,16 +275,18 @@ public class ClientHandler implements Runnable
   }
 
 
+  public synchronized void playerCreation(CopyOnWriteArrayList<Player> playersList) throws IOException {
+    Player player = (Player) toClientGetObject("createPlayer", playersList, playerNum);
+    player.setRelatedClient(this);
+    playersList.add(player);
+  }
 
-
-  private void handleClientConnection() throws IOException
-  {
+  private void handleClientConnection() throws IOException, InterruptedException {
     System.out.println("Connected to " + client.getInetAddress());
 
     output = new ObjectOutputStream(client.getOutputStream());
     input = new ObjectInputStream(client.getInputStream());
-
-
+    
     if (first){
       Server.playerNum = (int) toClientGetObject("getNumOfPlayers");
 
@@ -292,14 +297,18 @@ public class ClientHandler implements Runnable
 
     }
 
-    Player player = (Player) toClientGetObject("createPlayer");
-    player.setRelatedClient(this);
 
-    Server.players.add(player);
+    synchronized ( lock){
+      playerCreation(players);
+      i++;
+    }
 
-    synchronized(lockPlayer){
-      //set ready flag to true (so isReady returns true)
-      lockPlayer.notifyAll();
+
+    if (i == playerNum) {
+
+      synchronized (lockPlayer) {
+        lockPlayer.notifyAll();
+      }
     }
 
 

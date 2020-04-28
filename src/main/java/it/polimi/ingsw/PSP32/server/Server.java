@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Server implements Runnable {
@@ -16,11 +17,13 @@ public class Server implements Runnable {
 
   private ArrayList<ClientHandler> clients = new ArrayList<>();
 
-  public static ArrayList<Player> players = new ArrayList<>();
+  public static volatile CopyOnWriteArrayList<Player> players = new CopyOnWriteArrayList<>();
   public static int playerNum = 0;
   public static final Object lockNum = new Object();
   public static final Object lockPlayer = new Object();
   public static final Object lock = new Object();
+  public static final Object lockWaitEveryone = new Object();
+
 
 
 
@@ -73,16 +76,23 @@ public class Server implements Runnable {
         System.out.println("connection dropped");
       }
     }
-
-    for (int i = 0; i < playerNum; i++){
-      synchronized(lockPlayer){
-        try {
-          lockPlayer.wait();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+    synchronized (lockPlayer) {
+      try {
+        lockPlayer.wait();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
+
     }
+ //   for (int i = 0; i < playerNum; i++){
+   //   synchronized(lockPlayer){
+   //     try {
+    //      lockPlayer.wait();
+      //  } catch (InterruptedException e) {
+       //   e.printStackTrace();
+        //}
+      //}
+    //}
 
     new Thread(new UnwantedClientHandler(socket)).start();
 
@@ -108,7 +118,7 @@ public class Server implements Runnable {
       e.printStackTrace();
     }
 
-    while (true);
+while (true);
 
   }
 

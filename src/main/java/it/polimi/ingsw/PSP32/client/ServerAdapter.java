@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.*;
 
 import it.polimi.ingsw.PSP32.controller.Logic;
+import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.view.*;
 
@@ -62,18 +63,22 @@ public class ServerAdapter
     return executionQueue.submit(() -> (String)inputStm.readObject());
   }
 
-  public void answerToServer() throws ExecutionException, InterruptedException, IOException {
+  public void answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
+
     if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
+    if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) throw new LobbyIsFullException(this);
+
+
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         int n = VirtualCli.getNumOfPlayers();
         sendResultMessage(n);
         break;
       case "createPlayer":
-        Player p = VirtualCli.createPlayer();
+        Player p = VirtualCli.createPlayer((CopyOnWriteArrayList<Player>) message.getParameters().get(0), (int)message.getParameters().get(1));
         sendResultMessage(p);
         break;
       case "gameGodsPicking":
@@ -134,7 +139,20 @@ public class ServerAdapter
       case "removedPlayerGraphics":
         VirtualCli.removedPlayerGraphics((Player) message.getParameters().get(0));
         break;
+      case "waitTurnMessage":
+        System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
+        break;
+      case "waitGodsPicking":
+        System.out.println(""+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting the gods...");
+        break;
+      case "waitOwnGodSelection":
+        System.out.println("\n"+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting his own god...");
+        break;
+
+
+
     }
+    return;
   }
   public void requestSendObject(Object object)
   {

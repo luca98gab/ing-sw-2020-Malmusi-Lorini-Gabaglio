@@ -46,7 +46,7 @@ public class UnwantedClientHandler implements Runnable
     ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
 
     String str = "Lobby is full\n";
-    Message message = new Message(null, null, "StringInfoToPrint", str);
+    Message message = new Message(    null, null, "StringInfoToPrint", str);
     output.writeObject(message);
 
     client.close();
