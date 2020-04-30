@@ -3,9 +3,9 @@
 # Progetto di Ingegneria del Software - Politecnico di Milano
 
 ### Team:
-* Lorini Giorgio
-* Malmusi Davide
-* Gabaglio Luca
+* [Lorini Giorgio](https://github.com/giorgiolorini)
+* [Malmusi Davide](https://github.com/malmu99)
+* [Gabaglio Luca](https://github.com/luca98gab)
 
 ### Santorini Board Game
 
