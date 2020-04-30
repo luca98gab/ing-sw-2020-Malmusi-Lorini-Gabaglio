@@ -1,7 +1,6 @@
+<img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Apollo.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Artemis.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Athena.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Atlas.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Demeter.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Hepheastus.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Minotaur.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Pan.png" alt="alt text" width="90"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Prometheus.png" alt="alt text" width="90">
+
 # Progetto di Ingegneria del Software - Politecnico di Milano
-
-<img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Apollo.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Artemis.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Athena.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Atlas.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Demeter.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Hepheastus.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Minotaur.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Pan.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Prometheus.png" alt="alt text" width="200">
-
 
 ### Team:
 * Lorini Giorgio
