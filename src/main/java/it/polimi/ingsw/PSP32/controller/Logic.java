@@ -127,7 +127,7 @@ public class Logic{
     private static God[] allGods(){
 
         try {
-            FileReader f = new FileReader("src/Gods.txt");
+            FileReader f = new FileReader("src/resources/Santorini Images/Gods.txt");
             BufferedReader b = new BufferedReader(f);
             int godsNum = Integer.parseInt(b.readLine());
             String string = "";
