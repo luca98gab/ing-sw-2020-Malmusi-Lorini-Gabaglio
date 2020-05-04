@@ -1,12 +1,11 @@
+<img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Apollo.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Artemis.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Athena.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Atlas.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Demeter.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Hepheastus.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Minotaur.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Pan.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Prometheus.png" alt="alt text" width="95">
+
 # Progetto di Ingegneria del Software - Politecnico di Milano
 
-<img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Apollo.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Artemis.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Athena.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Atlas.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Demeter.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Hepheastus.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Minotaur.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Pan.png" alt="alt text" width="200"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/Prometheus.png" alt="alt text" width="200">
-
-
 ### Team:
-* Lorini Giorgio
-* Malmusi Davide
-* Gabaglio Luca
+* [Lorini Giorgio](https://github.com/giorgiolorini)
+* [Malmusi Davide](https://github.com/malmu99)
+* [Gabaglio Luca](https://github.com/luca98gab)
 
 ### Santorini Board Game
 
@@ -52,6 +51,3 @@
 * Client Server over internet
 * In-Game Chat
 * Resizable window
-
-
-
