@@ -8,9 +8,7 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapter;
-import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.server.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +52,10 @@ public class VirtualCli implements Runnable {
 
     //methods to get input
 
+    /** Method to ask the number of players for the game
+     *
+     * @return int # of players
+     */
     public static int getNumOfPlayers(){
 
         out("\n\nSANTORINI by Gio-Poco-Davim" + "\n\n" + "New game." + "\n\n" + "Insert number of players: ");
@@ -116,7 +118,13 @@ public class VirtualCli implements Runnable {
         return player;
     }
 
-    public static God[] gameGodsPicking(ArrayList<Player> playersList, God[] allGodsList){
+    /** Method used to select the 2/3 gods the players are going to play with, 'player 1' picks the gods from allGodsList
+     *
+     * @param playersList: ArrayList used to get the 'player 1' and the number of players
+     * @param allGodsList: God[] list of gods
+     * @return God[]
+     */
+    public static God[] gameGodsPicking(ArrayList<Player> playersList, God[] allGodsList) {
 
         out(RESET + playersList.get(0).getColor() + "PLAYER 1: ");
         outln(playersList.get(0).getName().toUpperCase());
@@ -146,6 +154,12 @@ public class VirtualCli implements Runnable {
         return gameGods;
     }
 
+    /** Method for the god selection of each player
+     *
+     * @param player: player that's selecting the god
+     * @param gameGods: ArrayList<God> list of gods selected for this game
+     * @return God: selected god
+     */
     public static God ownGodSelection(Player player, ArrayList<God> gameGods){
         out(RESET + player.getColor() + "\n\nPLAYER: ");
         outln(player.getName().toUpperCase());
@@ -161,6 +175,11 @@ public class VirtualCli implements Runnable {
         return choice;
     }
 
+    /** Method for the initial pawn positioning
+     *
+     * @param game: Game
+     * @return int[] coordinates of the pawn
+     */
     public static int[] getPawnInitialPosition(Game game){
         out("Select a cell for your pawn.\nX = ");
         int x = checkForValidIntInput(1, 5, null)-1;
@@ -180,6 +199,12 @@ public class VirtualCli implements Runnable {
         return position;
     }
 
+    /** Method to ask to the player which pawn he wants to use
+     *
+     * @param game: Game
+     * @param player: player current player
+     * @return Pawn selected pawn
+     */
     public static Pawn getActivePawn(Game game, Player player){
         for (int j = 0; j < player.getPawns().length; j++){
             outln("Pawn " + (j+1) + ": [" + (player.getPawns()[j].getX()+1)
@@ -190,6 +215,14 @@ public class VirtualCli implements Runnable {
         return player.getPawns()[checkForValidIntInput(1, 2, null)-1];
     }
 
+    /** Method to ask to the the player where he wants to move, than calls a check method to validate the request
+     *
+     * @param game: Game
+     * @param pawn: Pawn selected pawn
+     * @param restriction: Cell possible restricted cells
+     * @param canChangePawn: Boolean possibility to change the pawn (depends on the current phase)
+     * @return int [] resultant coordinates of the pawn after the move
+     */
     public static int[] getValidMoveViaArrows(Game game, Pawn pawn, Cell restriction, Boolean canChangePawn) throws IOException {
 
         int x=0, y=0;
@@ -262,6 +295,13 @@ public class VirtualCli implements Runnable {
         else return move;
     }
 
+    /** Method to ask to the the player where he wants to build, than calls a check method to validate the request
+     *
+     * @param game: Game
+     * @param pawn: Pawn selected pawn
+     * @param restriction: Cell possible restricted cells
+     * @return Cell selected cell to build on
+     */
     public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction) throws IOException {
         int x=0, y=0;
         Boolean valid = false;
@@ -323,11 +363,21 @@ public class VirtualCli implements Runnable {
         return new int[]{x, y};
     }
 
+    /** Method to ask if the player wants to build again (Hephaestus's power)
+     *
+     * @param player: Player current player that selected Hephaestus as his god
+     * @return Boolean (true= the player wants to build again , false= the player doesn't want to build again)
+     */
     public static Boolean askBuildTwice(Player player){
         out(player.getColor() + "\nDo you want to build again on the same cell? [Y/N]: ");
         return checkForValidYNInput(null);
     }
 
+    /** Method used to ask to the player if he wants to use his god's power
+     *
+     * @param player: Player current player
+     * @return Boolean (true= the player wants to use his power , false= the player doesn't want to use his power)
+     */
     public static Boolean wantsToUsePower(Player player){
         out(player.getColor() + "\nDo you want to use your power? [Y/N]: ");
         return checkForValidYNInput(null);
@@ -369,8 +419,7 @@ public class VirtualCli implements Runnable {
      * @param maxLength max length of the word
      * @return  String : valid value from input
      */
-    private static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength,
-                                                   int maxLength, String customErrorMessage){
+    private static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength, String customErrorMessage){
         String str;
         Scanner scanner = new Scanner(System.in);
         str = scanner.nextLine();
@@ -405,6 +454,12 @@ public class VirtualCli implements Runnable {
         return str;
     }
 
+    /** Method to get from the user a valid input:
+     *  Yes or No [Y/N]
+     *
+     * @param customErrorMessage: String
+     * @return Boolean (true = Yes, false= No)
+     */
     private static Boolean checkForValidYNInput(String customErrorMessage){
         String str;
         Scanner scanner = new Scanner(System.in);
@@ -419,6 +474,12 @@ public class VirtualCli implements Runnable {
         else return false;
     }
 
+    /** Method to check if the name selected by the client is already taken
+     *
+     * @param playerList : CopyOnWriteArrayList
+     * @param name : String the name that the client wants
+     * @return Boolean (False: the name is already taken, True: the name is ok)
+     */
     public static Boolean checkExistingName(CopyOnWriteArrayList<Player> playerList, String name) {
         name = name.toUpperCase();
         for (int i = 0; i < playerList.size(); i++) {
@@ -428,6 +489,12 @@ public class VirtualCli implements Runnable {
         return true;
     }
 
+    /** Method to check if the color selected by the client is already taken
+     *
+     * @param playerList : CopyOnWriteArrayList
+     * @param color : String the color that the client wants
+     * @return Boolean (False: the name is already taken, True: the name is ok)
+     */
     public static Boolean checkExistingColor(CopyOnWriteArrayList<Player> playerList, String color) {
         for (int i = 0; i < playerList.size(); i++) {
             if (color.equals(playerList.get(i).getColor()))
@@ -444,6 +511,11 @@ public class VirtualCli implements Runnable {
 
     // output methods
 
+    /** Method to print the god that's been assigned to player1 after the others chose
+     *
+     * @param player: Player player1
+     * @param god: God the remaining god
+     */
     public static void player1GodAssignment(Player player, God god){
         out(RESET + player.getColor() + "\n\nPLAYER 1: ");
         outln(player.getName().toUpperCase());
@@ -451,6 +523,10 @@ public class VirtualCli implements Runnable {
         outln(god.getName() + " --> " + god.getAbility());
     }
 
+    /** Method to print the name of the current player
+     *
+     * @param player: Player current player
+     */
     public static void printTurnInfo(Player player){
         out(RESET + player.getColor() + "\n\nPLAYER: ");
         outln(player.getName().toUpperCase());
@@ -498,6 +574,10 @@ public class VirtualCli implements Runnable {
         outln(RESET + "+   -  -  -  -  -   +");
     }
 
+    /** Method to print the end game graphics
+     *
+     * @param player: Player winner
+     */
     public static void endGameGraphics(Player player){
         String[] colors = {BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE,
                 YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK,
@@ -521,8 +601,13 @@ public class VirtualCli implements Runnable {
             out(colors[i+6] + "#");
         }
 
+        System.out.println("\nThe game is over, your client is closing\n");
     }
 
+    /** Method to show to a player that he has been removed after he lost
+     *
+     * @param player : Player the player that lost
+     */
     public static void removedPlayerGraphics(Player player){
         System.out.println(player.getName().toUpperCase() + " LOST - Player removed from the game");
     }
@@ -550,7 +635,14 @@ public class VirtualCli implements Runnable {
 
 
 
-
+    /** Method that waits the player's input in the build phase
+     *
+     * @param game: Game
+     * @param pawn: Pawn active pawn
+     * @param canBuildDome: Boolean true= if the player can build a special dome
+     * @param allowEsc: Boolean true= if this wait is a non mandatory build
+     * @return Boolean
+     */
     public static Boolean waitForBuildCommand(Game game, Pawn pawn, Boolean canBuildDome, Boolean allowEsc){
         String text1 = "";
         String text2 = "";
@@ -584,6 +676,14 @@ public class VirtualCli implements Runnable {
         } while (true);
     }
 
+    /** Method that waits the player's input in the move phase
+     *
+     * @param game: Game
+     * @param pawn: Pawn active pawn
+     * @param allowSwitch: Boolean true= if the player can switch his pawn with another pawn (Apollo's power)
+     * @param allowEsc: Boolean true= if this wait is a non mandatory move
+     * @return Boolean
+     */
     public static Boolean waitForMoveCommand(Game game, Pawn pawn, Boolean allowSwitch, Boolean allowEsc){
         String text1 = "";
         String text2 = "";

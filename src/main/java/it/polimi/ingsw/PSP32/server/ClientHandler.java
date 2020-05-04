@@ -10,9 +10,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 
 
@@ -21,15 +24,32 @@ import static it.polimi.ingsw.PSP32.server.Server.*;
 
 public class ClientHandler implements Runnable
 {
+  private  ObjectOutputStream output;
+  private  ObjectInputStream input;
   private final Socket client;
   private final Boolean first;
-  private ObjectOutputStream output;
-  private ObjectInputStream input;
-
+  private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
 
   ClientHandler(Socket client, Boolean first) {
     this.client = client;
     this.first = first;
+  }
+
+
+  public void stop()
+  {
+    executionQueue.execute(() -> {
+      try {
+        client.close();
+      } catch (IOException e) { }
+    });
+    executionQueue.shutdown();
+  }
+
+
+  public static Socket getClient(ClientHandler clientHandler)
+  {
+   return clientHandler.client;
   }
 
 
@@ -38,12 +58,23 @@ public class ClientHandler implements Runnable
   {
     try {
       handleClientConnection();
-    } catch (IOException | InterruptedException e) {
-      System.out.println("client " + client.getInetAddress() + " connection dropped");
+    } catch (IOException e) {
+      synchronized (lockNum) {
+        exit = true;
+        lockNum.notifyAll();
+      }
+
+
     }
   }
 
-
+  /** Method to ask something to the client expecting nothing in return (Overload)
+   *
+   * @param methodName : String name of the method to call client-side
+   * @param par1: Object possible parameter for the method
+   * @param par2
+   * @throws IOException
+   */
   public void toClientVoid(String methodName, Object par1, Object par2) throws IOException {
     ArrayList<Object> parameters = new ArrayList<>();
     parameters.add(par1);
@@ -59,7 +90,15 @@ public class ClientHandler implements Runnable
     toClientVoid(methodName, par, null);
   }
 
-
+  /** Method to ask something to the client expecting a Object in return (Overload)
+   *
+   * @param methodName : String name of the method to call client-side
+   * @param par1: Object possible parameter for the method
+   * @param par2
+   * @param par3
+   * @param par4
+   * @throws IOException
+   */
   public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
     ArrayList<Object> parameters = new ArrayList<>();
     parameters.add(par1);
@@ -67,7 +106,7 @@ public class ClientHandler implements Runnable
     parameters.add(par3);
     parameters.add(par4);
     Message outboundMessage = new Message(methodName, parameters, "Request", null);
-    output.reset();
+      output.reset();
     output.writeObject(outboundMessage);
     Object object= null;
     try {
@@ -154,21 +193,30 @@ public class ClientHandler implements Runnable
     return toClientGetObject(methodName, null);
   }
 
-
+  /** Method to create a player instance on the server
+   *
+   * @param playersList : CopyOnWriteArrayList list of already existing players
+   * @throws IOException
+   */
   public synchronized void playerCreation(CopyOnWriteArrayList<Player> playersList) throws IOException {
     Player player = (Player) toClientGetObject("createPlayer", playersList, playerNum);
     player.setRelatedClient(this);
     playersList.add(player);
   }
 
-  private void handleClientConnection() throws IOException, InterruptedException {
+  private void handleClientConnection() throws IOException {
     System.out.println("Connected to " + client.getInetAddress());
 
     output = new ObjectOutputStream(client.getOutputStream());
     input = new ObjectInputStream(client.getInputStream());
     
     if (first){
-      Server.playerNum = (int) toClientGetObject("getNumOfPlayers");
+      try{
+        Server.playerNum = (int) toClientGetObject("getNumOfPlayers");
+      }
+      catch (IOException e){
+        throw new IOException();
+      }
 
       playerCreation(players);
 
@@ -179,7 +227,20 @@ public class ClientHandler implements Runnable
       }
 
     } else{
-      playerCreation(players);
+
+      try {
+        playerCreation(players);
+      }
+      catch (IOException e){
+        Logic.notifyClosingGame(clients);
+        synchronized(lockPlayer){
+          Server.flagForSync.set(1);
+          lockPlayer.notifyAll();
+        }
+        throw new IOException();
+
+
+      }
 
       synchronized(lockPlayer){
         //set ready flag to true (so isReady returns true)

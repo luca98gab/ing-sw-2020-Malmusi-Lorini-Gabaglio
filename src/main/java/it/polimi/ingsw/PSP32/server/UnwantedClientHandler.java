@@ -37,9 +37,12 @@ public class UnwantedClientHandler implements Runnable
     }
   }
 
-
-  private void handleClientConnection(Socket client) throws IOException
-  {
+  /** Method to handle the exceeding clients
+   *
+   * @param client : Socket the socket between the server and the unwanted client
+   * @throws IOException possible connection errors
+   */
+  private void handleClientConnection(Socket client) throws IOException {
 
     System.out.println("Refusing connection to " + client.getInetAddress());
 

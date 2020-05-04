@@ -7,10 +7,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
-import it.polimi.ingsw.PSP32.controller.Logic;
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.view.*;
+@SuppressWarnings({"unchecked", "unused"})
 
 public class ServerAdapter
 {
@@ -23,8 +23,8 @@ public class ServerAdapter
   public ServerAdapter(Socket server) throws IOException
   {
     this.server = server;
-    this.outputStm = new ObjectOutputStream(server.getOutputStream());
-    this.inputStm = new ObjectInputStream(server.getInputStream());
+    outputStm = new ObjectOutputStream(server.getOutputStream());
+    inputStm = new ObjectInputStream(server.getInputStream());
   }
 
 
@@ -33,7 +33,7 @@ public class ServerAdapter
     executionQueue.execute(() -> {
       try {
         server.close();
-      } catch (IOException e) { }
+      } catch (IOException e) {e.printStackTrace(); }
     });
     executionQueue.shutdown();
   }
@@ -63,7 +63,15 @@ public class ServerAdapter
     return executionQueue.submit(() -> (String)inputStm.readObject());
   }
 
-  public void answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
+  /** Method to answer to the server
+   *
+   * @return Boolean (False= keep answering to the server, True= close the client )
+   * @throws ExecutionException
+   * @throws InterruptedException
+   * @throws IOException
+   * @throws LobbyIsFullException
+   */
+  public Boolean answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
@@ -135,7 +143,7 @@ public class ServerAdapter
         break;
       case "endGameGraphics":
         VirtualCli.endGameGraphics((Player) message.getParameters().get(0));
-        break;
+        return true;
       case "removedPlayerGraphics":
         VirtualCli.removedPlayerGraphics((Player) message.getParameters().get(0));
         break;
@@ -148,11 +156,12 @@ public class ServerAdapter
       case "waitOwnGodSelection":
         System.out.println("\n"+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting his own god...");
         break;
-
-
-
+      case "Disconnection":
+        System.out.println("\n"+   "\u001b[31m" +"   ## WARNING ## \n"+  "\u001b[0m" );
+        System.out.println("Someone left the match, the game is being shutted down");
+        return true;
     }
-    return;
+    return false;
   }
   public void requestSendObject(Object object)
   {
@@ -166,6 +175,10 @@ public class ServerAdapter
     });
   }
 
+  /** Method to send to the server the answer to a request
+   *
+   * @param object : Object the result
+   */
   public void sendResultMessage(Object object) {
     executionQueue.submit(() -> {
       try {
@@ -178,6 +191,16 @@ public class ServerAdapter
     });
   }
 
+  /** Method to ask to the server something (Overload)
+   *
+   * @param methodName : String the name of the method to call
+   * @param par1 : Object possible parameter for the method to call
+   * @param par2
+   * @param par3
+   * @param par4
+   * @return :
+   * @throws IOException
+   */
   public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
     ArrayList<Object> parameters = new ArrayList<>();
     parameters.add(par1);
