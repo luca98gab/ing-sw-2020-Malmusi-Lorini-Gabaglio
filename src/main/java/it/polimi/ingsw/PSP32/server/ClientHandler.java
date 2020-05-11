@@ -1,22 +1,19 @@
 package it.polimi.ingsw.PSP32.server;
 
 import it.polimi.ingsw.PSP32.client.Message;
-import it.polimi.ingsw.PSP32.controller.Logic;
+import it.polimi.ingsw.PSP32.controller.CheckCanBuild;
+import it.polimi.ingsw.PSP32.controller.CheckCanMove;
+import it.polimi.ingsw.PSP32.controller.Utility;
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.view.VirtualCli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Lock;
 
 
 import static it.polimi.ingsw.PSP32.server.Server.*;
@@ -115,52 +112,52 @@ public class ClientHandler implements Runnable
         Boolean valid = null;
         switch (inboundMessage.getMethodName()){
           case "checkCanMoveSW":
-            valid = Logic.checkCanMoveSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveS":
-            valid = Logic.checkCanMoveS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveSE":
-            valid = Logic.checkCanMoveSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveW":
-            valid = Logic.checkCanMoveW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveE":
-            valid = Logic.checkCanMoveE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveNW":
-            valid = Logic.checkCanMoveNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveN":
-            valid = Logic.checkCanMoveN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanMoveNE":
-            valid = Logic.checkCanMoveNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanMove.checkCanMoveNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildSW":
-            valid = Logic.checkCanBuildSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildS":
-            valid = Logic.checkCanBuildS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildSE":
-            valid = Logic.checkCanBuildSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildW":
-            valid = Logic.checkCanBuildW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildE":
-            valid = Logic.checkCanBuildE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildNW":
-            valid = Logic.checkCanBuildNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildN":
-            valid = Logic.checkCanBuildN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildNE":
-            valid = Logic.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
           break;
         }
         Message outboundMessageInner = null;
@@ -232,7 +229,7 @@ public class ClientHandler implements Runnable
         playerCreation(players);
       }
       catch (IOException e){
-        Logic.notifyClosingGame(clients);
+        Utility.notifyClosingGame(clients);
         synchronized(lockPlayer){
           Server.flagForSync.set(1);
           lockPlayer.notifyAll();

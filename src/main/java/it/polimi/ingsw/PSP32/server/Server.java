@@ -1,8 +1,10 @@
 package it.polimi.ingsw.PSP32.server;
 
+import it.polimi.ingsw.PSP32.controller.Phases;
+import it.polimi.ingsw.PSP32.controller.GameSetup;
 import it.polimi.ingsw.PSP32.model.Game;
 import it.polimi.ingsw.PSP32.model.Player;
-import it.polimi.ingsw.PSP32.controller.Logic;
+import it.polimi.ingsw.PSP32.controller.Utility;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -112,6 +114,7 @@ public class Server implements Runnable {
               }
               return;
           }
+
           synchronized (lockPlayer) {
               if (flagForSync.get() == 0) {
                   try {
@@ -135,24 +138,24 @@ public class Server implements Runnable {
 
 
       try {
-          Logic.godPicking(game.getPlayerList()); //every player picks his card
+          GameSetup.godPicking(game.getPlayerList()); //every player picks his card
           for (int i = 0; i < game.getPlayerList().size(); i++) {
               game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
           }
-          Logic.firstPawnPositioning(game);
-          Logic.toAllClientsVoid(game, "printBoardColored", game);
+          GameSetup.firstPawnPositioning(game);
+          Utility.toAllClientsVoid(game, "printBoardColored", game);
 
       } catch (IOException e) {
-              Logic.notifyClosingGame(clients);
+              Utility.notifyClosingGame(clients);
               StopClients(socket, players.size());
               return;
           }
 
       try {
-          Logic.startGame(game);
+          Phases.startGame(game);
       }  catch (IOException e) {
           System.out.println("Someone left, the game is being restarted");
-              Logic.notifyClosingGame(clients);
+              Utility.notifyClosingGame(clients);
       }
 
       StopClients(socket, players.size());
