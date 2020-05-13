@@ -19,7 +19,7 @@ public class CheckCanMove {
      * @return Boolean (True= you can move there, False= you can't move there)
      */
 
-    protected static Boolean checkCanMoveW(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveW(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -39,7 +39,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveE(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveE(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -59,7 +59,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveN(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveN(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -79,7 +79,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveS(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveS(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -99,7 +99,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveNW(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveNW(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()){
@@ -119,7 +119,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveNE(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveNE(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -139,7 +139,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveSE(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveSE(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){
@@ -159,7 +159,7 @@ public class CheckCanMove {
         }
         return false;
     }
-    protected static Boolean checkCanMoveSW(Game game, Pawn pawn, Cell restriction){
+    public static Boolean checkCanMoveSW(Game game, Pawn pawn, Cell restriction){
         String god = pawn.getPlayer().getGod().getName();
         int climbableFloor = 1;
         if (game.getAthenaFlag()==true){

@@ -2,6 +2,8 @@ package it.polimi.ingsw.PSP32.client;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
+import it.polimi.ingsw.PSP32.view.ConnectionScene;
+import it.polimi.ingsw.PSP32.view.Gui;
 
 
 import java.io.IOException;
@@ -15,9 +17,6 @@ import java.util.concurrent.TimeoutException;
 
 public class Client implements Runnable
 {
-  private Boolean exit=false;
-
-
 
   public static String ip = "0.0.0.0";
 
@@ -25,13 +24,7 @@ public class Client implements Runnable
   {
     Client client = new Client();
     client.run();
-    System.exit(0);
   }
-
-  public void setExit (Boolean bool){
-    exit=bool;
-  }
-
 
   public String receiveMessage(ServerAdapter serverAdapter1) {
     Future<String> stringFuture = serverAdapter1.requestRead();
@@ -51,7 +44,7 @@ public class Client implements Runnable
   @Override
   public void run()
   {
-
+    Gui.setupWindow();
     Scanner scanner = new Scanner(System.in);
 
     /**
@@ -60,6 +53,8 @@ public class Client implements Runnable
      */
 
 
+    ConnectionScene connectionScene = new ConnectionScene();
+    connectionScene.show();
 
     Socket server;
     try {
@@ -74,24 +69,38 @@ public class Client implements Runnable
     try {
       serverAdapter = new ServerAdapter(server);
     } catch (IOException e) {
-      System.out.println("There is already a game in progress, try later");
+      System.out.println("could not contact server");
       return;
     }
 
-
-
-    while (!exit) {
+    while (true){
       try {
-        exit = serverAdapter.answerToServer();
-      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException  e) {exit = true; }
+        serverAdapter.answerToServer();
+
+      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
+        return;
+      }
     }
-    }
+
+
+    /**
+     * String receivedMessage = null;
+     *     do {
+     *       receivedMessage = receiveMessage(serverAdapter);
+     *       System.out.println(receivedMessage);
+     *       String str = scanner.nextLine();
+     *       while ("".equals(str));
+     *
+     *       serverAdapter.requestSend(str);
+     *       System.out.println("message sent");
+     *     } while (!receivedMessage.equals("esc"));
+     *     serverAdapter.stop();
+     */
 
 
 
 
+  }
 
 
 }
-
-
