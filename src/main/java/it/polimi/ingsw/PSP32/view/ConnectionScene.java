@@ -16,6 +16,8 @@ public class ConnectionScene extends Gui {
   static JLabel connInfo = new JLabel("connecting...");
   static JButton playButton = new JButton();
 
+
+
   public void show(){
     window.setContentPane(serverConnectionPanel);
     window.pack();
@@ -29,7 +31,7 @@ public class ConnectionScene extends Gui {
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/Sfondo+Titolo.png");
     Image img = background.getImage();
-    Image newImg = img.getScaledInstance( 1200, 900,  java.awt.Image.SCALE_SMOOTH ) ;
+    Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
 
     serverConnectionPanel.setIcon(backgroundResized);
@@ -39,11 +41,11 @@ public class ConnectionScene extends Gui {
     serverLabel.setFont(minionPro);
     serverLabel.setForeground(darkBrown);
     serverLabel.setVerticalAlignment(SwingConstants.CENTER);
-    serverLabel.setBounds(350, 370, 200, 30);
+    serverLabel.setBounds((int) (350*scale), (int) (370*scale), (int) (200*scale), (int) (30*scale));
     serverConnectionPanel.add(serverLabel);
 
     textField.setFont(minionProSmall);
-    textField.setBounds(520, 370, 300, 30);
+    textField.setBounds((int) (520*scale), (int) (370*scale), (int) (300*scale), (int) (30*scale));
     textField.setBackground(lightBrown);
     textField.setForeground(darkBrown);
     textField.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -51,7 +53,7 @@ public class ConnectionScene extends Gui {
     textField.addActionListener(textFieldListener);
 
     connInfo.setFont(minionProSmall);
-    connInfo.setBounds(500, 480, 200, 30);
+    connInfo.setBounds((int) (500*scale), (int) (480*scale), (int) (200*scale), (int) (30*scale));
     connInfo.setHorizontalAlignment(SwingConstants.CENTER);
     connInfo.setForeground(darkBrown);
     connInfo.setFont(minionProSmall);
@@ -60,10 +62,10 @@ public class ConnectionScene extends Gui {
 
     ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
     Image img1 = playImage.getImage();
-    Image newImg1 = img1.getScaledInstance( 300, 900/4,  java.awt.Image.SCALE_SMOOTH ) ;
+    Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg1);
     playButton.setIcon(playImageResized);
-    playButton.setBounds(450, 600, 300, 900/4);
+    playButton.setBounds((int) (450*scale), (int) (600*scale), (int) (300*scale), (int) (900/4*scale));
     playButton.setOpaque(false);
     playButton.setContentAreaFilled(false);
     playButton.setBorderPainted(false);

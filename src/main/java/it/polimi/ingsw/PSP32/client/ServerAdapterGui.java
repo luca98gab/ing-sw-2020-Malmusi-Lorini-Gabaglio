@@ -82,10 +82,20 @@ public class ServerAdapterGui
 
     switch (message.getMethodName()){
       case "getNumOfPlayers":
-        int n = VirtualCli.getNumOfPlayers();
+        PlayerCreationScene playerCreationScene = new PlayerCreationScene();
+        playerCreationScene.show();
+        //wait for n to be sync
+        int n = PlayerCreationScene.getPlayerNum();
         sendResultMessage(n);
         break;
       case "createPlayer":
+
+        //if not first player:
+        //PlayerCreationScene2 playerCreationScene2 = new PlayerCreationScene2();
+        //playerCreationScene2.show();
+
+        //get player from creationScene
+
         Player p = VirtualCli.createPlayer((CopyOnWriteArrayList<Player>) message.getParameters().get(0), (int)message.getParameters().get(1));
         sendResultMessage(p);
         break;

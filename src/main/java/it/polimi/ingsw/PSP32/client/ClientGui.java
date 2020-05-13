@@ -50,6 +50,8 @@ public class ClientGui implements Runnable
     ConnectionScene connectionScene = new ConnectionScene();
     connectionScene.show();
 
+    //missing get ip from connectionScene
+
     Socket server = null;
     
     do {
@@ -61,9 +63,9 @@ public class ClientGui implements Runnable
     } while (server==null);
 
 
-    ServerAdapter serverAdapter;
+    ServerAdapterGui serverAdapter;
     try {
-      serverAdapter = new ServerAdapter(server);
+      serverAdapter = new ServerAdapterGui(server);
     } catch (IOException e) {
       System.out.println("could not contact server");
       return;

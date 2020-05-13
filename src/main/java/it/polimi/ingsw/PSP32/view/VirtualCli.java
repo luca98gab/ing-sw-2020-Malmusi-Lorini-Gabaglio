@@ -419,7 +419,7 @@ public class VirtualCli implements Runnable {
      * @param maxLength max length of the word
      * @return  String : valid value from input
      */
-    private static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength, String customErrorMessage){
+    protected static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength, String customErrorMessage){
         String str;
         Scanner scanner = new Scanner(System.in);
         str = scanner.nextLine();
