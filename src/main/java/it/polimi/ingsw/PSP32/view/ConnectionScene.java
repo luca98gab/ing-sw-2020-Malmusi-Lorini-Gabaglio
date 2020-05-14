@@ -1,12 +1,16 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.server.Server;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
+import static it.polimi.ingsw.PSP32.server.Server.lockNum;
 
 public class ConnectionScene extends Gui {
 
@@ -15,6 +19,7 @@ public class ConnectionScene extends Gui {
   static JTextField textField = new JTextField();
   static JLabel connInfo = new JLabel("connecting...");
   static JButton playButton = new JButton();
+
 
 
 
@@ -45,7 +50,7 @@ public class ConnectionScene extends Gui {
     serverConnectionPanel.add(serverLabel);
 
     textField.setFont(minionProSmall);
-    textField.setBounds((int) (520*scale), (int) (370*scale), (int) (300*scale), (int) (30*scale));
+    textField.setBounds((int) (550*scale), (int) (370*scale), (int) (300*scale), (int) (30*scale));
     textField.setBackground(lightBrown);
     textField.setForeground(darkBrown);
     textField.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -69,22 +74,26 @@ public class ConnectionScene extends Gui {
     playButton.setOpaque(false);
     playButton.setContentAreaFilled(false);
     playButton.setBorderPainted(false);
-    playButton.setEnabled(false);
     serverConnectionPanel.add(playButton);
+    playButton.addActionListener(textFieldListener);
 
   }
 
   public static void connectionRefused(){
     connInfo.setText("Invalid address");
     textField.setText("");
-    playButton.setEnabled(false);
   }
 
   static ActionListener textFieldListener = e -> {
     String address = textField.getText();
-    connInfo.setText("Connecting to "+ address);
-    connInfo.setVisible(true);
-    ClientGui.ip = address;
-    playButton.setEnabled(true);
+    if(!address.equals("")) {
+      connInfo.setText("Connecting to " + address);
+      connInfo.setVisible(true);
+      ClientGui.ip = address;
+      synchronized (lockAddress) {
+        ClientGui.flagForAddr.set(1);
+        lockAddress.notifyAll();
+      }
+    }
   };
 }

@@ -1,12 +1,16 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+import it.polimi.ingsw.PSP32.model.Player;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockNum;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
 public class PlayerCreationScene {
@@ -36,9 +40,10 @@ public class PlayerCreationScene {
   static ImageIcon threePlayersSelIcon = null;
 
   static int playerNum = 0;
-  static String name = null;
 
   static Boolean validName = false;
+
+  static Player player;
 
 
 
@@ -52,6 +57,8 @@ public class PlayerCreationScene {
   public static int getPlayerNum() {
     return playerNum;
   }
+  public static Player getPlayer() {return player;}
+
 
   public PlayerCreationScene(){
 
@@ -82,6 +89,7 @@ public class PlayerCreationScene {
     colorGroup.add(redPawn);
     colorGroup.add(bluePawn);
     colorGroup.add(greenPawn);
+
 
 
     ImageIcon bluePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBlu.png");
@@ -247,13 +255,21 @@ public class PlayerCreationScene {
     if (twoPlayers.isSelected()) playerNum=2;
     else playerNum=3;
 
-    name=textField.getName();
+    if(greenPawn.isSelected()) player = new Player(textField.getText(), "GREEN", null);
+    else if(redPawn.isSelected()) player = new Player(textField.getText(), "RED", null);
+    else if(bluePawn.isSelected()) player = new Player(textField.getText(), "BLUE", null);
+    synchronized(lockNum){
+      ServerAdapterGui.flagForNum.set(1);
+      lockNum.notifyAll();
+    }
+
 
   };
 
   private static void checkCanPlay(){
-    if (colorGroup.getSelection()!=null && numGroup.getSelection()!=null && validName==true){
+    if (colorGroup.getSelection()!=null && numGroup.getSelection()!=null && validName){
       startButton.setEnabled(true);
     }
   }
+
 }

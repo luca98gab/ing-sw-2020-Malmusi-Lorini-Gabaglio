@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
@@ -18,6 +19,12 @@ public class ServerAdapterGui
   private static ObjectOutputStream outputStm;
   private static ObjectInputStream inputStm;
   private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
+  public static final Object lockPlayer = new Object();
+  public static AtomicInteger flagForPlayer = new AtomicInteger(0);
+  public static final Object lockNum = new Object();
+  public static AtomicInteger flagForNum = new AtomicInteger(0);
+
+
 
 
   public ServerAdapterGui(Socket server) throws IOException
@@ -76,30 +83,48 @@ public class ServerAdapterGui
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
 
-    if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
-    if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) throw new LobbyIsFullException(null);
+ //   if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
+  //  if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) throw new LobbyIsFullException(null);
 
 
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         PlayerCreationScene playerCreationScene = new PlayerCreationScene();
         playerCreationScene.show();
-        //wait for n to be sync
+        synchronized (lockNum) {
+          while (flagForNum.get() == 0) {
+            try {
+              lockNum.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
         int n = PlayerCreationScene.getPlayerNum();
         sendResultMessage(n);
         break;
+
       case "createPlayer":
+        if( ((CopyOnWriteArrayList<Player>) message.getParameters().get(0)).size() != 0  ) {
+          PlayerCreationScene2 playerCreationScene2 = new PlayerCreationScene2(((CopyOnWriteArrayList<Player>) message.getParameters().get(0)));
+          playerCreationScene2.show();
 
-        //if not first player:
-        //PlayerCreationScene2 playerCreationScene2 = new PlayerCreationScene2();
-        //playerCreationScene2.show();
-
-        //get player from creationScene
-
-        Player p = VirtualCli.createPlayer((CopyOnWriteArrayList<Player>) message.getParameters().get(0), (int)message.getParameters().get(1));
-        sendResultMessage(p);
+          synchronized (lockPlayer) {
+            while (flagForPlayer.get() == 0) {
+              try {
+                lockPlayer.wait();
+              } catch (InterruptedException e) {}
+            }
+          }
+          Player p = PlayerCreationScene2.getPlayer();
+          sendResultMessage(p);
+        }
+        else sendResultMessage(PlayerCreationScene.getPlayer());
         break;
       case "gameGodsPicking":
+
+      //  GodSelectionScene godSelectionScene = new GodSelectionScene (((ArrayList<Player>) message.getParameters().get(0)).size());
+       // godSelectionScene.show();
+
+
         God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));
         sendResultMessage(g);
         break;

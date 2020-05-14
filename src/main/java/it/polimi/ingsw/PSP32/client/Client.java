@@ -44,17 +44,13 @@ public class Client implements Runnable
   @Override
   public void run()
   {
-    Gui.setupWindow();
-    Scanner scanner = new Scanner(System.in);
+
+ //   Scanner scanner = new Scanner(System.in);
 
     /**
      * System.out.println("IP address of server?");
      * String ip = scanner.nextLine();
      */
-
-
-    ConnectionScene connectionScene = new ConnectionScene();
-    connectionScene.show();
 
     Socket server;
     try {

@@ -1,12 +1,17 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+import it.polimi.ingsw.PSP32.model.Player;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
 public class PlayerCreationScene2 {
@@ -15,6 +20,10 @@ public class PlayerCreationScene2 {
   static JLabel nameLabel = new JLabel("Nickname:");
   static JTextField textField = new JTextField();
   static JButton startButton = new JButton();
+
+  static JLabel nameInfo = new JLabel("connecting...");
+
+
 
   static ButtonGroup colorGroup = new ButtonGroup();
   static JRadioButton bluePawn = new JRadioButton();
@@ -27,9 +36,13 @@ public class PlayerCreationScene2 {
   static ImageIcon redPawnSelIcon = null;
   static ImageIcon greenPawnSelIcon = null;
 
-  static String name = null;
+  private static CopyOnWriteArrayList<Player> players = new CopyOnWriteArrayList<>();
+
+  static Player player;
 
   static Boolean validName = false;
+
+  public static Player getPlayer() {return player;}
 
 
   public void show(){
@@ -39,8 +52,9 @@ public class PlayerCreationScene2 {
   }
 
 
-  public PlayerCreationScene2(){
+  public PlayerCreationScene2 (CopyOnWriteArrayList<Player> players){
 
+    this.players= players;
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
     Image img = background.getImage();
@@ -139,14 +153,38 @@ public class PlayerCreationScene2 {
     playerCreationPanel.add(startButton);
     startButton.addActionListener(startButtonListener);
 
+    nameInfo.setFont(minionProSmall);
+    nameInfo.setBounds((int) (810*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));
+    nameInfo.setHorizontalAlignment(SwingConstants.CENTER);
+    nameInfo.setForeground(darkBrown);
+    nameInfo.setFont(minionProSmall);
+    nameInfo.setVisible(false);
+    playerCreationPanel.add(nameInfo);
+
+    for(int i=0; i<players.size(); i++)
+    {
+      if (players.get(i).getColor().equals("RED"))
+        redPawn.setEnabled(false);
+      if (players.get(i).getColor().equals("BLUE"))
+        bluePawn.setEnabled(false);
+      if (players.get(i).getColor().equals("GREEN"))
+        greenPawn.setEnabled(false);
+    }
+
   }
 
 
   static ActionListener textFieldListener = e -> {
     String str = textField.getText();
     if (str.matches("[a-zA-Z]+") || str.equals(" ")){
-      validName=true;
-      checkCanPlay();
+      for(int i=0; i<players.size(); i++){
+        if (textField.getText().equals(players.get(i).getName())) existingName();
+        else {
+          validName=true;
+          nameInfo.setVisible(false);
+          checkCanPlay();
+        }
+      }
     } else {
       textField.setText("name not valid");
       validName=false;
@@ -175,14 +213,25 @@ public class PlayerCreationScene2 {
   };
 
   static ActionListener startButtonListener = e -> {
-
-    name=textField.getName();
-
+     if (greenPawn.isSelected()) player = new Player(textField.getText(), "GREEN", null);
+     else if (redPawn.isSelected()) player = new Player(textField.getText(), "RED", null);
+     else if (bluePawn.isSelected()) player = new Player(textField.getText(), "BLUE", null);
+     synchronized (lockPlayer) {
+       ServerAdapterGui.flagForPlayer.set(1);
+       lockPlayer.notifyAll();
+     }
   };
 
   private static void checkCanPlay(){
     if (colorGroup.getSelection()!=null &&  validName){
       startButton.setEnabled(true);
     }
+  }
+
+  public static void existingName(){
+    nameInfo.setText("Invalid name");
+    nameInfo.setVisible(true);
+    textField.setText("");
+    startButton.setEnabled(false);
   }
 }

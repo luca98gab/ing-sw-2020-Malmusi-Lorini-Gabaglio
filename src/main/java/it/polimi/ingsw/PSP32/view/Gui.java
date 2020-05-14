@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 
-public class Gui implements Runnable{
+public class Gui {
 
   static JFrame window = new JFrame("Santorini");
 
@@ -38,7 +38,7 @@ public class Gui implements Runnable{
     }
   }
 
-  @Override
+/*  @Override
   public void run() {
     setupWindow();
     GodPickingScene scene = new GodPickingScene();
@@ -51,4 +51,6 @@ public class Gui implements Runnable{
     Gui gui = new Gui();
     gui.run();
   }
+  */
+
 }

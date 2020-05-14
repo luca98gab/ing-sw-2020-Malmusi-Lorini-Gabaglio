@@ -14,16 +14,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ClientGui implements Runnable
 {
+  public static final Object lockAddress = new Object();
+  public static String ip;
+  public static AtomicInteger flagForAddr = new AtomicInteger();
 
-  public static String ip = "0.0.0.0";
 
   public static void main(String[] args )
   {
-    Client client = new Client();
+    ClientGui client = new ClientGui();
     client.run();
   }
 
@@ -45,23 +48,30 @@ public class ClientGui implements Runnable
   @Override
   public void run()
   {
-    Gui.setupWindow();
+    flagForAddr.set(0);
 
+    Gui.setupWindow();
     ConnectionScene connectionScene = new ConnectionScene();
     connectionScene.show();
 
     //missing get ip from connectionScene
-
     Socket server = null;
-    
+
     do {
+      synchronized (lockAddress) {
+        while (flagForAddr.get() == 0) {
+          try {
+            lockAddress.wait();
+          } catch (InterruptedException e) {}
+        }
+      }
       try {
         server = new Socket(ip, Server.SOCKET_PORT);
       } catch (IOException e) {
+        flagForAddr.set(0);
         ConnectionScene.connectionRefused();
       }
     } while (server==null);
-
 
     ServerAdapterGui serverAdapter;
     try {
@@ -79,24 +89,6 @@ public class ClientGui implements Runnable
         return;
       }
     }
-
-
-    /**
-     * String receivedMessage = null;
-     *     do {
-     *       receivedMessage = receiveMessage(serverAdapter);
-     *       System.out.println(receivedMessage);
-     *       String str = scanner.nextLine();
-     *       while ("".equals(str));
-     *
-     *       serverAdapter.requestSend(str);
-     *       System.out.println("message sent");
-     *     } while (!receivedMessage.equals("esc"));
-     *     serverAdapter.stop();
-     */
-
-
-
 
   }
 
