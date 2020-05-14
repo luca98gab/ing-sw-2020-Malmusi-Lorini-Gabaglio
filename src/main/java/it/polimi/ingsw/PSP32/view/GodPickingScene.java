@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
@@ -14,27 +15,18 @@ public class GodPickingScene {
   static JLabel godPickingPanel = new JLabel();
 
   static JButton startButton = new JButton();
-  static JButton g1 = new JButton();
+  static ArrayList<JButton> cardButtons = new ArrayList<>();
 
-  static ImageIcon g1Icon = null;
-  static ImageIcon g2Icon = null;
-  static ImageIcon g3Icon = null;
-  static ImageIcon g4Icon = null;
-  static ImageIcon g5Icon = null;
-  static ImageIcon g6Icon = null;
-  static ImageIcon g7Icon = null;
-  static ImageIcon g8Icon = null;
-  static ImageIcon g9Icon = null;
-  static ImageIcon g1bIcon = null;
-  static ImageIcon g2bIcon = null;
-  static ImageIcon g3bIcon = null;
-  static ImageIcon g4bIcon = null;
-  static ImageIcon g5bIcon = null;
-  static ImageIcon g6bIcon = null;
-  static ImageIcon g7bIcon = null;
-  static ImageIcon g8bIcon = null;
-  static ImageIcon g9bIcon = null;
+  static ArrayList<ImageIcon> frontIcons = new ArrayList<>();
+  static ArrayList<ImageIcon> backIcons = new ArrayList<>();
+  static int cardWidth = (int) (170*scale);
+  static int cardHeight = (int) (240*scale);
+  static ImageIcon emptySpaceIcon;
+  static ArrayList<JButton> selectedCards = new ArrayList<>();
 
+  static int playerNum = 3;
+
+  static int selectedNum = 0;
 
 
   public void show(){
@@ -43,21 +35,9 @@ public class GodPickingScene {
     window.setVisible(true);
   }
 
-  private void imagesSetup(){
-    ImageIcon image = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Apollo.png");
-    Image img1 = image.getImage();
-    Image newImg1 = img1.getScaledInstance( (int) (160*scale), (int) (225*scale),  java.awt.Image.SCALE_SMOOTH ) ;
-    g1Icon = new ImageIcon(newImg1);
-
-    image = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/ApolloTurned.png");
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( (int) (160*scale), (int) (225*scale),  java.awt.Image.SCALE_SMOOTH ) ;
-    g1bIcon = new ImageIcon(newImg1);
-  }
-
   public GodPickingScene(){
 
-    imagesSetup();
+    imagesImport();
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
     Image img = background.getImage();
@@ -67,39 +47,129 @@ public class GodPickingScene {
     godPickingPanel.setIcon(backgroundResized);
     godPickingPanel.setLayout(null);
 
-    g1.setIcon(g1Icon);
-    g1.setBounds((int) (100*scale), (int) (130*scale), (int) (160*scale), (int) (225*scale));
-    g1.setOpaque(false);
-    g1.setContentAreaFilled(false);
-    g1.setBorderPainted(false);
-    godPickingPanel.add(g1);
-    g1.addActionListener(g1buttonListener);
+    for (int i = 0; i < frontIcons.size(); i++){
+      cardButtons.add(new JButton());
+      JButton card = cardButtons.get(i);
+      card.setIcon(frontIcons.get(i));
+      if (i<5){
+        card.setBounds((int) ((100+200*i)*scale), (int) (120*scale), cardWidth, cardHeight);
+      } else {
+        card.setBounds((int) ((200+200*(i-5))*scale), (int) (350*scale), cardWidth, cardHeight);
+      }
 
+      card.setOpaque(false);
+      card.setContentAreaFilled(false);
+      card.setBorderPainted(false);
+      godPickingPanel.add(card);
+      card.addActionListener(cardButtonListener);
+      ImageIcon frontIcon = frontIcons.get(i);
+      ImageIcon backIcon = backIcons.get(i);
+      card.addMouseListener(new java.awt.event.MouseAdapter() {
 
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+          card.setIcon(backIcon);
+        }
 
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/StartButton.png");
-    Image img1 = playImage.getImage();
-    Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
-    ImageIcon playImageResized = new ImageIcon(newImg1);
-    startButton.setIcon(playImageResized);
-    startButton.setBounds((int) (450*scale), (int) (580*scale), (int) (300*scale), (int) (900/4*scale));
-    startButton.setOpaque(false);
-    startButton.setContentAreaFilled(false);
-    startButton.setBorderPainted(false);
-    startButton.setEnabled(false);
-    godPickingPanel.add(startButton);
-    startButton.addActionListener(startButtonListener);
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+          card.setIcon(frontIcon);
+        }
+      });
+    }
+
+    ImageIcon image = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
+    Image img1 = image.getImage();
+    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    emptySpaceIcon = (new ImageIcon(newImg1));
+
+    for (int i = 0; i < playerNum; i++){
+      selectedCards.add(new JButton());
+      JButton slot = selectedCards.get(i);
+      slot.setIcon(emptySpaceIcon);
+      if (playerNum==2) {
+        slot.setBounds((int) ((400 + 200 * i) * scale), (int) (620 * scale), cardWidth, cardHeight);
+      } else slot.setBounds((int) ((300 + 200 * i) * scale), (int) (620 * scale), cardWidth, cardHeight);
+      slot.setOpaque(false);
+      slot.setContentAreaFilled(false);
+      slot.setBorderPainted(false);
+      slot.setEnabled(true);
+      godPickingPanel.add(slot);
+      slot.addActionListener(slotButtonListener);
+    }
+
 
   }
 
+  static ActionListener cardButtonListener = e -> {
+    JButton clickedCard = (JButton) e.getSource();
 
-  static ActionListener startButtonListener = e -> {
+    int i = cardButtons.indexOf(clickedCard);
 
+    if (i!=-1) {
+      ImageIcon frontIcon = frontIcons.get(i);
+
+      Boolean alreadySelected = false;
+      int firstFreePos=0;
+
+      for (int j = playerNum-1; j >= 0; j--){
+        if (selectedCards.get(j).getIcon().equals(frontIcon)) alreadySelected=true;
+        if (selectedCards.get(j).getIcon().equals(emptySpaceIcon)) firstFreePos = j;
+      }
+
+      if (selectedNum < playerNum && !alreadySelected) {
+
+        selectedCards.get(firstFreePos).setIcon(frontIcon);
+        selectedNum++;
+      }
+    }
   };
 
-  static ActionListener g1buttonListener = e -> {
-    if (g1.getIcon()==g1bIcon) g1.setIcon(g1Icon);
-    else g1.setIcon(g1bIcon);
+  static ActionListener slotButtonListener = e -> {
+    JButton clickedCard = (JButton) e.getSource();
+
+    int i = selectedCards.indexOf(clickedCard);
+
+    if (i!=-1) {
+      selectedCards.get(i).setIcon(emptySpaceIcon);
+      selectedNum--;
+    }
   };
+
+
+  private void imagesImport(){
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Apollo.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Artemis.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Athena.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Atlas.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Demeter.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Hepheastus.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Minotaur.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Pan.png");
+
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Prometheus.png");
+  }
+
+  private void imageSetup(String path){
+    ImageIcon image = new ImageIcon(path);
+    Image img1 = image.getImage();
+    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    frontIcons.add(new ImageIcon(newImg1));
+
+    path=path.replace(".png", "Turned.png");
+
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    backIcons.add(new ImageIcon(newImg1));
+  }
+
+
 
 }

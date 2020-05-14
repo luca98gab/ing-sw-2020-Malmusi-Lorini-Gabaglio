@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 
-public class Gui {
+public class Gui implements Runnable {
 
   static JFrame window = new JFrame("Santorini");
 
@@ -28,17 +28,17 @@ public class Gui {
     if (dim.width<1200 || dim.height<900) small=true;
     if (!small){
       window.setPreferredSize(new Dimension(1200 , 900));
-      window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
     } else {
       scale=2/3.0;
       window.setPreferredSize(new Dimension(800 , 600));
-      window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
       minionPro = new Font("Minion Pro", Font.PLAIN, 18);
       minionProSmall = new Font("Minion Pro", Font.PLAIN, 13);
     }
+    window.pack();
+    window.setLocationRelativeTo(null);
   }
 
-/*  @Override
+  @Override
   public void run() {
     setupWindow();
     GodPickingScene scene = new GodPickingScene();
@@ -51,6 +51,6 @@ public class Gui {
     Gui gui = new Gui();
     gui.run();
   }
-  */
+
 
 }

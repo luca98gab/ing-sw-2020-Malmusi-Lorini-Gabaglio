@@ -121,8 +121,8 @@ public class ServerAdapterGui
         break;
       case "gameGodsPicking":
 
-      //  GodSelectionScene godSelectionScene = new GodSelectionScene (((ArrayList<Player>) message.getParameters().get(0)).size());
-       // godSelectionScene.show();
+       GodPickingScene godSelectionScene = new GodPickingScene ();
+       godSelectionScene.show();
 
 
         God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));

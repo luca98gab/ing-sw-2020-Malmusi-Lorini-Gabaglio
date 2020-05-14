@@ -25,7 +25,6 @@ public class ConnectionScene extends Gui {
 
   public void show(){
     window.setContentPane(serverConnectionPanel);
-    window.pack();
     window.setVisible(true);
   }
 

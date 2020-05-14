@@ -50,7 +50,6 @@ public class PlayerCreationScene {
 
   public void show(){
     window.setContentPane(playerCreationPanel);
-    window.pack();
     window.setVisible(true);
   }
 

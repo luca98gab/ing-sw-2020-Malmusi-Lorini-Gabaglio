@@ -47,7 +47,6 @@ public class PlayerCreationScene2 {
 
   public void show(){
     window.setContentPane(playerCreationPanel);
-    window.pack();
     window.setVisible(true);
   }
 
