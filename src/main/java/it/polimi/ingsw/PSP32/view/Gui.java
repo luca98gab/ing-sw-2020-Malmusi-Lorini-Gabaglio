@@ -23,7 +23,6 @@ public class Gui implements Runnable {
   static double scale = 1;
 
   static public void setupWindow() {
-    java.net.URL url = ClassLoader.getSystemResource("src/resources/Santorini Images/GameIcon.png");
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
