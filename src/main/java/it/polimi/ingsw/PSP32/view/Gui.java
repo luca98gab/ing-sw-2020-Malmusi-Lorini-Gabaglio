@@ -1,10 +1,12 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.Client;
+import it.polimi.ingsw.PSP32.model.God;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Gui implements Runnable {
 
@@ -41,7 +43,13 @@ public class Gui implements Runnable {
   @Override
   public void run() {
     setupWindow();
-    GodPickingScene scene = new GodPickingScene();
+
+    ArrayList<God> availableGods = new ArrayList<>();
+    availableGods.add(new God("Apollo", null));
+    availableGods.add(new God("Artemis", null));
+    availableGods.add(new God("Pan", null));
+
+    GodPickingScene2 scene = new GodPickingScene2(availableGods);
     scene.show();
 
   }

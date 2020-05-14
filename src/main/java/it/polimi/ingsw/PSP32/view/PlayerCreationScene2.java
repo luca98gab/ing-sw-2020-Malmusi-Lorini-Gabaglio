@@ -53,7 +53,7 @@ public class PlayerCreationScene2 {
 
   public PlayerCreationScene2 (CopyOnWriteArrayList<Player> players){
 
-    this.players= players;
+    this.players = players;
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
     Image img = background.getImage();
@@ -98,6 +98,7 @@ public class PlayerCreationScene2 {
     bluePawn.setBorderPainted(false);
     playerCreationPanel.add(bluePawn);
     bluePawn.addActionListener(bluePawnListener);
+    bluePawn.addActionListener(textFieldListener);
 
 
 
@@ -117,6 +118,7 @@ public class PlayerCreationScene2 {
     redPawn.setBorderPainted(false);
     playerCreationPanel.add(redPawn);
     redPawn.addActionListener(redPawnListener);
+    redPawn.addActionListener(textFieldListener);
 
 
 
@@ -136,6 +138,7 @@ public class PlayerCreationScene2 {
     greenPawn.setBorderPainted(false);
     playerCreationPanel.add(greenPawn);
     greenPawn.addActionListener(greenPawnListener);
+    greenPawn.addActionListener(textFieldListener);
 
 
 
@@ -186,6 +189,7 @@ public class PlayerCreationScene2 {
       }
     } else {
       textField.setText("name not valid");
+      textField.selectAll();
       validName=false;
     }
   };

@@ -107,6 +107,7 @@ public class PlayerCreationScene {
     bluePawn.setBorderPainted(false);
     playerCreationPanel.add(bluePawn);
     bluePawn.addActionListener(bluePawnListener);
+    bluePawn.addActionListener(textFieldListener);
 
 
 
@@ -126,6 +127,8 @@ public class PlayerCreationScene {
     redPawn.setBorderPainted(false);
     playerCreationPanel.add(redPawn);
     redPawn.addActionListener(redPawnListener);
+    redPawn.addActionListener(textFieldListener);
+
 
 
 
@@ -145,6 +148,7 @@ public class PlayerCreationScene {
     greenPawn.setBorderPainted(false);
     playerCreationPanel.add(greenPawn);
     greenPawn.addActionListener(greenPawnListener);
+    greenPawn.addActionListener(textFieldListener);
 
 
 
@@ -168,6 +172,8 @@ public class PlayerCreationScene {
     twoPlayers.setBorderPainted(false);
     playerCreationPanel.add(twoPlayers);
     twoPlayers.addActionListener(twoPawnListener);
+    twoPlayers.addActionListener(textFieldListener);
+
 
 
 
@@ -187,6 +193,8 @@ public class PlayerCreationScene {
     threePlayers.setBorderPainted(false);
     playerCreationPanel.add(threePlayers);
     threePlayers.addActionListener(threePawnListener);
+    threePlayers.addActionListener(textFieldListener);
+
 
 
 
@@ -213,6 +221,7 @@ public class PlayerCreationScene {
       checkCanPlay();
     } else {
       textField.setText("name not valid");
+      textField.selectAll();
       validName=false;
     }
   };
