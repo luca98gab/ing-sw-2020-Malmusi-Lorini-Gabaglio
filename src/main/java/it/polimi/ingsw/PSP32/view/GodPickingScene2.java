@@ -125,7 +125,7 @@ public class GodPickingScene2 {
   private void imageSetup(String path){
     ImageIcon image = new ImageIcon(path);
     Image img1 = image.getImage();
-    Image newImg1 = img1.getScaledInstance( cardWidth, 0,  java.awt.Image.SCALE_SMOOTH ) ;
+    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     frontIcons.add(new ImageIcon(newImg1));
 
     path=path.replace(".png", "Turned.png");
