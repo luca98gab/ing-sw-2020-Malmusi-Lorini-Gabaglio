@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Server implements Runnable {
-  public final static int SOCKET_PORT = 7777;
+  public final static int SOCKET_PORT = 7778;
 
   public static volatile ArrayList<ClientHandler> clients = new ArrayList<>();
 

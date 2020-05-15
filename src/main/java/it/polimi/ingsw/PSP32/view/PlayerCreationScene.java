@@ -74,11 +74,11 @@ public class PlayerCreationScene {
     nameLabel.setFont(minionPro);
     nameLabel.setForeground(darkBrown);
     nameLabel.setVerticalAlignment(SwingConstants.CENTER);
-    nameLabel.setBounds((int)(350*scale), (int)(180*scale), (int)(200*scale), (int)(30*scale));
+    nameLabel.setBounds((int)(390*scale), (int)(180*scale), (int)(120*scale), (int)(30*scale));
     playerCreationPanel.add(nameLabel);
 
     textField.setFont(minionProSmall);
-    textField.setBounds((int)(520*scale), (int)(180*scale), (int)(300*scale), (int)(30*scale));
+    textField.setBounds((int)(520*scale), (int)(180*scale), (int)(200*scale), (int)(30*scale));
     textField.setBackground(lightBrown);
     textField.setForeground(darkBrown);
     textField.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -271,6 +271,13 @@ public class PlayerCreationScene {
       lockNum.notifyAll();
     }
 
+    JLabel waitLabel = new JLabel("Waiting for Players...");
+    waitLabel.setFont(minionProSmall);
+    waitLabel.setForeground(darkBrown);
+    waitLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    waitLabel.setBounds((int)(500*scale), (int)(685*scale), (int)(200*scale), (int)(30*scale));
+    playerCreationPanel.add(waitLabel);
+    startButton.setEnabled(false);
 
   };
 

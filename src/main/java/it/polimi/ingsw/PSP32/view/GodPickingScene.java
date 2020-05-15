@@ -117,7 +117,7 @@ public class GodPickingScene {
     Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg2);
     playButton.setIcon(playImageResized);
-    playButton.setBounds((int) (1000*scale), (int) (620*scale), (int) (300*scale), (int) (900/4*scale));
+    playButton.setBounds((int) (865*scale), (int) (620*scale), (int) (300*scale), (int) (900/4*scale));
     playButton.setOpaque(false);
     playButton.setContentAreaFilled(false);
     playButton.setBorderPainted(false);

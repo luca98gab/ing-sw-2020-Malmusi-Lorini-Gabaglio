@@ -9,6 +9,8 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -27,13 +29,15 @@ public class Gui implements Runnable {
 
   static double scale = 1;
 
-  static public void setupWindow()  {
+  static public void setupWindow() throws IOException, FontFormatException {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-    scale = 900.0/dim.height;
+    addFont();
+
+    scale = dim.height/1200.0;
     window.getContentPane().setPreferredSize(new Dimension((int)(1200*scale) , (int)(900*scale)));
     minionPro = new Font("Minion Pro", Font.PLAIN, (int)(25*scale));
     minionProSmall = new Font("Minion Pro", Font.PLAIN, (int)(20*scale));
@@ -57,7 +61,13 @@ public class Gui implements Runnable {
 
   @Override
   public void run() {
-    setupWindow();
+    try {
+      setupWindow();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (FontFormatException e) {
+      e.printStackTrace();
+    }
 
     Player player = new Player("Gio", "\u001B[31m", new God("Apollo", null));
 
@@ -70,6 +80,16 @@ public class Gui implements Runnable {
   {
     Gui gui = new Gui();
     gui.run();
+  }
+
+
+  private static void addFont() throws IOException, FontFormatException {
+
+    Font f = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/Santorini Images/LillyBelle.ttf"));
+
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    ge.registerFont(f);
+
   }
 
 

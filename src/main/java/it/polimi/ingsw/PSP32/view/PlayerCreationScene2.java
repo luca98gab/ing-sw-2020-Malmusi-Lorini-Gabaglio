@@ -21,7 +21,7 @@ public class PlayerCreationScene2 {
   static JTextField textField = new JTextField();
   static JButton startButton = new JButton();
 
-  static JLabel nameInfo = new JLabel("connecting...");
+  static JLabel nameInfo = new JLabel();
 
 
 
@@ -53,7 +53,7 @@ public class PlayerCreationScene2 {
 
   public PlayerCreationScene2 (CopyOnWriteArrayList<Player> players){
 
-    this.players = players;
+    PlayerCreationScene2.players = players;
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
     Image img = background.getImage();
@@ -66,11 +66,11 @@ public class PlayerCreationScene2 {
     nameLabel.setFont(minionPro);
     nameLabel.setForeground(darkBrown);
     nameLabel.setVerticalAlignment(SwingConstants.CENTER);
-    nameLabel.setBounds((int) (350*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));
+    nameLabel.setBounds((int)(390*scale), (int)(180*scale), (int)(120*scale), (int)(30*scale));
     playerCreationPanel.add(nameLabel);
 
     textField.setFont(minionProSmall);
-    textField.setBounds((int) (520*scale), (int) (180*scale), (int) (300*scale), (int) (30*scale));
+    textField.setBounds((int)(520*scale), (int)(180*scale), (int)(200*scale), (int)(30*scale));
     textField.setBackground(lightBrown);
     textField.setForeground(darkBrown);
     textField.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -156,7 +156,7 @@ public class PlayerCreationScene2 {
     startButton.addActionListener(startButtonListener);
 
     nameInfo.setFont(minionProSmall);
-    nameInfo.setBounds((int) (810*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));
+    nameInfo.setBounds((int) (705*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));
     nameInfo.setHorizontalAlignment(SwingConstants.CENTER);
     nameInfo.setForeground(darkBrown);
     nameInfo.setFont(minionProSmall);
@@ -178,15 +178,16 @@ public class PlayerCreationScene2 {
 
   static ActionListener textFieldListener = e -> {
     String str = textField.getText();
+    Boolean existing = false;
     if (str.matches("[a-zA-Z]+") || str.equals(" ")){
       for(int i=0; i<players.size(); i++){
-        if (textField.getText().equals(players.get(i).getName())) existingName();
-        else {
+        if (textField.getText().equals(players.get(i).getName())) existing=true;
+      }
+      if (!existing){
           validName=true;
           nameInfo.setVisible(false);
           checkCanPlay();
-        }
-      }
+      } else existingName();
     } else {
       textField.setText("name not valid");
       textField.selectAll();
@@ -223,6 +224,15 @@ public class PlayerCreationScene2 {
        ServerAdapterGui.flagForPlayer.set(1);
        lockPlayer.notifyAll();
      }
+
+    JLabel waitLabel = new JLabel("Waiting for Players...");
+    waitLabel.setFont(minionProSmall);
+    waitLabel.setForeground(darkBrown);
+    waitLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    waitLabel.setBounds((int)(500*scale), (int)(755*scale), (int)(200*scale), (int)(30*scale));
+    playerCreationPanel.add(waitLabel);
+    startButton.setEnabled(false);
+
   };
 
   private static void checkCanPlay(){
@@ -234,7 +244,7 @@ public class PlayerCreationScene2 {
   public static void existingName(){
     nameInfo.setText("Invalid name");
     nameInfo.setVisible(true);
-    textField.setText("");
+    textField.selectAll();
     startButton.setEnabled(false);
   }
 }

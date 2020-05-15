@@ -8,6 +8,7 @@ import it.polimi.ingsw.PSP32.view.PlayerCreationScene;
 
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
@@ -51,7 +52,11 @@ public class ClientGui implements Runnable
   {
     flagForAddr.set(0);
 
+    try {
       Gui.setupWindow();
+    } catch (IOException | FontFormatException e) {
+      e.printStackTrace();
+    }
 
     ConnectionScene connectionScene = new ConnectionScene();
     connectionScene.show();

@@ -45,11 +45,11 @@ public class ConnectionScene extends Gui {
     serverLabel.setFont(minionPro);
     serverLabel.setForeground(darkBrown);
     serverLabel.setVerticalAlignment(SwingConstants.CENTER);
-    serverLabel.setBounds((int) (350*scale), (int) (370*scale), (int) (200*scale), (int) (30*scale));
+    serverLabel.setBounds((int) (390*scale), (int) (370*scale), (int) (160*scale), (int) (30*scale));
     serverConnectionPanel.add(serverLabel);
 
     textField.setFont(minionProSmall);
-    textField.setBounds((int) (550*scale), (int) (370*scale), (int) (300*scale), (int) (30*scale));
+    textField.setBounds((int) (560*scale), (int) (368*scale), (int) (200*scale), (int) (30*scale));
     textField.setBackground(lightBrown);
     textField.setForeground(darkBrown);
     textField.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -57,7 +57,7 @@ public class ConnectionScene extends Gui {
     textField.addActionListener(textFieldListener);
 
     connInfo.setFont(minionProSmall);
-    connInfo.setBounds((int) (500*scale), (int) (480*scale), (int) (200*scale), (int) (30*scale));
+    connInfo.setBounds((int) (500*scale), (int) (520*scale), (int) (200*scale), (int) (30*scale));
     connInfo.setHorizontalAlignment(SwingConstants.CENTER);
     connInfo.setForeground(darkBrown);
     connInfo.setFont(minionProSmall);
