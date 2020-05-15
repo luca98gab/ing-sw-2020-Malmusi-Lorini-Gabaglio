@@ -92,7 +92,7 @@ public class ClientGui implements Runnable
       try {
         serverAdapter.answerToServer();
 
-      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
+      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {e.printStackTrace();
         return;
       }
     }

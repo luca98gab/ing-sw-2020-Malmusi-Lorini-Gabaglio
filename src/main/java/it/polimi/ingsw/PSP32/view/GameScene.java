@@ -2,8 +2,7 @@ package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
-import it.polimi.ingsw.PSP32.model.God;
-import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.model.*;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -12,8 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockNum;
-import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
 public class GameScene {
@@ -24,6 +22,13 @@ public class GameScene {
   static ImageIcon myCardIconFront;
   static ImageIcon myCardIconBack;
   static JLabel phaseLabel;
+
+  static JButton phaseButton = new JButton();
+
+  static int [] position1= {-1,-1};
+  static int [] position2= {-1,-1};
+
+
 
   static ArrayList<JButton> cells = new ArrayList<>();
 
@@ -85,6 +90,19 @@ public class GameScene {
       }
     });
 
+    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/StartButton.png");
+    Image img1 = playImage.getImage();
+    Image newImg1 = img1.getScaledInstance( (int)(300*scale), (int)(900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon playImageResized = new ImageIcon(newImg1);
+    phaseButton.setIcon(playImageResized);
+    phaseButton.setBounds((int)(450*scale), (int)(650*scale), (int)(300*scale), (int)(900/4*scale));
+    phaseButton.setOpaque(false);
+    phaseButton.setContentAreaFilled(false);
+    phaseButton.setBorderPainted(false);
+    phaseButton.setEnabled(false);
+    gamePanel.add(phaseButton);
+    phaseButton.addActionListener(phaseButtonListener);
+
 
     createCells();
     setupPawnIcons();
@@ -93,7 +111,26 @@ public class GameScene {
 
   }
 
+ static ActionListener phaseButtonListener = e ->{
+    switch (phase){
+     case ("Initial Positioning"):
+       position1[0]= selectedCells.get(0)%5;
+       position1[1]= selectedCells.get(0)/5;
+       position2[0]= selectedCells.get(1)%5;
+       position2[1]= selectedCells.get(1)/5;
 
+       synchronized(lockFirstPositioning){
+         ServerAdapterGui.flagForFirstPositioning.set(1);
+         lockFirstPositioning.notifyAll();
+       }
+
+
+
+       break;
+
+   }
+
+  };
 
   private void imageSetup(String path){
     ImageIcon image = new ImageIcon(path);
@@ -149,6 +186,7 @@ public class GameScene {
     if (!selectedCells.contains(i) && selectedCells.size()<2){
       selectedCells.add(i);
       selectedCell.setIcon(myPawnIcon[0]);
+      if (selectedCells.size()==2) phaseButton.setEnabled(true);
     } else if (selectedCells.contains(i)){
       selectedCells.remove(((Integer) i));
       selectedCell.setIcon(null);
@@ -209,19 +247,30 @@ public class GameScene {
     }
   }
 
-  private static void messageReceived(String newPhase, ArrayList<Object> parameters){
+  public static void messageReceived(String newPhase, ArrayList<Object> parameters){
     if (newPhase!=null){
-      phase = newPhase;
-      switch (phase){
+      switch (newPhase){
         case "Initial Positioning":
+          phase = newPhase;
           initialPosGraphics();
+          break;
         case "Move Phase":
+          phase = newPhase;
           movePhaseGraphics();
+          break;
         case "Build Phase":
+          phase = newPhase;
           buildPhaseGraphics();
+          break;
+        case "Refresh Screen":
+          if(myPlayer!=null)
+          refreshScreen((Game) parameters.get(0));
+          break;
       }
     }
   }
+
+ // public static int[] getCoords(){return }
 
   private static void initialPosGraphics(){
     phaseLabel = new JLabel("Place your pawns");
@@ -238,6 +287,38 @@ public class GameScene {
 
   private static void buildPhaseGraphics(){
     phaseLabel = new JLabel("Build Phase");
+  }
+
+  public static void refreshScreen(Game game){
+    for (int i=0; i<25; i++){
+      Cell cell = game.getMap()[i%5][i/5];
+      if (cell.getIsFull()!=null) {
+        switch (cell.getIsFull().getPlayer().getColor()){
+          case("\u001B[31m"):
+            cells.get(i).setIcon(redPawnIcon[0]);
+            break;
+          case("\u001B[32m"):
+            cells.get(i).setIcon(greenPawnIcon[0]);
+            break;
+          case("\u001B[34m"):
+            cells.get(i).setIcon(bluePawnIcon[0]);
+            break;
+
+
+
+
+        }
+
+
+      }
+    }
+
+
+  }
+
+  public static int[] getCoords (Boolean first){
+    if (first) return position1;
+    else return position2;
   }
 
 }

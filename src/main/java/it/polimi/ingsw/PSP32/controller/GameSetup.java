@@ -125,7 +125,7 @@ public class GameSetup {
             game.getPlayerList().get(i).getRelatedClient().toClientVoid("printBoardColored", game);
 
             for (int j = 0; j < 2; j++) {
-                int[] coordinates = (int []) client.toClientGetObject("getPawnInitialPosition", game);
+                int[] coordinates = (int []) client.toClientGetObject("getPawnInitialPosition",game, game.getPlayerList().get(i));
                 int x = coordinates[0];
                 int y = coordinates[1];
                 game.getPlayerList().get(i).getPawns()[j] = new Pawn(x, y, j+1, game.getPlayerList().get(i));

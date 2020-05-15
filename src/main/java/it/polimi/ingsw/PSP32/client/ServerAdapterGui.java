@@ -27,6 +27,9 @@ public class ServerAdapterGui
   public static AtomicInteger flagForGods = new AtomicInteger(0);
   public static final Object lockOwnGod = new Object();
   public static AtomicInteger flagForOwnGod = new AtomicInteger(0);
+  static boolean firstTime= true;
+  public static final Object lockFirstPositioning = new Object();
+  public static AtomicInteger flagForFirstPositioning = new AtomicInteger(0);
 
 
 
@@ -164,11 +167,28 @@ public class ServerAdapterGui
         VirtualCli.printTurnInfo((Player) message.getParameters().get(0));
         break;
       case "getPawnInitialPosition":
-        int[] position = VirtualCli.getPawnInitialPosition((Game) message.getParameters().get(0));
-        sendResultMessage(position);
+
+        if (firstTime) {
+          GameScene gameScene = new GameScene((Player) message.getParameters().get(1));
+          gameScene.show();
+          gameScene.messageReceived("Refresh Screen", message.getParameters());
+          gameScene.messageReceived("Initial Positioning", null);
+        }
+
+        synchronized (lockFirstPositioning) {
+          while (flagForFirstPositioning.get() == 0) {
+            try {
+              lockFirstPositioning.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
+
+       sendResultMessage(GameScene.getCoords(firstTime));
+        firstTime=false;
+
         break;
       case "printBoardColored":
-        VirtualCli.printBoardColored((Game) message.getParameters().get(0));
+        GameScene.messageReceived("Refresh Screen", message.getParameters());
         break;
       case "getActivePawn":
         Pawn pawn=VirtualCli.getActivePawn((Game) message.getParameters().get(0), (Player) message.getParameters().get(1) );
