@@ -23,6 +23,10 @@ public class ServerAdapterGui
   public static AtomicInteger flagForPlayer = new AtomicInteger(0);
   public static final Object lockNum = new Object();
   public static AtomicInteger flagForNum = new AtomicInteger(0);
+  public static final Object lockGods = new Object();
+  public static AtomicInteger flagForGods = new AtomicInteger(0);
+  public static final Object lockOwnGod = new Object();
+  public static AtomicInteger flagForOwnGod = new AtomicInteger(0);
 
 
 
@@ -119,19 +123,37 @@ public class ServerAdapterGui
         }
         else sendResultMessage(PlayerCreationScene.getPlayer());
         break;
-      case "gameGodsPicking":
 
-       GodPickingScene godSelectionScene = new GodPickingScene ();
+      case "gameGodsPicking":
+       GodPickingScene godSelectionScene = new GodPickingScene (((ArrayList<Player>) message.getParameters().get(0)).size(), ((God[]) message.getParameters().get(1)));
        godSelectionScene.show();
 
-
-        God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));
+        synchronized (lockGods) {
+          while (flagForGods.get() == 0) {
+            try {
+              lockGods.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
+        God[] g = GodPickingScene.getSelectedGods();
         sendResultMessage(g);
         break;
+
       case "ownGodSelection":
-        God[] god = {VirtualCli.ownGodSelection(((Player) message.getParameters().get(0)), ((ArrayList<God>) message.getParameters().get(1)))};
+        GodPickingScene2 ownGodSelection = new GodPickingScene2 (((ArrayList<God>) message.getParameters().get(1)));
+        ownGodSelection.show();
+
+        synchronized (lockOwnGod) {
+          while (flagForOwnGod.get() == 0) {
+            try {
+              lockOwnGod.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
+        God[] god =  {GodPickingScene2.getGod()};
         sendResultMessage(god);
         break;
+
       case "player1GodAssignment":
         VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));
         break;

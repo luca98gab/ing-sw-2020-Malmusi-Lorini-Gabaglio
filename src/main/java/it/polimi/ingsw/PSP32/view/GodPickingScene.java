@@ -1,6 +1,9 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+import it.polimi.ingsw.PSP32.model.God;
+import it.polimi.ingsw.PSP32.model.Player;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -8,6 +11,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
 public class GodPickingScene {
@@ -23,8 +28,15 @@ public class GodPickingScene {
   static int cardHeight = (int) (240*scale);
   static ImageIcon emptySpaceIcon;
   static ArrayList<JButton> selectedCards = new ArrayList<>();
+  static JButton playButton = new JButton();
 
-  static int playerNum = 3;
+
+  static int playerNum ;
+
+  static ArrayList<God> gods = new ArrayList();
+  static God[] allGods = new God[9];
+
+
 
   static int selectedNum = 0;
 
@@ -35,7 +47,11 @@ public class GodPickingScene {
     window.setVisible(true);
   }
 
-  public GodPickingScene(){
+  public GodPickingScene(int playerNum, God[] allGods){
+
+
+    this.playerNum=playerNum;
+    this.allGods = allGods;
 
     imagesImport();
 
@@ -96,6 +112,19 @@ public class GodPickingScene {
       slot.addActionListener(slotButtonListener);
     }
 
+    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    Image img2 = playImage.getImage();
+    Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon playImageResized = new ImageIcon(newImg2);
+    playButton.setIcon(playImageResized);
+    playButton.setBounds((int) (1000*scale), (int) (620*scale), (int) (300*scale), (int) (900/4*scale));
+    playButton.setOpaque(false);
+    playButton.setContentAreaFilled(false);
+    playButton.setBorderPainted(false);
+    playButton.setEnabled(false);
+    godPickingPanel.add(playButton);
+    playButton.addActionListener(playButtonLister);
+
 
   }
 
@@ -119,6 +148,7 @@ public class GodPickingScene {
 
         selectedCards.get(firstFreePos).setIcon(frontIcon);
         selectedNum++;
+        if (selectedNum==playerNum) playButton.setEnabled(true);
       }
     }
   };
@@ -131,9 +161,33 @@ public class GodPickingScene {
     if (i!=-1) {
       selectedCards.get(i).setIcon(emptySpaceIcon);
       selectedNum--;
+      playButton.setEnabled(false);
     }
   };
 
+  static ActionListener playButtonLister = e ->{
+      for (int i=0; i<playerNum; i++){
+            if (selectedCards.get(i).getIcon().equals(cardButtons.get(0).getIcon())) gods.add(allGods[0]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(1).getIcon())) gods.add(allGods[1]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(2).getIcon())) gods.add(allGods[2]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(3).getIcon())) gods.add(allGods[3]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(4).getIcon())) gods.add(allGods[4]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(5).getIcon())) gods.add(allGods[5]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(6).getIcon())) gods.add(allGods[6]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(7).getIcon())) gods.add(allGods[7]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(8).getIcon())) gods.add(allGods[8]);
+          }
+    synchronized (lockGods) {
+      ServerAdapterGui.flagForGods.set(1);
+      lockGods.notifyAll();
+    }
+
+
+
+  };
+
+  public static God[] getSelectedGods(){
+    return gods.toArray(new God[0]); }
 
   private void imagesImport(){
 

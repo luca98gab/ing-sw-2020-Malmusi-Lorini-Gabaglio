@@ -165,11 +165,11 @@ public class PlayerCreationScene2 {
 
     for(int i=0; i<players.size(); i++)
     {
-      if (players.get(i).getColor().equals("RED"))
+      if (players.get(i).getColor().equals("\u001B[31m"))
         redPawn.setEnabled(false);
-      if (players.get(i).getColor().equals("BLUE"))
+      if (players.get(i).getColor().equals("\u001B[34m"))
         bluePawn.setEnabled(false);
-      if (players.get(i).getColor().equals("GREEN"))
+      if (players.get(i).getColor().equals("\u001B[32m"))
         greenPawn.setEnabled(false);
     }
 
@@ -216,9 +216,9 @@ public class PlayerCreationScene2 {
   };
 
   static ActionListener startButtonListener = e -> {
-     if (greenPawn.isSelected()) player = new Player(textField.getText(), "GREEN", null);
-     else if (redPawn.isSelected()) player = new Player(textField.getText(), "RED", null);
-     else if (bluePawn.isSelected()) player = new Player(textField.getText(), "BLUE", null);
+     if (greenPawn.isSelected()) player = new Player(textField.getText(), "\u001B[32m", null);
+     else if (redPawn.isSelected()) player = new Player(textField.getText(), "\u001B[31m", null);
+     else if (bluePawn.isSelected()) player = new Player(textField.getText(), "\u001B[34m", null);
      synchronized (lockPlayer) {
        ServerAdapterGui.flagForPlayer.set(1);
        lockPlayer.notifyAll();

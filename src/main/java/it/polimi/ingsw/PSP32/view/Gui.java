@@ -8,7 +8,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Gui implements Runnable {
+public class Gui {
 
   static JFrame window = new JFrame("Santorini");
 
@@ -22,7 +22,7 @@ public class Gui implements Runnable {
 
   static double scale = 1;
 
-  static public void setupWindow() {
+  static public void setupWindow()  {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
@@ -40,7 +40,7 @@ public class Gui implements Runnable {
     window.setLocationRelativeTo(null);
   }
 
-  @Override
+ /* @Override
   public void run() {
     setupWindow();
 
@@ -59,6 +59,6 @@ public class Gui implements Runnable {
     Gui gui = new Gui();
     gui.run();
   }
-
+*/
 
 }

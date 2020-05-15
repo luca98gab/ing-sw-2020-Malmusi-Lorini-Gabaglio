@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.God;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockOwnGod;
 import static it.polimi.ingsw.PSP32.view.Gui.*;
 
 public class GodPickingScene2 {
@@ -24,6 +27,9 @@ public class GodPickingScene2 {
   static int cardHeight = (int) (240*scale);
   static ImageIcon emptySpaceIcon;
   static JButton slot = new JButton();
+  static JButton playButton = new JButton();
+  static God god;
+  static ArrayList<God> availableGods = new ArrayList<>();
 
 
   public void show(){
@@ -34,6 +40,7 @@ public class GodPickingScene2 {
 
   public GodPickingScene2(ArrayList<God> availableGods){
 
+    this.availableGods =availableGods;
     imagesImport(availableGods);
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
@@ -88,9 +95,37 @@ public class GodPickingScene2 {
     godPickingPanel.add(slot);
     slot.addActionListener(slotButtonListener);
 
+    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    Image img2 = playImage.getImage();
+    Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon playImageResized = new ImageIcon(newImg2);
+    playButton.setIcon(playImageResized);
+    playButton.setBounds((int) (800*scale), (int) (620*scale), (int) (300*scale), (int) (900/4*scale));
+    playButton.setOpaque(false);
+    playButton.setContentAreaFilled(false);
+    playButton.setBorderPainted(false);
+    playButton.setEnabled(false);
+    godPickingPanel.add(playButton);
+    playButton.addActionListener(playButtonLister);
+
 
 
   }
+
+  static ActionListener playButtonLister = e -> {
+    if (slot.getIcon().equals(cardButtons.get(0).getIcon())) god = availableGods.get(0);
+    else if (slot.getIcon().equals(cardButtons.get(1).getIcon())) god = availableGods.get(1);
+    else if (availableGods.size()==3 && slot.getIcon().equals(cardButtons.get(2).getIcon())) god = availableGods.get(2);
+
+    synchronized (lockOwnGod) {
+      ServerAdapterGui.flagForOwnGod.set(1);
+      lockOwnGod.notifyAll();
+    }
+
+
+
+
+  };
 
   static ActionListener cardButtonListener = e -> {
     JButton clickedCard = (JButton) e.getSource();
@@ -101,6 +136,7 @@ public class GodPickingScene2 {
       ImageIcon frontIcon = frontIcons.get(i);
       slot.setIcon(frontIcon);
     }
+    playButton.setEnabled(true);
 
   };
 
@@ -136,6 +172,6 @@ public class GodPickingScene2 {
     backIcons.add(new ImageIcon(newImg1));
   }
 
-
+  public static God getGod() {return god;}
 
 }

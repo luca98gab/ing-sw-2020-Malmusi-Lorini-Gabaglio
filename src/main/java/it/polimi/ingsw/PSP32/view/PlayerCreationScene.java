@@ -263,9 +263,9 @@ public class PlayerCreationScene {
     if (twoPlayers.isSelected()) playerNum=2;
     else playerNum=3;
 
-    if(greenPawn.isSelected()) player = new Player(textField.getText(), "GREEN", null);
-    else if(redPawn.isSelected()) player = new Player(textField.getText(), "RED", null);
-    else if(bluePawn.isSelected()) player = new Player(textField.getText(), "BLUE", null);
+    if(greenPawn.isSelected()) player = new Player(textField.getText(), "\u001B[32m", null);
+    else if(redPawn.isSelected()) player = new Player(textField.getText(), "\u001B[31m", null);
+    else if(bluePawn.isSelected()) player = new Player(textField.getText(), "\u001B[34m", null);
     synchronized(lockNum){
       ServerAdapterGui.flagForNum.set(1);
       lockNum.notifyAll();
