@@ -40,7 +40,7 @@ public class GodPickingScene2 {
 
   public GodPickingScene2(ArrayList<God> availableGods){
 
-    this.availableGods =availableGods;
+    GodPickingScene2.availableGods = availableGods;
     imagesImport(availableGods);
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
