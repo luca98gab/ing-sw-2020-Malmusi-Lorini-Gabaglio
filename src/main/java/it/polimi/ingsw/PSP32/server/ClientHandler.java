@@ -173,6 +173,7 @@ public class ClientHandler implements Runnable
         object = inboundMessage.getResult();
       }
     } catch (ClassNotFoundException | ClassCastException e) {
+      e.printStackTrace();
       System.out.println("invalid stream from client");
     }
     return object;

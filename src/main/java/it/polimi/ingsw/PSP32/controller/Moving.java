@@ -31,7 +31,8 @@ public class Moving {
         Pawn activePawn = null;
         Cell startPosition;
         do {
-            activePawnId = ((Pawn) player.getRelatedClient().toClientGetObject("getActivePawn", game, player)).getId();
+
+            activePawnId =((Pawn) player.getRelatedClient().toClientGetObject("getActivePawn", game, player)).getId();
             for (int i = 0; i < player.getPawns().length; i++){
                 if (player.getPawns()[i].getId()==activePawnId) activePawn = player.getPawns()[i];
             }
@@ -60,7 +61,8 @@ public class Moving {
                     if (changedFlag.equals(true)) game.setAthenaFlag(false);
                 }
                 else return null;
-            } else if ((Boolean) player.getRelatedClient().toClientGetObject("waitForMoveCommand",game, activePawn, true, false)){
+            }
+            else if ((Boolean) player.getRelatedClient().toClientGetObject("waitForMoveCommand",game, activePawn, true, false)){
                 move = (int []) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, true);
             }
         } while (move==null);

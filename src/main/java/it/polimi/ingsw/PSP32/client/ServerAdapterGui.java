@@ -30,6 +30,8 @@ public class ServerAdapterGui
   static boolean firstTime= true;
   public static final Object lockFirstPositioning = new Object();
   public static AtomicInteger flagForFirstPositioning = new AtomicInteger(0);
+  public static final Object lockActivePawn = new Object();
+  public static AtomicInteger flagForActivePawn = new AtomicInteger(0);
 
 
 
@@ -198,7 +200,16 @@ public class ServerAdapterGui
         GameScene.messageReceived("Refresh Screen", message.getParameters());
         break;
       case "getActivePawn":
-        Pawn pawn=VirtualCli.getActivePawn((Game) message.getParameters().get(0), (Player) message.getParameters().get(1) );
+        GameScene.messageReceived("Move Phase", message.getParameters());
+
+        synchronized (lockActivePawn) {
+          while (flagForActivePawn.get() == 0) {
+            try {
+              lockActivePawn.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
+        Pawn pawn = GameScene.getActivePawn();
         sendResultMessage(pawn);
         break;
       case "wantsToUsePower":
@@ -214,12 +225,11 @@ public class ServerAdapterGui
         sendResultMessage(cell);
         break;
       case "waitForMoveCommand":
-        Boolean bool3=VirtualCli.waitForMoveCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
-        sendResultMessage(bool3);
+        //da modificare con gli dei
+        sendResultMessage(true);
         break;
       case "getValidMoveViaArrows":
-        int[] move=VirtualCli.getValidMoveViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1), (Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3));
-        sendResultMessage(move);
+        sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});
         break;
       case "askBuildTwice":
         Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));

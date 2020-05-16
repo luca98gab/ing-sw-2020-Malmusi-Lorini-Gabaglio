@@ -1,6 +1,7 @@
 package it.polimi.ingsw.PSP32.view;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.client.ServerAdapter;
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.*;
 
@@ -9,6 +10,7 @@ import javax.swing.border.BevelBorder;
 import javax.xml.xpath.XPath;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
@@ -29,7 +31,9 @@ public class GameScene {
   static int [] position1= {-1,-1};
   static int [] position2= {-1,-1};
 
+  static Pawn activePawn;
 
+  static Game game;
 
   static ArrayList<JButton> cells = new ArrayList<>();
 
@@ -169,11 +173,43 @@ public class GameScene {
 
   static ActionListener cellClickedListener = e -> {
     JButton clickedCell = (JButton) e.getSource();
-
     if (clickedCell!=null){
       switch (phase){
         case "Initial Positioning":
-          pawnPositioning(clickedCell);
+          if(clickedCell.getIcon()==null || clickedCell.getIcon().equals(myPawnIcon[0])){
+            pawnPositioning(clickedCell);
+            break;
+          }
+        case "Move Phase":
+          if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
+            clickedCell.setIcon(myPawnIcon[1]);
+            int i = cells.indexOf(clickedCell);
+            activePawn = game.getMap()[i%5][i/5].getIsFull();
+          }
+          else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) cells.get(activePawn.getX()+activePawn.getY()*5).setIcon(myPawnIcon[0]);
+          else{
+            String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
+            Boolean valid=false;
+            if(direction!=null) {
+              try {
+                valid = (Boolean) ServerAdapterGui.toServerGetObject("checkCanMove"+direction, game, activePawn, null);
+              } catch (IOException ex) {
+                ex.printStackTrace();
+              }
+              activePawn.moves(getX(clickedCell), getY(clickedCell));
+              if(valid){
+                synchronized(lockActivePawn){
+                  flagForActivePawn.set(1);
+                  lockActivePawn.notifyAll();
+                }
+                break;
+                //refreshare schermo
+              }
+            }
+
+
+          }
+          break;
       }
     }
 
@@ -258,6 +294,7 @@ public class GameScene {
           break;
         case "Move Phase":
           phase = newPhase;
+          game = (Game) parameters.get(0);
           movePhaseGraphics();
           break;
         case "Build Phase":
@@ -272,7 +309,6 @@ public class GameScene {
     }
   }
 
- // public static int[] getCoords(){return }
 
   private static void setupPhaseZone(){
     phaseLabel.setVisible(false);
@@ -364,21 +400,19 @@ public class GameScene {
     for (int i=0; i<25; i++){
       Cell cell = game.getMap()[i%5][i/5];
       if (cell.getIsFull()!=null) {
-        switch (cell.getIsFull().getPlayer().getColor()){
-          case("\u001B[31m"):
+        switch (cell.getIsFull().getPlayer().getColor()) {
+          case ("\u001B[31m"):
             cells.get(i).setIcon(redPawnIcon[0]);
             break;
-          case("\u001B[32m"):
+          case ("\u001B[32m"):
             cells.get(i).setIcon(greenPawnIcon[0]);
             break;
-          case("\u001B[34m"):
+          case ("\u001B[34m"):
             cells.get(i).setIcon(bluePawnIcon[0]);
             break;
-
         }
-
-
       }
+      else cells.get(i).setIcon(null);
     }
 
 
@@ -389,4 +423,58 @@ public class GameScene {
     else return position2;
   }
 
+
+  public static  Pawn getActivePawn(){ return activePawn; }
+
+  private static int getX (JButton cell){
+    return cells.indexOf(cell)%5;
+  }
+  private static int getY (JButton cell){
+    return cells.indexOf(cell)/5;
+  }
+
+  private static boolean near (JButton cell1, JButton cell2){
+    if (getX(cell1)- getX(cell2)>=-1 && getX(cell1)-getX(cell2)<=1)
+      if (getY(cell1)- getY(cell2)>=-1 && getY(cell1)-getY(cell2)<=1) return true;
+    return false;
+  }
+
+  private static String direction (JButton centralCell, JButton newCell){
+    if (near(centralCell, newCell)){
+      switch (getX(centralCell)-getX(newCell)){
+        case 1:
+          switch (getY(centralCell)-getY(newCell)){
+            case 1:
+              return "NO";
+            case 0:
+              return "O";
+            case -1:
+              return "SO";
+          }
+          break;
+        case 0:
+          switch (getY(centralCell)-getY(newCell)){
+            case 1:
+              return "N";
+            case 0:
+              return null;
+            case -1:
+              return "S";
+          }
+          break;
+        case -1:
+          switch (getY(centralCell)-getY(newCell)){
+            case 1:
+              return "NE";
+            case 0:
+              return "E";
+            case -1:
+              return "SE";
+          }
+          break;
+      }
+    }
+    return null;
+  }
 }
+
