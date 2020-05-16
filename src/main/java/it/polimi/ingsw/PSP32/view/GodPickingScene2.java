@@ -122,6 +122,7 @@ public class GodPickingScene2 {
       lockOwnGod.notifyAll();
     }
 
+    playButton.setEnabled(false);
 
 
 

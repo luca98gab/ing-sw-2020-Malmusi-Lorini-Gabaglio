@@ -19,8 +19,9 @@ public class Gui implements Runnable {
 
   static JFrame window = new JFrame("Santorini");
 
-  static Font minionPro = new Font("Minion Pro", Font.PLAIN, 25);
-  static Font minionProSmall = new Font("Minion Pro", Font.PLAIN, 20);
+  static Font minionPro = new Font("a", Font.PLAIN, 25);
+  static Font minionProSmall = new Font("a", Font.PLAIN, 20);
+  static Font minionProXSmall = new Font("a", Font.PLAIN, 20);
   static Font lillyBelle = new Font("LillyBelle", Font.PLAIN, 25);
   static Color darkBrown = new Color(106, 101, 83);
   static Color lightBrown = new Color(240, 230, 211);
@@ -39,8 +40,9 @@ public class Gui implements Runnable {
 
     scale = dim.height/1200.0;
     window.getContentPane().setPreferredSize(new Dimension((int)(1200*scale) , (int)(900*scale)));
-    minionPro = new Font("Minion Pro", Font.PLAIN, (int)(25*scale));
-    minionProSmall = new Font("Minion Pro", Font.PLAIN, (int)(20*scale));
+    minionPro = new Font("a", Font.PLAIN, (int)(23*scale));
+    minionProSmall = new Font("a", Font.PLAIN, (int)(18*scale));
+    minionProXSmall = new Font("a", Font.PLAIN, (int)(14*scale));
     lillyBelle = new Font("LillyBelle", Font.PLAIN, (int)(25*scale));
 
 
@@ -71,7 +73,7 @@ public class Gui implements Runnable {
 
     Player player = new Player("Gio", "\u001B[31m", new God("Apollo", null));
 
-    GameScene scene = new GameScene(player);
+    GodPickingScene scene = new GodPickingScene(2, null);
     scene.show();
 
   }

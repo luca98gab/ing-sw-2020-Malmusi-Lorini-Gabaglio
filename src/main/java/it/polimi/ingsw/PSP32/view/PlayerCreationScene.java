@@ -102,7 +102,7 @@ public class PlayerCreationScene {
     bluePawnSelIcon = new ImageIcon(newImgb);
 
     bluePawn.setIcon(bluePawnIcon);
-    bluePawn.setBounds((int)(340*scale), (int)(260*scale), (int)(140*scale), (int)(210*scale));
+    bluePawn.setBounds((int)(340*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     bluePawn.setContentAreaFilled(false);
     bluePawn.setBorderPainted(false);
     playerCreationPanel.add(bluePawn);
@@ -122,7 +122,7 @@ public class PlayerCreationScene {
     redPawnSelIcon = new ImageIcon(newImgr);
 
     redPawn.setIcon(redPawnIcon);
-    redPawn.setBounds((int)(530*scale), (int)(260*scale), (int)(140*scale), (int)(210*scale));
+    redPawn.setBounds((int)(530*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     redPawn.setContentAreaFilled(false);
     redPawn.setBorderPainted(false);
     playerCreationPanel.add(redPawn);
@@ -143,7 +143,7 @@ public class PlayerCreationScene {
     greenPawnSelIcon = new ImageIcon(newImgg);
 
     greenPawn.setIcon(greenPawnIcon);
-    greenPawn.setBounds((int)(720*scale), (int)(260*scale), (int)(140*scale), (int)(210*scale));
+    greenPawn.setBounds((int)(720*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     greenPawn.setContentAreaFilled(false);
     greenPawn.setBorderPainted(false);
     playerCreationPanel.add(greenPawn);

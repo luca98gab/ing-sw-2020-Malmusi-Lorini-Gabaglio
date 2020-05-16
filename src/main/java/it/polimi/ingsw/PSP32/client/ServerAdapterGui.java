@@ -155,6 +155,10 @@ public class ServerAdapterGui
         }
         God[] god =  {GodPickingScene2.getGod()};
         sendResultMessage(god);
+        Player player = (Player) message.getParameters().get(0);
+        player.setGod(god[0]);
+        GameScene gameScene = new GameScene(player);
+        gameScene.show();
         break;
 
       case "player1GodAssignment":
@@ -169,10 +173,13 @@ public class ServerAdapterGui
       case "getPawnInitialPosition":
 
         if (firstTime) {
-          GameScene gameScene = new GameScene((Player) message.getParameters().get(1));
-          gameScene.show();
-          gameScene.messageReceived("Refresh Screen", message.getParameters());
-          gameScene.messageReceived("Initial Positioning", null);
+          Player player1 = (Player) message.getParameters().get(1);
+          if (((Game) message.getParameters().get(0)).getPlayerList().get(0).equals(player1)){
+            GameScene gameScene1 = new GameScene(player1);
+            gameScene1.show();
+          }
+          GameScene.messageReceived("Refresh Screen", message.getParameters());
+          GameScene.messageReceived("Initial Positioning", null);
         }
 
         synchronized (lockFirstPositioning) {

@@ -30,10 +30,13 @@ public class GodPickingScene {
   static ArrayList<JButton> selectedCards = new ArrayList<>();
   static JButton playButton = new JButton();
 
+  static JLabel waitLabel = new JLabel("Other players are choosing their card...");
+
+
 
   static int playerNum ;
 
-  static ArrayList<God> gods = new ArrayList();
+  static ArrayList<God> gods = new ArrayList<>();
   static God[] allGods = new God[9];
 
 
@@ -50,7 +53,7 @@ public class GodPickingScene {
   public GodPickingScene(int playerNum, God[] allGods){
 
 
-    this.playerNum=playerNum;
+    this.playerNum = playerNum;
     this.allGods = allGods;
 
     imagesImport();
@@ -166,6 +169,18 @@ public class GodPickingScene {
   };
 
   static ActionListener playButtonLister = e ->{
+
+    waitLabel.setBounds((int) (400*scale), (int) (855*scale), (int) (400*scale), (int) (20*scale));
+    waitLabel.setFont(minionProXSmall);
+    waitLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    waitLabel.setForeground(lightBrown);
+    godPickingPanel.add(waitLabel);
+    playButton.setEnabled(false);
+    waitLabel.setVisible(true);
+
+
+
+
       for (int i=0; i<playerNum; i++){
             if (selectedCards.get(i).getIcon().equals(cardButtons.get(0).getIcon())) gods.add(allGods[0]);
             else if (selectedCards.get(i).getIcon().equals(cardButtons.get(1).getIcon())) gods.add(allGods[1]);
@@ -201,7 +216,7 @@ public class GodPickingScene {
 
     imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Demeter.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Hepheastus.png");
+    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Hephaestus.png");
 
     imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Minotaur.png");
 

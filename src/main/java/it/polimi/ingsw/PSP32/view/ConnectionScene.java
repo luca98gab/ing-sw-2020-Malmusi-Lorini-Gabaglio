@@ -45,7 +45,7 @@ public class ConnectionScene extends Gui {
     serverLabel.setFont(minionPro);
     serverLabel.setForeground(darkBrown);
     serverLabel.setVerticalAlignment(SwingConstants.CENTER);
-    serverLabel.setBounds((int) (390*scale), (int) (370*scale), (int) (160*scale), (int) (30*scale));
+    serverLabel.setBounds((int) (385*scale), (int) (370*scale), (int) (200*scale), (int) (30*scale));
     serverConnectionPanel.add(serverLabel);
 
     textField.setFont(minionProSmall);
