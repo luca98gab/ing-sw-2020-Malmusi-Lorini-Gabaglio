@@ -171,7 +171,7 @@ public class GameScene {
   static ActionListener cellClickedListener = e -> {
     JButton clickedCell = (JButton) e.getSource();
 
-    if (clickedCell!=null){
+    if (clickedCell!=null && (clickedCell.getIcon()==null || clickedCell.getIcon().equals(myPawnIcon[0]))){
       switch (phase){
         case "Initial Positioning":
           pawnPositioning(clickedCell);
@@ -183,13 +183,14 @@ public class GameScene {
   private static void pawnPositioning(JButton selectedCell){
     int i = cells.indexOf(selectedCell);
 
-    if (!selectedCells.contains(i) && selectedCells.size()<2){
+    if (!selectedCells.contains(i) && selectedCells.size()<2 ){
       selectedCells.add(i);
       selectedCell.setIcon(myPawnIcon[0]);
       if (selectedCells.size()==2) phaseButton.setEnabled(true);
     } else if (selectedCells.contains(i)){
       selectedCells.remove(((Integer) i));
       selectedCell.setIcon(null);
+      phaseButton.setEnabled(false);
     }
 
   }
