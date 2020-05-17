@@ -31,6 +31,8 @@ public class GameScene {
   static int [] position1= {-1,-1};
   static int [] position2= {-1,-1};
 
+  static int [] buildLocation ={-1,-1};
+
   static Pawn activePawn;
 
   static Game game;
@@ -54,6 +56,9 @@ public class GameScene {
   static ImageIcon[] bluePawnIcon = new ImageIcon[2];
   static ImageIcon[] greenPawnIcon = new ImageIcon[2];
   static ImageIcon[] myPawnIcon = new ImageIcon[2];
+
+  static ImageIcon[] building = new ImageIcon[4];
+
 
 
   public void show(){
@@ -131,6 +136,7 @@ public class GameScene {
 
 
     createCells();
+    setupBuildingIcons();
     setupPawnIcons();
   }
 
@@ -182,12 +188,17 @@ public class GameScene {
           }
         case "Move Phase":
           if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
+              if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
             clickedCell.setIcon(myPawnIcon[1]);
             int i = cells.indexOf(clickedCell);
             activePawn = game.getMap()[i%5][i/5].getIsFull();
           }
-          else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) cells.get(activePawn.getX()+activePawn.getY()*5).setIcon(myPawnIcon[0]);
-          else{
+          else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) {
+            cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);
+            activePawn = null;
+
+          }
+          else if(activePawn!=null){
             String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
             Boolean valid=false;
             if(direction!=null) {
@@ -196,20 +207,38 @@ public class GameScene {
               } catch (IOException ex) {
                 ex.printStackTrace();
               }
-              activePawn.moves(getX(clickedCell), getY(clickedCell));
+
               if(valid){
-                synchronized(lockActivePawn){
+                activePawn.moves(getX(clickedCell), getY(clickedCell));
+                synchronized(lockActivePawn) {
                   flagForActivePawn.set(1);
                   lockActivePawn.notifyAll();
                 }
-                break;
-                //refreshare schermo
               }
             }
-
-
           }
           break;
+        case "Build Phase":
+          String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
+            Boolean valid1=false;
+          if(direction!=null) {
+            try {
+              valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, null);
+            } catch (IOException ex) {
+              ex.printStackTrace();
+            }
+          }
+          if(valid1){
+             buildLocation [0]= getX(clickedCell);
+             buildLocation [1]= getY(clickedCell);
+            activePawn=null;
+             waitGraphics();
+
+            synchronized(lockBuilding) {
+              flagForBuilding.set(1);
+              lockBuilding.notifyAll();
+            }
+          }
       }
     }
 
@@ -229,6 +258,15 @@ public class GameScene {
       phaseInfo.setText(selectedCells.size() + "/2 pawns placed");
       phaseButton.setEnabled(false);
     }
+
+  }
+
+  private static void setupBuildingIcons(){
+    String path = "src/resources/Santorini Images/SchermataGioco/Floor1.png";
+    ImageIcon image = new ImageIcon(path);
+    Image img1 = image.getImage();
+    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    building[0] = new ImageIcon(newImg1);
 
   }
 
@@ -293,12 +331,15 @@ public class GameScene {
           initialPosGraphics();
           break;
         case "Move Phase":
+
           phase = newPhase;
           game = (Game) parameters.get(0);
           movePhaseGraphics();
           break;
         case "Build Phase":
           phase = newPhase;
+          game = (Game) parameters.get(0);
+
           buildPhaseGraphics();
           break;
         case "Refresh Screen":
@@ -399,16 +440,29 @@ public class GameScene {
   public static void refreshScreen(Game game){
     for (int i=0; i<25; i++){
       Cell cell = game.getMap()[i%5][i/5];
+      switch (cell.getFloor()){
+        case 1:
+          cells.get(i).setIcon(building[0]);
+      }
       if (cell.getIsFull()!=null) {
         switch (cell.getIsFull().getPlayer().getColor()) {
           case ("\u001B[31m"):
-            cells.get(i).setIcon(redPawnIcon[0]);
+            if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5))
+              cells.get(i).setIcon(redPawnIcon[1]);
+            else
+              cells.get(i).setIcon(redPawnIcon[0]);
             break;
           case ("\u001B[32m"):
-            cells.get(i).setIcon(greenPawnIcon[0]);
+            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
+              cells.get(i).setIcon(greenPawnIcon[1]);
+            else
+              cells.get(i).setIcon(greenPawnIcon[0]);
             break;
           case ("\u001B[34m"):
-            cells.get(i).setIcon(bluePawnIcon[0]);
+            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
+              cells.get(i).setIcon(bluePawnIcon[1]);
+            else
+              cells.get(i).setIcon(bluePawnIcon[0]);
             break;
         }
       }
@@ -423,6 +477,7 @@ public class GameScene {
     else return position2;
   }
 
+  public static int[] getBuildLocation(){return buildLocation;}
 
   public static  Pawn getActivePawn(){ return activePawn; }
 
@@ -445,11 +500,11 @@ public class GameScene {
         case 1:
           switch (getY(centralCell)-getY(newCell)){
             case 1:
-              return "NO";
+              return "NW";
             case 0:
-              return "O";
+              return "W";
             case -1:
-              return "SO";
+              return "SW";
           }
           break;
         case 0:

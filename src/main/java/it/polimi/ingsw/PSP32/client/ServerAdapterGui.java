@@ -32,6 +32,8 @@ public class ServerAdapterGui
   public static AtomicInteger flagForFirstPositioning = new AtomicInteger(0);
   public static final Object lockActivePawn = new Object();
   public static AtomicInteger flagForActivePawn = new AtomicInteger(0);
+  public static final Object lockBuilding = new Object();
+  public static AtomicInteger flagForBuilding = new AtomicInteger(0);
 
 
 
@@ -209,6 +211,7 @@ public class ServerAdapterGui
             } catch (InterruptedException e) {}
           }
         }
+        flagForActivePawn.set(0);
         Pawn pawn = GameScene.getActivePawn();
         sendResultMessage(pawn);
         break;
@@ -217,12 +220,24 @@ public class ServerAdapterGui
         sendResultMessage(bool1);
         break;
       case "waitForBuildCommand":
-        Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
-        sendResultMessage(bool2);
+        GameScene.messageReceived("Build Phase", message.getParameters());
+        synchronized (lockBuilding) {
+          while (flagForBuilding.get() == 0) {
+            try {
+              lockBuilding.wait();
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+          }
+          flagForBuilding.set(0);
+        }
+      //  Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
+        sendResultMessage(false);
         break;
       case "getBuildLocationViaArrows":
-        int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
-        sendResultMessage(cell);
+
+        //int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
+        sendResultMessage(GameScene.getBuildLocation());
         break;
       case "waitForMoveCommand":
         //da modificare con gli dei
@@ -307,10 +322,11 @@ public class ServerAdapterGui
     Object object = null;
     try {
       Message inboundMessage = (Message) inputStm.readObject();
-      if (inboundMessage.getTypeOfMessage().equals("Result")){
+      if (inboundMessage.getTypeOfMessage()!=null && inboundMessage.getTypeOfMessage().equals("Result")){
         object = inboundMessage.getResult();
       }
-    } catch (ClassNotFoundException | ClassCastException e) {
+    } catch (ClassNotFoundException | ClassCastException | NullPointerException e) {
+      e.printStackTrace();
       System.out.println("invalid stream from server");
     }
     return object;

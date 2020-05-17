@@ -75,7 +75,7 @@ public class Server implements Runnable {
 
 
       synchronized (lockNum) {
-          if (flagForSync.get() == 0) {
+          while (flagForSync.get() == 0) {
               try {
                   lockNum.wait();
               } catch (InterruptedException e) {
@@ -116,7 +116,7 @@ public class Server implements Runnable {
           }
 
           synchronized (lockPlayer) {
-              if (flagForSync.get() == 0) {
+              while (flagForSync.get() == 0) {
                   try {
                       lockPlayer.wait();
                   } catch (InterruptedException e) {
