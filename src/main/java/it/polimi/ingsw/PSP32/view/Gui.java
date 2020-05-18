@@ -38,7 +38,7 @@ public class Gui implements Runnable {
 
     addFont();
 
-    scale = dim.height/1200.0;
+    //scale = dim.height/1200.0;
     window.getContentPane().setPreferredSize(new Dimension((int)(1200*scale) , (int)(900*scale)));
     minionPro = new Font("a", Font.PLAIN, (int)(23*scale));
     minionProSmall = new Font("a", Font.PLAIN, (int)(18*scale));
@@ -46,17 +46,6 @@ public class Gui implements Runnable {
     lillyBelle = new Font("LillyBelle", Font.PLAIN, (int)(25*scale));
 
 
-
-    //
-    //if (dim.width<1200 || dim.height<900) small=true;
-    //if (!small){
-    // window.setPreferredSize(new Dimension(1200 , 900));
-    //} else {
-    //  scale=2/3.0;
-    //  window.setPreferredSize(new Dimension(800 , 600));
-    //  minionPro = new Font("Minion Pro", Font.PLAIN, 18);
-    //  minionProSmall = new Font("Minion Pro", Font.PLAIN, 13);
-    //}
     window.pack();
     window.setLocationRelativeTo(null);
   }
@@ -73,7 +62,7 @@ public class Gui implements Runnable {
 
     Player player = new Player("Gio", "\u001B[31m", new God("Apollo", null));
 
-    GodPickingScene scene = new GodPickingScene(2, null);
+    GameScene scene = new GameScene(player);
     scene.show();
 
   }
