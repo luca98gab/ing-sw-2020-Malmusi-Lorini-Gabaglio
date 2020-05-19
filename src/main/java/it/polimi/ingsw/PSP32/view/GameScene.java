@@ -78,12 +78,12 @@ public class GameScene {
 
   public GameScene(Player player){
 
+
     myPlayer = player;
 
     sceneSetup();
 
     waitGraphics();
-
 
   }
 
@@ -131,7 +131,6 @@ public class GameScene {
 
       public void mouseEntered(java.awt.event.MouseEvent evt) {
         myCard.setIcon(myCardIconBack);
-        new Toast("Invalid Move", gamePanel, 2000);
       }
 
       public void mouseExited(java.awt.event.MouseEvent evt) {

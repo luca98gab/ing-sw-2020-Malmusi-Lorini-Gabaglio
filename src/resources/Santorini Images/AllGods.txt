@@ -30,35 +30,18 @@ God of the Wild - Your Turn: If your Worker does not move up, it may build both 
 Prometheus
 Titan Benefactor of Mankind - Your Turn: If your Worker does not move up, it may build both before and after moving.
 
-Aphrodite
-Goddess of Love - Any Move: If an opponent Worker starts its turn neighboring one of your Workers, its last move must be to a space neighboring one of your Workers.
 
-Ares
-God of War - End of Your Turn: You may remove an unoccupied block (not dome) neighboring your unmoved Worker. You also remove any Tokens on the block.
 
-Bia
-Goddess of Violence - Setup: Place your Workers first. -  Your Move: If your Worker moves into a space and the next space in the same direction is occupied by an opponent Worker, the opponent's Worker is removed from the game.
 
-Charon
-Ferryman to the Underworld - Your Move: Before your Worker moves, you may force a neighboring opponent Worker to the space directly on the other side of your Worker, if that space is unoccupied.
 
-Chaos
-Primordial Nothingness - Setup: Shuffle all unused Simple God Powers (featuring a symbol) into a face-down deck in your play area. Draw the top God Power, and place it face-up beside the deck. - Any Time: You have the Power of the face-up God Power. You must discard your current God Power and draw a new one after any turn in which at least one dome is built. If you run out of God Powers, shuffle them to create a new deck and draw the top one.
 
-Chronus
-God of Time - Win Condition: You also win when there are at least five Complete Towers on the board.
+Limus
+Goddess of Famine - Opponent's Turn: Opponent Workers cannot build on spaces neighboring your Workers, unless building a dome to create a Complete Tower.
 
-Circe
-Divine Enchantress - Start of Your Turn: If an opponent's Workers do not neighbor each other, you alone have use of their power until your next turn.
 
-Dionysus
-God of Wine - Your Build: Each time a Worker you control creates a Complete Tower, you may take an additional turn using an opponent Worker instead of your own. No player can win during these additional turns.
 
-Eros
-God of Desire - Setup: Place your Workers anywhere along opposite edges of the board. - Win Condition: You also win if one of your Workers moves to a space neighboring your other Worker and both are on the first level (or the same level in a 3-player game).
 
-Hera
-Goddess of Marriage - Opponent's Turn: An opponent cannot win by moving into a perimeter space.
+
 
 Hestia
 Goddess of Hearth and Home - Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.
@@ -66,26 +49,11 @@ Goddess of Hearth and Home - Your Build: Your Worker may build one additional ti
 Hypnus
 God of Sleep - Start of Opponent's Turn: If one of your opponent's Workers is higher than all of their others, it cannot move.
 
-Limus
-Goddess of Famine - Opponent's Turn: Opponent Workers cannot build on spaces neighboring your Workers, unless building a dome to create a Complete Tower.
+Hera
+Goddess of Marriage - Opponent's Turn: An opponent cannot win by moving into a perimeter space.
 
-Medusa
-Petrifying Gorgon - End of Your Turn: If possible, your Workers build in lower neighboring spaces that are occupied by opponent Workers, removing the opponent Workers from the game.
-
-Morpheus
-God of dreams - Start of Your Turn: Place a block or dome on your God Power card. - Your Build: Your Worker cannot build as normal. Instead, your Worker may build any number of times (even zero) using blocks / domes collected on your God Power card. At any time, any player may exchange a block / dome on the God Power card for dome or a block of a different shape.
-
-Persephone
-Goddess of Spring Growth - Opponent's Turn: If possible, at least one Worker must move up this turn.
-
-Poseidon
-God of the Sea - End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.
-
-Selene
-Goddess of the Moon - Setup: Place a male and a female Worker of your color.
-
-Triton
-God of the Waves - Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.
+Chronus
+God of Time - Win Condition: You also win when there are at least five Complete Towers on the board.
 
 Zeus
 God of the Sky - Your Build: Your Worker may build a block under itself.

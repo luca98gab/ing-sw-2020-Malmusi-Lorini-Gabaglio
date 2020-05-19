@@ -177,6 +177,11 @@ public class GodPickingScene {
     godPickingPanel.add(waitLabel);
     playButton.setEnabled(false);
     waitLabel.setVisible(true);
+    Hourglass hGlass = new Hourglass();
+    hGlass.setBounds((int)(50*scale), (int)(750*scale), (int) (96 * scale), (int) (130 * scale));
+    hGlass.setVisible(true);
+    godPickingPanel.add(hGlass);
+    godPickingPanel.revalidate();
 
 
 

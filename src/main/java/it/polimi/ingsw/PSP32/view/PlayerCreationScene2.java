@@ -231,9 +231,18 @@ public class PlayerCreationScene2 {
     waitLabel.setHorizontalAlignment(SwingConstants.CENTER);
     waitLabel.setBounds((int)(500*scale), (int)(755*scale), (int)(200*scale), (int)(30*scale));
     playerCreationPanel.add(waitLabel);
-    startButton.setEnabled(false);
+    disableAll();
 
   };
+
+  private static void disableAll(){
+    startButton.setEnabled(false);
+    Hourglass hGlass = new Hourglass();
+    hGlass.setBounds((int)(1050*scale), (int)(750*scale), (int) (96 * scale), (int) (130 * scale));
+    hGlass.setVisible(true);
+    playerCreationPanel.add(hGlass);
+
+  }
 
   private static void checkCanPlay(){
     if (colorGroup.getSelection()!=null &&  validName){
