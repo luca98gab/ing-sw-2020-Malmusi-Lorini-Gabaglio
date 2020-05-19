@@ -65,8 +65,6 @@ public class Gui implements Runnable {
     GameScene scene = new GameScene(player);
     scene.show();
 
-    new PopupWin(window, player);
-
   }
 
   public static void main(String[] args )
