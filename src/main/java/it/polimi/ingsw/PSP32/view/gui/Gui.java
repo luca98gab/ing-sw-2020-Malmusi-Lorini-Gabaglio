@@ -2,12 +2,12 @@ package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
-import it.polimi.ingsw.PSP32.view.gui.GameScene;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Gui implements Runnable {
 
@@ -32,7 +32,7 @@ public class Gui implements Runnable {
 
     addFont();
 
-    scale = dim.height/1200.0;
+    //scale = dim.height/1200.0;
     window.getContentPane().setPreferredSize(new Dimension((int)(1200*scale) , (int)(900*scale)));
     minionPro = new Font("a", Font.PLAIN, (int)(23*scale));
     minionProSmall = new Font("a", Font.PLAIN, (int)(18*scale));
@@ -54,10 +54,12 @@ public class Gui implements Runnable {
       e.printStackTrace();
     }
 
-    Player player = new Player("Gio", "\u001B[31m", new God("Apollo", null));
+    ArrayList<Player> players = new ArrayList<>();
+    players.add( new Player("Gio", "\u001B[31m", new God("Apollo", null)));
 
-    GameScene scene = new GameScene(player);
+    GameScene scene = new GameScene(players.get(0));
     scene.show();
+
 
   }
 

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
-
 import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class GodPickingScene {

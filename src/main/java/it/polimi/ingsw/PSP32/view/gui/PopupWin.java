@@ -5,7 +5,6 @@ import it.polimi.ingsw.PSP32.model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 
 import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 

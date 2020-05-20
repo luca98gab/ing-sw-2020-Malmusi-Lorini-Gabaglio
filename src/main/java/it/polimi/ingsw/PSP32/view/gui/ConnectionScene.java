@@ -1,16 +1,13 @@
 package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
-import it.polimi.ingsw.PSP32.server.Server;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
-import static it.polimi.ingsw.PSP32.server.Server.lockNum;
 
 public class ConnectionScene extends Gui {
 

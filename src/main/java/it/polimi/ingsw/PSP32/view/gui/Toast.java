@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP32.view.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 

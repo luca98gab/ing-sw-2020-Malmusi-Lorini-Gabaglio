@@ -5,7 +5,9 @@ import it.polimi.ingsw.PSP32.model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,7 +17,15 @@ import static javax.swing.SwingConstants.CENTER;
 
 public class GameScene {
 
+  static JLayeredPane layeredPane = new JLayeredPane();
+
   static JLabel gamePanel = new JLabel();
+
+  static JMenuBar menuBar = new JMenuBar();
+
+
+
+
 
   static JButton myCard = new JButton();
   static ImageIcon myCardIconFront;
@@ -65,9 +75,11 @@ public class GameScene {
   static ImageIcon[] buildingDomeIcons = new ImageIcon[5];
 
 
-
   public void show(){
-    window.setContentPane(gamePanel);
+    gamePanel.setBounds(0, -11, window.getWidth(), window.getHeight());
+    layeredPane.add(gamePanel, 0);
+    layeredPane.setVisible(true);
+    window.setLayeredPane(layeredPane);
     window.setVisible(true);
   }
 
@@ -80,6 +92,8 @@ public class GameScene {
     sceneSetup();
 
     waitGraphics();
+
+    askPower();
 
   }
 
@@ -106,7 +120,91 @@ public class GameScene {
 
   };
 
+  private static void addPlayerToMenu(){
+
+    JMenu playersColumn = new JMenu();
+
+    playersColumn.setText("Players");
+
+    if (game!=null){
+      for (int i = 0; i < game.getPlayerList().size(); i++){
+
+        JMenu name = new JMenu(game.getPlayerList().get(i).getName());
+        JMenuItem color = new JMenuItem();
+        switch (game.getPlayerList().get(i).getColor()){
+          case "\u001B[31m":
+            color.setText("RED");
+            break;
+          case "\u001B[32m":
+            color.setText("GREEN");
+            break;
+          case "\u001B[34m":
+            color.setText("BLUE");
+            break;
+        }
+        JMenu godName = new JMenu(game.getPlayerList().get(i).getGod().getName());
+        JMenuItem godAbility = new JMenuItem(game.getPlayerList().get(i).getGod().getAbility());
+
+        godName.add(godAbility);
+        name.add(color);
+        name.add(godName);
+
+        playersColumn.add(name);
+      }
+    }
+
+    menuBar.add(playersColumn);
+    menuBar.setSize((int) menuBar.getPreferredSize().getWidth(), (int) menuBar.getPreferredSize().getHeight());
+
+  }
+
+  private static void menuSetup(){
+
+
+    UIManager.put("MenuItem.background", new Color(63, 100, 143));
+    UIManager.put("MenuItem.foreground", new Color(225, 224, 222));
+
+
+
+    JMenu help = new JMenu("Help");
+    JMenuItem rules = new JMenuItem("Rules");
+    rules.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (Desktop.isDesktopSupported()) {
+          try {
+            File myFile = new File( "src/resources/Santorini Images/Santorini Rulebook.pdf");
+            Desktop.getDesktop().open(myFile);
+          } catch (IOException ex) {
+
+          }
+        }
+      }
+    });
+
+    help.add(rules);
+
+    JMenuItem about = new JMenuItem("About");
+    about.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new AboutPage();
+      }
+    });
+    help.add(about);
+    help.setBackground(Color.red);
+
+    menuBar.add(help);
+    menuBar.setBackground(Color.red);
+
+    menuBar.setBounds((int)(50*scale), (int)(32*scale), (int) menuBar.getPreferredSize().getWidth(), (int)(22*scale));
+
+    gamePanel.add(menuBar);
+  }
+
   private static void sceneSetup(){
+
+    menuSetup();
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataGioco/Sfondo.png");
     Image img = background.getImage();
@@ -378,8 +476,10 @@ public class GameScene {
     if (newPhase!=null){
       switch (newPhase){
         case "Initial Positioning":
+          game = (Game) parameters.get(0);
           phase = newPhase;
           initialPosGraphics();
+          addPlayerToMenu();
           break;
         case "Move Phase":
 
@@ -397,11 +497,6 @@ public class GameScene {
           if(myPlayer!=null)
           refreshScreen((Game) parameters.get(0));
           break;
-        case "Endgame":
-          new PopupWin(window, (Player) parameters.get(0));
-          break;
-        case "Disconnection":
-          new DisconnectedPopup(window);
       }
     }
   }
@@ -424,7 +519,7 @@ public class GameScene {
     divider.setHorizontalAlignment(CENTER);
     divider.setForeground(darkBrown);
     divider.setBounds((int)(60*scale), (int)(366*scale), (int)(240*scale), (int)(20*scale));
-    divider.setVisible(false);
+    divider.setVisible(true);
     gamePanel.add(divider);
 
     ImageIcon athena = new ImageIcon("src/resources/Santorini Images/SchermataGioco/AthenaFlag.png");
@@ -529,7 +624,7 @@ public class GameScene {
     phaseInfo.setHorizontalTextPosition(CENTER);
     athenaFlagImageContainer.setVisible(game.getAthenaFlag());
     divider.setVisible(game.getAthenaFlag());
-    phaseButton.setVisible(false);
+
   }
 
   private static void buildPhaseGraphics(){
@@ -545,10 +640,13 @@ public class GameScene {
       else buildIconsLayer.get(i).setIcon(buildingIcons[cell.getFloor()]);
 
       if (cell.getIsFull()!=null) {
+        cells.get(i).setToolTipText("<html>" + cell.getIsFull().getPlayer().getName() + "<br/>"
+                + cell.getIsFull().getPlayer().getGod().getName() + "<br/>" + cell.getIsFull().getPlayer().getGod().getAbility());
         switch (cell.getIsFull().getPlayer().getColor()) {
           case ("\u001B[31m"):
-            if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5))
+            if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5)){
               cells.get(i).setIcon(redPawnIcon[1]);
+            }
             else
               cells.get(i).setIcon(redPawnIcon[0]);
             break;
@@ -630,6 +728,63 @@ public class GameScene {
       }
     }
     return null;
+  }
+
+
+
+
+  private static void askPower(){
+    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonYes.png");
+    Image img1 = playImage.getImage();
+    Image newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon yesIcon = new ImageIcon(newImg1);
+
+    playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonNO.png");
+    img1 = playImage.getImage();
+    newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon noIcon = new ImageIcon(newImg1);
+
+    phaseInfo.setText("Use power?");
+
+    JButton yesButton = new JButton();
+    yesButton.setBounds((int)(95*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));
+    yesButton.setIcon(yesIcon);
+
+    JButton noButton = new JButton();
+    noButton.setBounds((int)(195*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));
+    noButton.setIcon(noIcon);
+
+    gamePanel.add(yesButton);
+    gamePanel.add(noButton);
+
+
+    yesButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        //Do Something
+
+        phaseInfo.setVisible(false);
+        yesButton.setVisible(false);
+        noButton.setVisible(false);
+        gamePanel.remove(yesButton);
+        gamePanel.remove(noButton);
+      }
+    });
+    noButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        //Do Something
+
+        phaseInfo.setVisible(false);
+        yesButton.setVisible(false);
+        noButton.setVisible(false);
+        gamePanel.remove(yesButton);
+        gamePanel.remove(noButton);
+      }
+    });
+
   }
 }
 

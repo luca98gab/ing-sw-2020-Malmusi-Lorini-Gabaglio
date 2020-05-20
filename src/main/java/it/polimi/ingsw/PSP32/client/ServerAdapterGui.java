@@ -185,7 +185,7 @@ public class ServerAdapterGui
             gameScene1.show();
           }
           GameScene.messageReceived("Refresh Screen", message.getParameters());
-          GameScene.messageReceived("Initial Positioning", null);
+          GameScene.messageReceived("Initial Positioning", message.getParameters());
         }
 
         synchronized (lockFirstPositioning) {
@@ -264,6 +264,7 @@ public class ServerAdapterGui
     }
     return false;
   }
+
   public void requestSendObject(Object object)
   {
     executionQueue.submit(() -> {

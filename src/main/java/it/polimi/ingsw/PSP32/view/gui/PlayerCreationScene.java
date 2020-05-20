@@ -2,7 +2,6 @@ package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.Player;
-import it.polimi.ingsw.PSP32.view.gui.Hourglass;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

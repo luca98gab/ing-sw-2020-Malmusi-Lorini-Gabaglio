@@ -1,14 +1,8 @@
 
 package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.model.Player;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
-
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class DisconnectedPopup{
 

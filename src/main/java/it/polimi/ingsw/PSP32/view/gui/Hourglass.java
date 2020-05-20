@@ -4,8 +4,6 @@ package it.polimi.ingsw.PSP32.view.gui;
 import javax.swing.*;
 import java.awt.*;
 
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
-
 public class Hourglass extends JLabel {
 
   ImageIcon[] hourglassIcons = new ImageIcon[3];
