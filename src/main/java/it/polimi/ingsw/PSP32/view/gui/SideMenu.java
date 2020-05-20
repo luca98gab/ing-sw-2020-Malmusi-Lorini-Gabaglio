@@ -85,7 +85,7 @@ public class SideMenu extends JPanel {
     setBackground(new Color(198, 190, 174));
 
     setVisible(true);
-    layeredPane.add(this, 100);
+    //layeredPane.add(this, 100);
   }
 
 

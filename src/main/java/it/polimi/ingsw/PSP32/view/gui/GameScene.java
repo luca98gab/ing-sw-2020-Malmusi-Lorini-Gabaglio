@@ -17,8 +17,6 @@ import static javax.swing.SwingConstants.CENTER;
 
 public class GameScene {
 
-  static JLayeredPane layeredPane = new JLayeredPane();
-
   static JLabel gamePanel = new JLabel();
 
   static JMenuBar menuBar = new JMenuBar();
@@ -76,10 +74,8 @@ public class GameScene {
 
 
   public void show(){
-    gamePanel.setBounds(0, -11, window.getWidth(), window.getHeight());
-    layeredPane.add(gamePanel, 0);
-    layeredPane.setVisible(true);
-    window.setLayeredPane(layeredPane);
+    gamePanel.setBounds(0, 0, window.getWidth(), window.getHeight());
+    window.setContentPane(gamePanel);
     window.setVisible(true);
   }
 
@@ -92,8 +88,6 @@ public class GameScene {
     sceneSetup();
 
     waitGraphics();
-
-    askPower();
 
   }
 

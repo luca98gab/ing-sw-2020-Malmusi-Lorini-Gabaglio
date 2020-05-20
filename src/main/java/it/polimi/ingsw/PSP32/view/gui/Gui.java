@@ -32,7 +32,7 @@ public class Gui implements Runnable {
 
     addFont();
 
-    //scale = dim.height/1200.0;
+    scale = dim.height/1200.0;
     window.getContentPane().setPreferredSize(new Dimension((int)(1200*scale) , (int)(900*scale)));
     minionPro = new Font("a", Font.PLAIN, (int)(23*scale));
     minionProSmall = new Font("a", Font.PLAIN, (int)(18*scale));
