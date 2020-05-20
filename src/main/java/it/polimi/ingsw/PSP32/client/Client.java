@@ -2,8 +2,8 @@ package it.polimi.ingsw.PSP32.client;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
-import it.polimi.ingsw.PSP32.view.ConnectionScene;
-import it.polimi.ingsw.PSP32.view.Gui;
+import it.polimi.ingsw.PSP32.view.gui.ConnectionScene;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 
 import java.io.IOException;
@@ -17,6 +17,7 @@ import java.util.concurrent.TimeoutException;
 
 public class Client implements Runnable
 {
+  private Boolean exit=false;
 
   public static String ip = "0.0.0.0";
 
@@ -24,6 +25,7 @@ public class Client implements Runnable
   {
     Client client = new Client();
     client.run();
+    System.exit(0);
   }
 
   public String receiveMessage(ServerAdapter serverAdapter1) {
@@ -69,9 +71,9 @@ public class Client implements Runnable
       return;
     }
 
-    while (true){
+    while (!exit){
       try {
-        serverAdapter.answerToServer();
+        exit =serverAdapter.answerToServer();
 
       } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
         return;

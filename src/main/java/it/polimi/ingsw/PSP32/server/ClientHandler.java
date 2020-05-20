@@ -213,13 +213,17 @@ public class ClientHandler implements Runnable
         Server.playerNum = (int) toClientGetObject("getNumOfPlayers");
       }
       catch (IOException e){
-        throw new IOException();
+        exit=true;
+        synchronized(lockNum){
+          Server.flagForSync.set(1);
+          lockNum.notifyAll();
+        }
+
       }
 
       playerCreation(players);
 
       synchronized(lockNum){
-        //set ready flag to true (so isReady returns true)
         Server.flagForSync.set(1);
         lockNum.notifyAll();
       }
@@ -231,12 +235,11 @@ public class ClientHandler implements Runnable
       }
       catch (IOException e){
         Utility.notifyClosingGame(clients);
+        exit=true;
         synchronized(lockPlayer){
           Server.flagForSync.set(1);
           lockPlayer.notifyAll();
         }
-        throw new IOException();
-
 
       }
 

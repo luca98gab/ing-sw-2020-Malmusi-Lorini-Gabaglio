@@ -9,7 +9,8 @@ import java.util.concurrent.*;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.view.*;
+import it.polimi.ingsw.PSP32.view.cli.VirtualCli;
+
 @SuppressWarnings({"unchecked", "unused"})
 
 public class ServerAdapter

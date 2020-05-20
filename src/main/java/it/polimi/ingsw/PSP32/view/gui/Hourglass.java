@@ -1,10 +1,10 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
 
 import javax.swing.*;
 import java.awt.*;
 
-import static it.polimi.ingsw.PSP32.view.Gui.*;
+import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class Hourglass extends JLabel {
 

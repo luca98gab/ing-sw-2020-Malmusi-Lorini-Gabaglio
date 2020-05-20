@@ -1,19 +1,13 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.client.Client;
 import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.GameScene;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class Gui implements Runnable {
 

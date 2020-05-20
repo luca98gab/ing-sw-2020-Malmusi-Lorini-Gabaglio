@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.model.Player;
 
@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 
-import static it.polimi.ingsw.PSP32.view.Gui.*;
+import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class PopupWin{
 

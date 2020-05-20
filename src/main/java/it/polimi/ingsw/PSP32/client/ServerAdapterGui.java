@@ -10,7 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.view.*;
+import it.polimi.ingsw.PSP32.view.cli.VirtualCli;
+import it.polimi.ingsw.PSP32.view.gui.*;
+
 @SuppressWarnings({"unchecked", "unused"})
 
 public class ServerAdapterGui
@@ -251,23 +253,13 @@ public class ServerAdapterGui
         sendResultMessage(bool4);
         break;
       case "endGameGraphics":
-        VirtualCli.endGameGraphics((Player) message.getParameters().get(0));
+        GameScene.messageReceived("Endgame", message.getParameters());
         return true;
       case "removedPlayerGraphics":
         VirtualCli.removedPlayerGraphics((Player) message.getParameters().get(0));
         break;
-      case "waitTurnMessage":
-        System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
-        break;
-      case "waitGodsPicking":
-        System.out.println(""+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting the gods...");
-        break;
-      case "waitOwnGodSelection":
-        System.out.println("\n"+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting his own god...");
-        break;
       case "Disconnection":
-        System.out.println("\n"+   "\u001b[31m" +"   ## WARNING ## \n"+  "\u001b[0m" );
-        System.out.println("Someone left the match, the game is being shutted down");
+        GameScene.messageReceived("Disconnection", null);
         return true;
     }
     return false;

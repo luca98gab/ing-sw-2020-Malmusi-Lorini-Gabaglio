@@ -1,18 +1,15 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.client.ClientGui;
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.God;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockOwnGod;
-import static it.polimi.ingsw.PSP32.view.Gui.*;
+import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class GodPickingScene2 {
 

@@ -2,16 +2,13 @@ package it.polimi.ingsw.PSP32.client;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
-import it.polimi.ingsw.PSP32.view.ConnectionScene;
-import it.polimi.ingsw.PSP32.view.Gui;
-import it.polimi.ingsw.PSP32.view.PlayerCreationScene;
+import it.polimi.ingsw.PSP32.view.gui.ConnectionScene;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;

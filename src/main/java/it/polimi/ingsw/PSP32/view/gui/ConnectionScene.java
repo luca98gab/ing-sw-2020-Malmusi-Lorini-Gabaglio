@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
 import it.polimi.ingsw.PSP32.server.Server;

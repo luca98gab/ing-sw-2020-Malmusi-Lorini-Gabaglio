@@ -1,20 +1,16 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.client.ClientGui;
-import it.polimi.ingsw.PSP32.client.ServerAdapter;
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.*;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.xml.xpath.XPath;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
-import static it.polimi.ingsw.PSP32.view.Gui.*;
+import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 import static javax.swing.SwingConstants.CENTER;
 
 public class GameScene {
@@ -401,6 +397,11 @@ public class GameScene {
           if(myPlayer!=null)
           refreshScreen((Game) parameters.get(0));
           break;
+        case "Endgame":
+          new PopupWin(window, (Player) parameters.get(0));
+          break;
+        case "Disconnection":
+          new DisconnectedPopup(window);
       }
     }
   }

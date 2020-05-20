@@ -1,29 +1,23 @@
-package it.polimi.ingsw.PSP32.view;
+package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.client.ClientGui;
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.Hourglass;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
-import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
-import static it.polimi.ingsw.PSP32.view.Gui.*;
+import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockNum;
+import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
-public class PlayerCreationScene2 {
+public class PlayerCreationScene {
 
   static JLabel playerCreationPanel = new JLabel();
   static JLabel nameLabel = new JLabel("Nickname:");
   static JTextField textField = new JTextField();
   static JButton startButton = new JButton();
-
-  static JLabel nameInfo = new JLabel();
-
-
 
   static ButtonGroup colorGroup = new ButtonGroup();
   static JRadioButton bluePawn = new JRadioButton();
@@ -36,13 +30,21 @@ public class PlayerCreationScene2 {
   static ImageIcon redPawnSelIcon = null;
   static ImageIcon greenPawnSelIcon = null;
 
-  private static CopyOnWriteArrayList<Player> players = new CopyOnWriteArrayList<>();
+  static ButtonGroup numGroup = new ButtonGroup();
+  static JRadioButton twoPlayers = new JRadioButton();
+  static JRadioButton threePlayers = new JRadioButton();
+  static ImageIcon twoPlayersIcon = null;
+  static ImageIcon threePlayersIcon = null;
+  static ImageIcon twoPlayersSelIcon = null;
+  static ImageIcon threePlayersSelIcon = null;
 
-  static Player player;
+  static int playerNum = 0;
 
   static Boolean validName = false;
 
-  public static Player getPlayer() {return player;}
+  static Player player;
+
+
 
 
   public void show(){
@@ -50,10 +52,15 @@ public class PlayerCreationScene2 {
     window.setVisible(true);
   }
 
+  public static int getPlayerNum() {
+    return playerNum;
+  }
+  public static Player getPlayer() {return player;}
 
-  public PlayerCreationScene2 (CopyOnWriteArrayList<Player> players){
 
-    PlayerCreationScene2.players = players;
+  public PlayerCreationScene(){
+
+
 
     ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
     Image img = background.getImage();
@@ -82,18 +89,19 @@ public class PlayerCreationScene2 {
     colorGroup.add(greenPawn);
 
 
+
     ImageIcon bluePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBlu.png");
     Image imgb = bluePawnImage.getImage();
-    Image newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    Image newImgb = imgb.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     bluePawnIcon = new ImageIcon(newImgb);
 
     bluePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBluSelezionato.png");
     imgb = bluePawnImage.getImage();
-    newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    newImgb = imgb.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     bluePawnSelIcon = new ImageIcon(newImgb);
 
     bluePawn.setIcon(bluePawnIcon);
-    bluePawn.setBounds((int) (340*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));
+    bluePawn.setBounds((int)(340*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     bluePawn.setContentAreaFilled(false);
     bluePawn.setBorderPainted(false);
     playerCreationPanel.add(bluePawn);
@@ -104,16 +112,16 @@ public class PlayerCreationScene2 {
 
     ImageIcon redPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossa.png");
     Image imgr = redPawnImage.getImage();
-    Image newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    Image newImgr = imgr.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnIcon = new ImageIcon(newImgr);
 
     redPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossaSelezionato.png");
     imgr = redPawnImage.getImage();
-    newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    newImgr = imgr.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnSelIcon = new ImageIcon(newImgr);
 
     redPawn.setIcon(redPawnIcon);
-    redPawn.setBounds((int) (530*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));
+    redPawn.setBounds((int)(530*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     redPawn.setContentAreaFilled(false);
     redPawn.setBorderPainted(false);
     playerCreationPanel.add(redPawn);
@@ -122,18 +130,19 @@ public class PlayerCreationScene2 {
 
 
 
+
     ImageIcon greenPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerde.png");
     Image imgg = greenPawnImage.getImage();
-    Image newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    Image newImgg = imgg.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     greenPawnIcon = new ImageIcon(newImgg);
 
     greenPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerdeSelezionato.png");
     imgg = greenPawnImage.getImage();
-    newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    newImgg = imgg.getScaledInstance( (int)(140*scale), (int)(210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     greenPawnSelIcon = new ImageIcon(newImgg);
 
     greenPawn.setIcon(greenPawnIcon);
-    greenPawn.setBounds((int) (720*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));
+    greenPawn.setBounds((int)(720*scale), (int)(270*scale), (int)(140*scale), (int)(210*scale));
     greenPawn.setContentAreaFilled(false);
     greenPawn.setBorderPainted(false);
     playerCreationPanel.add(greenPawn);
@@ -142,12 +151,58 @@ public class PlayerCreationScene2 {
 
 
 
+
+    numGroup.add(twoPlayers);
+    numGroup.add(threePlayers);
+
+    ImageIcon twoPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/2Players.png");
+    img = twoPawnImage.getImage();
+    newImg = img.getScaledInstance( (int)(240*scale), (int)(180*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    twoPlayersIcon = new ImageIcon(newImg);
+
+    twoPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/2PlayersSelezionato.png");
+    img = twoPawnImage.getImage();
+    newImg = img.getScaledInstance( (int)(240*scale), (int)(180*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    twoPlayersSelIcon = new ImageIcon(newImg);
+
+    twoPlayers.setIcon(twoPlayersIcon);
+    twoPlayers.setBounds((int)(350*scale), (int)(500*scale), (int)(240*scale), (int)(180*scale));
+    twoPlayers.setContentAreaFilled(false);
+    twoPlayers.setBorderPainted(false);
+    playerCreationPanel.add(twoPlayers);
+    twoPlayers.addActionListener(twoPawnListener);
+    twoPlayers.addActionListener(textFieldListener);
+
+
+
+
+    ImageIcon threePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/3Players.png");
+    img = threePawnImage.getImage();
+    newImg = img.getScaledInstance( (int)(240*scale), (int)(180*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
+    threePlayersIcon = new ImageIcon(newImg);
+
+    threePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/3PlayersSelezionato.png");
+    img = threePawnImage.getImage();
+    newImg = img.getScaledInstance( (int)(240*scale), (int)(180*scale),  Image.SCALE_SMOOTH  ) ;
+    threePlayersSelIcon = new ImageIcon(newImg);
+
+    threePlayers.setIcon(threePlayersIcon);
+    threePlayers.setBounds((int)(600*scale), (int)(500*scale), (int)(240*scale), (int)(180*scale));
+    threePlayers.setContentAreaFilled(false);
+    threePlayers.setBorderPainted(false);
+    playerCreationPanel.add(threePlayers);
+    threePlayers.addActionListener(threePawnListener);
+    threePlayers.addActionListener(textFieldListener);
+
+
+
+
     ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/StartButton.png");
     Image img1 = playImage.getImage();
-    Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    Image newImg1 = img1.getScaledInstance( (int)(300*scale), (int)(900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg1);
     startButton.setIcon(playImageResized);
-    startButton.setBounds((int) (450*scale), (int) (580*scale), (int) (300*scale), (int) (900/4*scale));
+    startButton.setBounds((int)(450*scale), (int)(650*scale), (int)(300*scale), (int)(900/4*scale));
     startButton.setOpaque(false);
     startButton.setContentAreaFilled(false);
     startButton.setBorderPainted(false);
@@ -155,39 +210,14 @@ public class PlayerCreationScene2 {
     playerCreationPanel.add(startButton);
     startButton.addActionListener(startButtonListener);
 
-    nameInfo.setFont(minionProSmall);
-    nameInfo.setBounds((int) (705*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));
-    nameInfo.setHorizontalAlignment(SwingConstants.CENTER);
-    nameInfo.setForeground(darkBrown);
-    nameInfo.setFont(minionProSmall);
-    nameInfo.setVisible(false);
-    playerCreationPanel.add(nameInfo);
-
-    for(int i=0; i<players.size(); i++)
-    {
-      if (players.get(i).getColor().equals("\u001B[31m"))
-        redPawn.setEnabled(false);
-      if (players.get(i).getColor().equals("\u001B[34m"))
-        bluePawn.setEnabled(false);
-      if (players.get(i).getColor().equals("\u001B[32m"))
-        greenPawn.setEnabled(false);
-    }
-
   }
 
 
   static ActionListener textFieldListener = e -> {
     String str = textField.getText();
-    Boolean existing = false;
     if (str.matches("[a-zA-Z]+") || str.equals(" ")){
-      for(int i=0; i<players.size(); i++){
-        if (textField.getText().equals(players.get(i).getName())) existing=true;
-      }
-      if (!existing){
-          validName=true;
-          nameInfo.setVisible(false);
-          checkCanPlay();
-      } else existingName();
+      validName=true;
+      checkCanPlay();
     } else {
       textField.setText("name not valid");
       textField.selectAll();
@@ -216,23 +246,37 @@ public class PlayerCreationScene2 {
     checkCanPlay();
   };
 
+  static ActionListener twoPawnListener = e -> {
+    twoPlayers.setIcon(twoPlayersSelIcon);
+    threePlayers.setIcon(threePlayersIcon);
+    checkCanPlay();
+  };
+
+  static ActionListener threePawnListener = e -> {
+    twoPlayers.setIcon(twoPlayersIcon);
+    threePlayers.setIcon(threePlayersSelIcon);
+    checkCanPlay();
+  };
+
   static ActionListener startButtonListener = e -> {
-     if (greenPawn.isSelected()) player = new Player(textField.getText(), "\u001B[32m", null);
-     else if (redPawn.isSelected()) player = new Player(textField.getText(), "\u001B[31m", null);
-     else if (bluePawn.isSelected()) player = new Player(textField.getText(), "\u001B[34m", null);
-     synchronized (lockPlayer) {
-       ServerAdapterGui.flagForPlayer.set(1);
-       lockPlayer.notifyAll();
-     }
+    if (twoPlayers.isSelected()) playerNum=2;
+    else playerNum=3;
+
+    if(greenPawn.isSelected()) player = new Player(textField.getText(), "\u001B[32m", null);
+    else if(redPawn.isSelected()) player = new Player(textField.getText(), "\u001B[31m", null);
+    else if(bluePawn.isSelected()) player = new Player(textField.getText(), "\u001B[34m", null);
+    synchronized(lockNum){
+      ServerAdapterGui.flagForNum.set(1);
+      lockNum.notifyAll();
+    }
 
     JLabel waitLabel = new JLabel("Waiting for Players...");
     waitLabel.setFont(minionProSmall);
     waitLabel.setForeground(darkBrown);
     waitLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    waitLabel.setBounds((int)(500*scale), (int)(755*scale), (int)(200*scale), (int)(30*scale));
+    waitLabel.setBounds((int)(500*scale), (int)(685*scale), (int)(200*scale), (int)(30*scale));
     playerCreationPanel.add(waitLabel);
     disableAll();
-
   };
 
   private static void disableAll(){
@@ -245,15 +289,9 @@ public class PlayerCreationScene2 {
   }
 
   private static void checkCanPlay(){
-    if (colorGroup.getSelection()!=null &&  validName){
+    if (colorGroup.getSelection()!=null && numGroup.getSelection()!=null && validName){
       startButton.setEnabled(true);
     }
   }
 
-  public static void existingName(){
-    nameInfo.setText("Invalid name");
-    nameInfo.setVisible(true);
-    textField.selectAll();
-    startButton.setEnabled(false);
-  }
 }

@@ -2,17 +2,11 @@ package it.polimi.ingsw.PSP32.controller;
 
 import it.polimi.ingsw.PSP32.model.*;
 import it.polimi.ingsw.PSP32.server.ClientHandler;
-import it.polimi.ingsw.PSP32.view.VirtualCli;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
- @SuppressWarnings("Simplify")
+@SuppressWarnings("Simplify")
 
 public class Utility {
 
