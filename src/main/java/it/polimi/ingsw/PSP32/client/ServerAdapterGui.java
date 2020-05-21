@@ -36,6 +36,8 @@ public class ServerAdapterGui
   public static AtomicInteger flagForActivePawn = new AtomicInteger(0);
   public static final Object lockBuilding = new Object();
   public static AtomicInteger flagForBuilding = new AtomicInteger(0);
+  public static final Object lockMove2 = new Object();
+  public static AtomicInteger flagForMove2 = new AtomicInteger(0);
 
 
 
@@ -96,10 +98,6 @@ public class ServerAdapterGui
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
 
- //   if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
-  //  if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) throw new LobbyIsFullException(null);
-
-
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         PlayerCreationScene playerCreationScene = new PlayerCreationScene();
@@ -129,6 +127,7 @@ public class ServerAdapterGui
           }
           Player p = PlayerCreationScene2.getPlayer();
           sendResultMessage(p);
+          break;
         }
         else sendResultMessage(PlayerCreationScene.getPlayer());
         break;
@@ -166,16 +165,6 @@ public class ServerAdapterGui
         GameScene gameScene = new GameScene(player);
         gameScene.show();
         break;
-
-      case "player1GodAssignment":
-        VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));
-        break;
-      case "printPlayerInfo":
-        VirtualCli.printPlayerInfo(((ArrayList<Player>) message.getParameters().get(0)), ((Boolean) message.getParameters().get(1)));
-        break;
-      case "printTurnInfo":
-        VirtualCli.printTurnInfo((Player) message.getParameters().get(0));
-        break;
       case "getPawnInitialPosition":
 
         if (firstTime) {
@@ -195,7 +184,6 @@ public class ServerAdapterGui
             } catch (InterruptedException e) {}
           }
         }
-
        sendResultMessage(GameScene.getCoords(firstTime));
         firstTime=false;
 
@@ -222,35 +210,102 @@ public class ServerAdapterGui
         sendResultMessage(bool1);
         break;
       case "waitForBuildCommand":
-        GameScene.messageReceived("Build Phase", message.getParameters());
-        synchronized (lockBuilding) {
-          while (flagForBuilding.get() == 0) {
+        Boolean power1;
+        if ((Boolean) message.getParameters().get(2)){
+          power1 = GameScene.messageReceived("Power", message.getParameters());
+          GameScene.messageReceived("Build Phase", message.getParameters());
+          synchronized (lockBuilding) {
+            while (flagForBuilding.get() == 0) {
+              try {
+                lockBuilding.wait();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+            flagForBuilding.set(0);
+          }
+          sendResultMessage(power1);
+          break;
+        }
+        else if ((Boolean) message.getParameters().get(3)){
+          power1 = GameScene.messageReceived("Power", message.getParameters());
+          if (power1){
+          GameScene.messageReceived("Build Phase 2", message.getParameters());
+          synchronized (lockBuilding) {
+            while (flagForBuilding.get() == 0) {
+              try {
+                lockBuilding.wait();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+            flagForBuilding.set(0);
+          }
+            GameScene.messageReceived("Wait", message.getParameters()) ;
+            sendResultMessage(!power1);
+          break;
+          }
+          else {
+            GameScene.messageReceived("Wait", message.getParameters()) ;
+          sendResultMessage(!power1);
+            break;
+          }
+        }
+
+        else {
+          GameScene.messageReceived("Build Phase", message.getParameters());
+          synchronized (lockBuilding) {
+            while (flagForBuilding.get() == 0) {
+              try {
+                lockBuilding.wait();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+            flagForBuilding.set(0);
+          }
+
+          //  Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
+          sendResultMessage(false);
+        }
+        break;
+      case "getBuildLocationViaArrows":
+        sendResultMessage(GameScene.getBuildLocation());
+        break;
+      case "waitForMoveCommand":
+        if((Boolean) message.getParameters().get(3))
+        {
+          Boolean power =GameScene.messageReceived("Power", message.getParameters());
+          sendResultMessage( power);
+          break;
+
+        }
+        sendResultMessage(true);
+        break;
+      case "getValidMoveViaArrows":
+        if (!(Boolean) message.getParameters().get(3)){
+        GameScene.messageReceived("Move Phase 2", message.getParameters());
+        synchronized (lockMove2) {
+          while (flagForMove2.get() == 0) {
             try {
-              lockBuilding.wait();
+              lockMove2.wait();
             } catch (InterruptedException e) {
               e.printStackTrace();
             }
           }
-          flagForBuilding.set(0);
         }
-      //  Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
-        sendResultMessage(false);
-        break;
-      case "getBuildLocationViaArrows":
+          flagForMove2.set(0);
+        int x[] = {GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()};
+          sendResultMessage(x);
+          break;
+        }
 
-        //int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
-        sendResultMessage(GameScene.getBuildLocation());
-        break;
-      case "waitForMoveCommand":
-        //da modificare con gli dei
-        sendResultMessage(true);
-        break;
-      case "getValidMoveViaArrows":
-        sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});
+        else sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});
         break;
       case "askBuildTwice":
-        Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));
-        sendResultMessage(bool4);
+
+        sendResultMessage(GameScene.messageReceived("Power", message.getParameters()));
+        GameScene.messageReceived("Wait", message.getParameters()) ;
         break;
       case "endGameGraphics":
         GameScene.messageReceived("Endgame", message.getParameters());

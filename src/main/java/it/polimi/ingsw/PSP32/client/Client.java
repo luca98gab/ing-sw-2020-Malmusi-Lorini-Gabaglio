@@ -47,12 +47,12 @@ public class Client implements Runnable
   public void run()
   {
 
- //   Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
-    /**
-     * System.out.println("IP address of server?");
-     * String ip = scanner.nextLine();
-     */
+
+      System.out.println("IP address of server?");
+      String ip = scanner.nextLine();
+
 
     Socket server;
     try {

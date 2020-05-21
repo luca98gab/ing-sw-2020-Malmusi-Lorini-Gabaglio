@@ -83,7 +83,7 @@ public class Moving {
         if (god.equals("Artemis")) {
             if(!CheckHasLost.checkHasLostForMoves(game, player, true)) {
                 if (player.getRelatedClient().toClientGetObject("waitForMoveCommand", game, activePawn, false, true).equals(true)) {
-                    move = (int[]) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, startPosition, true);
+                        move = (int[]) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, startPosition, false);
                 }
                 if (move != null) {
                     movePawnSecure(game, activePawn, move[0], move[1]);

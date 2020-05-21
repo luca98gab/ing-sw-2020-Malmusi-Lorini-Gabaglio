@@ -42,7 +42,8 @@ public class Building {
         if (god.equals("Demeter")) {
             if(!CheckHasLost.checkHasLostForBuild(game, pawn, true, cell)) {
                 Cell restriction = cell;
-                if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true).equals(false)) {
+                cell=null;
+                if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true, restriction).equals(false)) {
                     cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
                     cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 }

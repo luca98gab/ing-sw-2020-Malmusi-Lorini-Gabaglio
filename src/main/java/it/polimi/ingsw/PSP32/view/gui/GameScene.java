@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
 import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
@@ -33,6 +34,8 @@ public class GameScene {
   static JButton phaseButton = new JButton();
   static JLabel athenaFlagImageContainer = new JLabel();
   static JLabel divider = new JLabel("- - - - - - - - - -");
+
+  static Cell restrictedCell = null;
 
 
   static JLabel meLabel = new JLabel();
@@ -308,12 +311,62 @@ public class GameScene {
     }
   }
 
+  private static void movePhase2Click(JButton clickedCell){
+
+    if(clickedCell.getIcon()==null){
+      String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
+      Boolean valid=false;
+      if(direction!=null) {
+        try {
+          valid = (Boolean) ServerAdapterGui.toServerGetObject("checkCanMove"+direction, game, activePawn, restrictedCell);
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+
+        if(valid){
+          activePawn.moves(getX(clickedCell), getY(clickedCell));
+          synchronized(lockMove2) {
+            flagForMove2.set(1);
+            lockMove2.notifyAll();
+          }
+        } else {
+          new Toast("Invalid Move", gamePanel, 2000);
+        }
+      }
+    }
+  }
+
   private static void buildPhaseClick(JButton clickedCell){
     String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
     Boolean valid1=false;
     if(direction!=null) {
       try {
         valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, null);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      }
+    }
+    if(valid1){
+      buildLocation [0]= getX(clickedCell);
+      buildLocation [1]= getY(clickedCell);
+      activePawn=null;
+      waitGraphics();
+
+      synchronized(lockBuilding) {
+        flagForBuilding.set(1);
+        lockBuilding.notifyAll();
+      }
+    } else {
+      new Toast("Invalid Build Location", gamePanel, 2000);
+    }
+  }
+
+  private static void buildPhase2Click(JButton clickedCell){
+    String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
+    Boolean valid1=false;
+    if(direction!=null) {
+      try {
+        valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, restrictedCell);
       } catch (IOException ex) {
         ex.printStackTrace();
       }
@@ -347,6 +400,14 @@ public class GameScene {
           break;
         case "Build Phase":
           buildPhaseClick(clickedCell);
+          break;
+        case "Move Phase 2":
+          movePhase2Click(clickedCell);
+          break;
+        case "Power":
+          break;
+        case "Build Phase 2":
+          buildPhase2Click(clickedCell);
           break;
       }
     }
@@ -466,7 +527,7 @@ public class GameScene {
     }
   }
 
-  public static void messageReceived(String newPhase, ArrayList<Object> parameters){
+  public static Boolean messageReceived(String newPhase, ArrayList<Object> parameters){
     if (newPhase!=null){
       switch (newPhase){
         case "Initial Positioning":
@@ -476,10 +537,17 @@ public class GameScene {
           addPlayerToMenu();
           break;
         case "Move Phase":
-
           phase = newPhase;
           game = (Game) parameters.get(0);
           movePhaseGraphics();
+          break;
+        case "Move Phase 2":
+          phase = "Move Phase 2";
+          game = (Game) parameters.get(0);
+          activePawn= (Pawn) parameters.get(1);
+          restrictedCell= (Cell) parameters.get(2);
+          movePhaseGraphics();
+          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
           break;
         case "Build Phase":
           phase = newPhase;
@@ -491,8 +559,29 @@ public class GameScene {
           if(myPlayer!=null)
           refreshScreen((Game) parameters.get(0));
           break;
+        case "Disconnection":
+          new DisconnectedPopup(window);
+          break;
+        case "Endgame":
+          new PopupWin(window, (Player) parameters.get(0));
+          break;
+        case "Power":
+          phase= newPhase;
+          return askPower();
+        case "Build Phase 2":
+          phase = "Build Phase 2";
+          game = (Game) parameters.get(0);
+          activePawn= (Pawn) parameters.get(1);
+          restrictedCell= (Cell) parameters.get(4);
+          buildPhaseGraphics();
+          //cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
+          break;
+        case "Wait":
+          waitGraphics();
+          break;
       }
     }
+    return false;
   }
 
 
@@ -513,7 +602,7 @@ public class GameScene {
     divider.setHorizontalAlignment(CENTER);
     divider.setForeground(darkBrown);
     divider.setBounds((int)(60*scale), (int)(366*scale), (int)(240*scale), (int)(20*scale));
-    divider.setVisible(true);
+    divider.setVisible(false);
     gamePanel.add(divider);
 
     ImageIcon athena = new ImageIcon("src/resources/Santorini Images/SchermataGioco/AthenaFlag.png");
@@ -618,6 +707,7 @@ public class GameScene {
     phaseInfo.setHorizontalTextPosition(CENTER);
     athenaFlagImageContainer.setVisible(game.getAthenaFlag());
     divider.setVisible(game.getAthenaFlag());
+    phaseInfo.setVisible(true);
 
   }
 
@@ -625,6 +715,7 @@ public class GameScene {
     phaseLabel.setText("Build Phase");
     phaseInfo.setText("Select where to build");
     phaseButton.setVisible(false);
+    phaseInfo.setVisible(true);
   }
 
   public static void refreshScreen(Game game){
@@ -669,7 +760,8 @@ public class GameScene {
     else return position2;
   }
 
-  public static int[] getBuildLocation(){return buildLocation;}
+  public static int[] getBuildLocation(){
+    return buildLocation;}
 
   public static  Pawn getActivePawn(){ return activePawn; }
 
@@ -727,7 +819,12 @@ public class GameScene {
 
 
 
-  private static void askPower(){
+  private static Boolean askPower(){
+    final Object lock = new Object();
+    AtomicInteger flagForLock = new AtomicInteger(0);
+
+
+    final Boolean[] result = new Boolean[1];
     ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonYes.png");
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
@@ -743,10 +840,14 @@ public class GameScene {
     JButton yesButton = new JButton();
     yesButton.setBounds((int)(95*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));
     yesButton.setIcon(yesIcon);
+    yesButton.setVisible(true);
 
     JButton noButton = new JButton();
     noButton.setBounds((int)(195*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));
     noButton.setIcon(noIcon);
+    noButton.setVisible(true);
+
+
 
     gamePanel.add(yesButton);
     gamePanel.add(noButton);
@@ -755,33 +856,46 @@ public class GameScene {
     gamePanel.repaint();
 
 
-    yesButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
+    yesButton.addActionListener(e -> {
 
-        //Do Something
-
-        phaseInfo.setVisible(false);
-        yesButton.setVisible(false);
-        noButton.setVisible(false);
-        gamePanel.remove(yesButton);
-        gamePanel.remove(noButton);
+      phaseInfo.setVisible(false);
+      yesButton.setVisible(false);
+      noButton.setVisible(false);
+      gamePanel.remove(yesButton);
+      gamePanel.remove(noButton);
+      result[0] =true;
+      synchronized(lock){
+        flagForLock.set(1);
+        lock.notifyAll();
       }
     });
-    noButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
+    noButton.addActionListener(e -> {
 
-        //Do Something
+      //Do Something
 
-        phaseInfo.setVisible(false);
-        yesButton.setVisible(false);
-        noButton.setVisible(false);
-        gamePanel.remove(yesButton);
-        gamePanel.remove(noButton);
+      phaseInfo.setVisible(false);
+      yesButton.setVisible(false);
+      noButton.setVisible(false);
+      gamePanel.remove(yesButton);
+      gamePanel.remove(noButton);
+      result[0]= false;
+      synchronized(lock){
+        flagForLock.set(1);
+        lock.notifyAll();
       }
     });
 
+    synchronized (lock){
+      while(flagForLock.get()==0){
+        try {
+          lock.wait();
+        }catch (InterruptedException e){}
+
+      }
+
+    }
+
+    return result[0];
   }
 }
 
