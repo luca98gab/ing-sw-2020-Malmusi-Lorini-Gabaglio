@@ -1,20 +1,20 @@
+
 package it.polimi.ingsw.PSP32.view.gui;
 
-import it.polimi.ingsw.PSP32.model.Player;
+        import it.polimi.ingsw.PSP32.model.Player;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
+        import javax.swing.*;
+        import java.awt.*;
+        import java.awt.event.ActionListener;
 
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
+        import static it.polimi.ingsw.PSP32.view.gui.GameScene.myPlayer;
+        import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
-public class PopupWin{
+public class PopupRemovedPlayer{
 
+  JDialog popup = new JDialog(window, "dialog Box", true);
 
-
-  public PopupWin (JFrame window, Player winner) {
-
-    JDialog popup = new JDialog(window, "dialog Box", true);
+  public PopupRemovedPlayer (JFrame window, Player player) {
 
     JLabel backgroundLabel = new JLabel();
     JButton b = new JButton();
@@ -41,14 +41,20 @@ public class PopupWin{
     b.setVisible(true);
     b.setIcon(escIcon);
     b.setBounds((int)(660*scale), (int)(0*scale), escIcon.getIconWidth(), escIcon.getIconHeight());
-    b.addActionListener(escListener);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
     b.setBorderPainted(false);
 
     winnerLabel.setFont(lillyBelle);
     winnerLabel.setForeground(new Color(247, 206, 135));
-    winnerLabel.setText(winner.getName().toUpperCase() + " is the winner");
+    if (player == myPlayer){
+      winnerLabel.setText("YOU LOST");
+      b.addActionListener(escListenerCloseAll);
+    } else {
+      winnerLabel.setText(player.getName().toUpperCase() + " LOST");
+      b.addActionListener(escListenerClosePopup);
+    }
+
     winnerLabel.setBounds((int)(182*scale), (int)(206*scale), (int)(250*scale), (int)(30*scale));
     winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -63,10 +69,15 @@ public class PopupWin{
 
   }
 
-  static ActionListener escListener = e -> {
+  ActionListener escListenerCloseAll = e -> {
     window.setVisible(false);
     window.dispose();
     System.exit(0);
+  };
+
+  ActionListener escListenerClosePopup = e -> {
+    popup.setVisible(false);
+    popup.dispose();
   };
 
 }

@@ -14,17 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
 import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
-import static javax.swing.SwingConstants.CENTER;
+import static javax.swing.SwingConstants.*;
 
 public class GameScene {
 
   static JLabel gamePanel = new JLabel();
 
-  static JMenuBar menuBar = new JMenuBar();
-
-
-
-
+  static JPanel menuBar = new JPanel();
 
   static JButton myCard = new JButton();
   static ImageIcon myCardIconFront;
@@ -87,7 +83,6 @@ public class GameScene {
 
   public GameScene(Player player){
 
-
     myPlayer = player;
 
     sceneSetup();
@@ -119,54 +114,15 @@ public class GameScene {
 
   };
 
-  private static void addPlayerToMenu(){
-
-    JMenu playersColumn = new JMenu();
-
-    playersColumn.setText("Players");
-
-    if (game!=null){
-      for (int i = 0; i < game.getPlayerList().size(); i++){
-
-        JMenu name = new JMenu(game.getPlayerList().get(i).getName());
-        JMenuItem color = new JMenuItem();
-        switch (game.getPlayerList().get(i).getColor()){
-          case "\u001B[31m":
-            color.setText("RED");
-            break;
-          case "\u001B[32m":
-            color.setText("GREEN");
-            break;
-          case "\u001B[34m":
-            color.setText("BLUE");
-            break;
-        }
-        JMenu godName = new JMenu(game.getPlayerList().get(i).getGod().getName());
-        JMenuItem godAbility = new JMenuItem(game.getPlayerList().get(i).getGod().getAbility());
-
-        godName.add(godAbility);
-        name.add(color);
-        name.add(godName);
-
-        playersColumn.add(name);
-      }
-    }
-
-    menuBar.add(playersColumn);
-    menuBar.setSize((int) menuBar.getPreferredSize().getWidth(), (int) menuBar.getPreferredSize().getHeight());
-
-  }
-
   private static void menuSetup(){
 
+    JButton rules = new JButton("Rules");
+    rules.setVerticalAlignment(TOP);
+    rules.setForeground(new Color(225, 224, 222));
+    rules.setFont(minionProXSmall);
+    rules.setContentAreaFilled(false);
+    rules.setBorderPainted(false);
 
-    UIManager.put("MenuItem.background", new Color(63, 100, 143));
-    UIManager.put("MenuItem.foreground", new Color(225, 224, 222));
-
-
-
-    JMenu help = new JMenu("Help");
-    JMenuItem rules = new JMenuItem("Rules");
     rules.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -180,23 +136,73 @@ public class GameScene {
         }
       }
     });
+    rules.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        rules.setOpaque(true);
+        rules.setBackground(new Color(0x2D6772D5, true));
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        rules.setOpaque(false);
+        rules.setBackground(new Color(0,0,0,0));
+      }
+    });
 
-    help.add(rules);
+    menuBar.add(rules);
 
-    JMenuItem about = new JMenuItem("About");
+
+    JButton about = new JButton("About");
+    about.setVerticalAlignment(TOP);
+    about.setOpaque(false);
+    about.setContentAreaFilled(false);
+    about.setBorderPainted(false);
+    about.setFont(minionProXSmall);
+    about.setForeground(new Color(225, 224, 222));
     about.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         new AboutPage();
       }
     });
-    help.add(about);
-    help.setBackground(Color.red);
+    about.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        about.setOpaque(true);
+        about.setBackground(new Color(0x2D6772D5, true));
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        about.setOpaque(false);
+        about.setBackground(new Color(0,0,0,0));
+      }
+    });
+    menuBar.add(about);
 
-    menuBar.add(help);
-    menuBar.setBackground(Color.red);
+    JButton players = new JButton("Players");
+    players.setVerticalAlignment(TOP);
+    players.setOpaque(false);
+    players.setContentAreaFilled(false);
+    players.setBorderPainted(false);
+    players.setFont(minionProXSmall);
+    players.setForeground(new Color(225, 224, 222));
+    players.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        new PlayersPopup();
+      }
+    });
+    players.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        players.setOpaque(true);
+        players.setBackground(new Color(0x2D6772D5, true));
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        players.setOpaque(false);
+        players.setBackground(new Color(0,0,0,0));
+      }
+    });
+    menuBar.add(players);
 
-    menuBar.setBounds((int)(50*scale), (int)(32*scale), (int) menuBar.getPreferredSize().getWidth(), (int)(22*scale));
+    menuBar.setLayout(new FlowLayout(FlowLayout.LEADING));
+    menuBar.setBounds((int) (35*scale), (int) ((15)*scale), (int) (1133*scale), (int) (29*scale));
+    menuBar.setOpaque(false);
 
     gamePanel.add(menuBar);
   }
@@ -575,7 +581,6 @@ public class GameScene {
           game = (Game) parameters.get(0);
           phase = newPhase;
           initialPosGraphics();
-          addPlayerToMenu();
           break;
         case "Move Phase":
           phase = newPhase;
@@ -605,8 +610,11 @@ public class GameScene {
         case "Endgame":
           new PopupWin(window, (Player) parameters.get(0));
           break;
+        case "Remove Player":
+          new PopupRemovedPlayer(window, (Player) parameters.get(0));
+          break;
         case "Power":
-          phase= newPhase;
+          phase = newPhase;
           wantsToUsePower=askPower();
           return wantsToUsePower;
         case "Build Phase 2":
@@ -616,6 +624,9 @@ public class GameScene {
           restrictedCell= (Cell) parameters.get(4);
           buildPhaseGraphics();
           //cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
+          break;
+        case "Playing Player":
+          waitGraphics((String) parameters.get(0));
           break;
         case "Wait":
           waitGraphics();
@@ -722,7 +733,7 @@ public class GameScene {
 
   }
 
-  private static void waitGraphics(){
+  private static void waitGraphics(String name){
     phase = "Wait";
 
     for (int i = 0; i < cells.size(); i++){
@@ -738,15 +749,22 @@ public class GameScene {
 
 
     phaseInfo.setBounds((int)(55*scale), (int)(220*scale), (int)(255*scale), (int)((100)*scale));
-    phaseInfo.setText("Other players are playing");
+    if (name!=null){
+      phaseInfo.setText(name.toUpperCase() + " is playing");
+    } else {
+      phaseInfo.setText("Other players are playing");
+    }
     phaseInfo.setFont(minionProXSmall);
     phaseInfo.setHorizontalAlignment(CENTER);
     phaseInfo.setForeground(darkBrown);
     phaseInfo.setVisible(true);
 
     phaseButton.setVisible(false);
-
   }
+  private static void waitGraphics(){
+    waitGraphics(null);
+  }
+
 
   private static void movePhaseGraphics(){
     phaseLabel.setText("Move Phase");

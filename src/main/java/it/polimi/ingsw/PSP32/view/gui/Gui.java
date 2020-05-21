@@ -13,10 +13,10 @@ public class Gui implements Runnable {
 
   static JFrame window = new JFrame("Santorini");
 
-  static Font minionPro = new Font("a", Font.PLAIN, 25);
-  static Font minionProSmall = new Font("a", Font.PLAIN, 20);
-  static Font minionProXSmall = new Font("a", Font.PLAIN, 20);
-  static Font lillyBelle = new Font("LillyBelle", Font.PLAIN, 25);
+  static Font minionPro;
+  static Font minionProSmall;
+  static Font minionProXSmall;
+  static Font lillyBelle;
   static Color darkBrown = new Color(106, 101, 83);
   static Color lightBrown = new Color(240, 230, 211);
   static Color transparent = new Color(240, 230, 211, 0);

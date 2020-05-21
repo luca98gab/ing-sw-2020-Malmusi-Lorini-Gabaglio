@@ -29,7 +29,7 @@ public class DisconnectedPopup{
 
     popup.setUndecorated(false);
     popup.setSize(300, 80);
-    popup.setLocationRelativeTo(null);
+    popup.setLocationRelativeTo(window);
     popup.setVisible(true);
 
   }

@@ -31,6 +31,7 @@ public class AboutPage{
 
     backgroundLabel.setText("<html><br/><br/>Developed by:<br/><br/>-Giorgio Lorini<br/>-Davide Malmusi<br/>-Luca Gabaglio<br/>" +
             "<br/>as a project for PoliMi.<br/>Based on SANTORINI by Roxley<html/>");
+    backgroundLabel.setFont(minionProXSmall);
     backgroundLabel.setForeground(Color.white);
     backgroundLabel.setVerticalAlignment(SwingConstants.TOP);
     backgroundLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -57,13 +58,16 @@ public class AboutPage{
     b.setVisible(true);
     b.setIcon(escIcon);
     b.setBounds((int)(360*scale), (int)(0*scale), escIcon.getIconWidth(), escIcon.getIconHeight());
+    b.setOpaque(false);
+    b.setContentAreaFilled(false);
+    b.setBorderPainted(false);
     b.addActionListener(escListener);
 
 
     popup.setUndecorated(true); //this has to be before .setBackground !!!!!!!
     popup.setBackground(new Color(40, 100, 150, 0));
     popup.setSize((int)(400*scale), (int)(500*scale));
-    popup.setLocationRelativeTo(null);
+    popup.setLocationRelativeTo(window);
     popup.setVisible(true);
 
   }
