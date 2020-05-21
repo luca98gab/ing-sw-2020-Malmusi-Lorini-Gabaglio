@@ -37,6 +37,8 @@ public class GameScene {
 
   static Cell restrictedCell = null;
 
+  static Boolean wantsToUsePower=false;
+
 
   static JLabel meLabel = new JLabel();
   static JLabel myColor = new JLabel();
@@ -386,6 +388,42 @@ public class GameScene {
     }
   }
 
+  private static void buildFirstPhaseClick(JButton clickedCell){
+    if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
+      if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
+      clickedCell.setIcon(myPawnIcon[1]);
+      int i = cells.indexOf(clickedCell);
+      activePawn = game.getMap()[i%5][i/5].getIsFull();
+    }
+    else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) {
+      cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);
+      activePawn = null;
+
+    }
+    else if(activePawn!=null){
+      String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
+      Boolean valid=false;
+      if(direction!=null) {
+        try {
+          valid = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild"+direction, game, activePawn, null);
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+
+        if(valid){
+          buildLocation [0]= getX(clickedCell);
+          buildLocation [1]= getY(clickedCell);
+          synchronized(lockActivePawn) {
+            flagForActivePawn.set(1);
+            lockActivePawn.notifyAll();
+          }
+        } else {
+          new Toast("Invalid Move", gamePanel, 2000);
+        }
+      }
+    }
+  }
+
   static ActionListener cellClickedListener = e -> {
     JButton clickedCell = (JButton) e.getSource();
     if (clickedCell!=null){
@@ -408,6 +446,9 @@ public class GameScene {
           break;
         case "Build Phase 2":
           buildPhase2Click(clickedCell);
+          break;
+        case "BuildFirst":
+          buildFirstPhaseClick(clickedCell);
           break;
       }
     }
@@ -552,7 +593,6 @@ public class GameScene {
         case "Build Phase":
           phase = newPhase;
           game = (Game) parameters.get(0);
-
           buildPhaseGraphics();
           break;
         case "Refresh Screen":
@@ -567,7 +607,8 @@ public class GameScene {
           break;
         case "Power":
           phase= newPhase;
-          return askPower();
+          wantsToUsePower=askPower();
+          return wantsToUsePower;
         case "Build Phase 2":
           phase = "Build Phase 2";
           game = (Game) parameters.get(0);
@@ -579,6 +620,12 @@ public class GameScene {
         case "Wait":
           waitGraphics();
           break;
+        case"Lobby Is Full":
+          new LobbyIsFullPopup(window);
+        case "BuildFirst":
+          game = (Game) parameters.get(0);
+          buildFirstPhaseGraphics();
+          phase=newPhase;
       }
     }
     return false;
@@ -718,6 +765,13 @@ public class GameScene {
     phaseInfo.setVisible(true);
   }
 
+  private static void buildFirstPhaseGraphics(){
+    phaseLabel.setText("Build Phase");
+    phaseInfo.setText("<html>Select one of your pawns, then<br/>click on a nearby spot to build.</html>");
+    phaseButton.setVisible(false);
+    phaseInfo.setVisible(true);
+  }
+
   public static void refreshScreen(Game game){
     for (int i=0; i<25; i++){
       Cell cell = game.getMap()[i%5][i/5];
@@ -816,8 +870,9 @@ public class GameScene {
     return null;
   }
 
-
-
+  public static Boolean getWantsToUsePower() {
+    return wantsToUsePower;
+  }
 
   private static Boolean askPower(){
     final Object lock = new Object();

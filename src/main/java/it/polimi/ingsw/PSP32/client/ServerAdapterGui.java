@@ -93,10 +93,13 @@ public class ServerAdapterGui
    * @throws IOException
    * @throws LobbyIsFullException
    */
-  public Boolean answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
+  public Boolean answerToServer() throws ExecutionException, InterruptedException {
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
     Message message = (Message)incomingObject;
+
+    if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) GameScene.messageReceived("Lobby Is Full", message.getParameters());
+
 
     switch (message.getMethodName()){
       case "getNumOfPlayers":
@@ -192,6 +195,21 @@ public class ServerAdapterGui
         GameScene.messageReceived("Refresh Screen", message.getParameters());
         break;
       case "getActivePawn":
+        if(((Player) message.getParameters().get(1)).getGod().getName().equals("Prometheus"))
+          if(GameScene.messageReceived("Power", message.getParameters())){
+              GameScene.messageReceived("BuildFirst", message.getParameters());
+            synchronized (lockActivePawn) {
+              while (flagForActivePawn.get() == 0) {
+                try {
+                  lockActivePawn.wait();
+                } catch (InterruptedException e) {}
+              }
+            }
+            flagForActivePawn.set(0);
+
+              sendResultMessage(GameScene.getActivePawn());
+              break;
+          }
         GameScene.messageReceived("Move Phase", message.getParameters());
 
         synchronized (lockActivePawn) {
@@ -206,7 +224,7 @@ public class ServerAdapterGui
         sendResultMessage(pawn);
         break;
       case "wantsToUsePower":
-        Boolean bool1=VirtualCli.wantsToUsePower((Player) message.getParameters().get(0));
+        Boolean bool1=GameScene.getWantsToUsePower();
         sendResultMessage(bool1);
         break;
       case "waitForBuildCommand":
@@ -264,8 +282,6 @@ public class ServerAdapterGui
             }
             flagForBuilding.set(0);
           }
-
-          //  Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
           sendResultMessage(false);
         }
         break;
@@ -299,7 +315,20 @@ public class ServerAdapterGui
           sendResultMessage(x);
           break;
         }
-
+        else if (((Pawn) message.getParameters().get(1)).getPlayer().getGod().getName().equals("Prometheus") && GameScene.getWantsToUsePower()){
+          GameScene.messageReceived("Move Phase 2", message.getParameters());
+          synchronized (lockMove2) {
+            while (flagForMove2.get() == 0) {
+              try {
+                lockMove2.wait();
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+            }
+          }
+          flagForMove2.set(0);
+          sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});
+        }
         else sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});
         break;
       case "askBuildTwice":
@@ -316,6 +345,7 @@ public class ServerAdapterGui
       case "Disconnection":
         GameScene.messageReceived("Disconnection", null);
         return true;
+
     }
     return false;
   }
