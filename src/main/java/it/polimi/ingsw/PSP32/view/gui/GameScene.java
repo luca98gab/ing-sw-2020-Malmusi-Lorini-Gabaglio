@@ -751,6 +751,9 @@ public class GameScene {
     gamePanel.add(yesButton);
     gamePanel.add(noButton);
 
+    gamePanel.revalidate();
+    gamePanel.repaint();
+
 
     yesButton.addActionListener(new ActionListener() {
       @Override
