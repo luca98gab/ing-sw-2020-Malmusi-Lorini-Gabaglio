@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -108,6 +109,7 @@ public class ClientHandler implements Runnable
     Object object= null;
     try {
       Message inboundMessage = (Message) input.readObject();
+      while(inboundMessage.getTypeOfMessage().equals("Heartbeat")){inboundMessage = (Message) input.readObject();}
       while (inboundMessage.getTypeOfMessage().equals("Request")){
         Boolean valid = null;
         switch (inboundMessage.getMethodName()){
@@ -211,6 +213,14 @@ public class ClientHandler implements Runnable
     if (first){
       try{
         Server.playerNum = (int) toClientGetObject("getNumOfPlayers");
+      }catch (SocketTimeoutException s) {
+        synchronized (lockNum) {
+          Server.flagForSync.set(1);
+          Server.flagForTimeout.set(1);
+          lockNum.notifyAll();
+          client.close();
+          this.stop();
+        }
       }
       catch (IOException e){
         exit=true;
@@ -232,6 +242,14 @@ public class ClientHandler implements Runnable
 
       try {
         playerCreation(players);
+      }catch (SocketTimeoutException s) {
+        synchronized (lockPlayer) {
+          Server.flagForSync.set(1);
+          lockPlayer.notifyAll();
+          Server.flagForTimeout.set(1);
+          client.close();
+          this.stop();
+        }
       }
       catch (IOException e){
         Utility.notifyClosingGame(clients);

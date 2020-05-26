@@ -287,7 +287,7 @@ public class ServerAdapterGui
         Message message = new Message(null, null, "Result", object);
         outputStm.writeObject(message);
       } catch (IOException e) {
-        e.printStackTrace();
+        System.out.println("Connection dropped");
       }
     });
   }

@@ -80,6 +80,8 @@ public class ClientGui implements Runnable
     ServerAdapterGui serverAdapter;
     try {
       serverAdapter = new ServerAdapterGui(server);
+      Thread thread = new Thread(new ClientHeartbeat(serverAdapter));
+      thread.start();
     } catch (IOException e) {
       System.out.println("could not contact server");
       return;

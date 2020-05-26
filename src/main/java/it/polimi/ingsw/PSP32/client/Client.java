@@ -8,6 +8,7 @@ import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -66,6 +67,8 @@ public class Client implements Runnable
     ServerAdapter serverAdapter;
     try {
       serverAdapter = new ServerAdapter(server);
+      Thread thread = new Thread(new ClientHeartbeat(serverAdapter));
+      thread.start();
     } catch (IOException e) {
       System.out.println("could not contact server");
       return;

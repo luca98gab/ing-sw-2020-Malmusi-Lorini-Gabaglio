@@ -171,7 +171,7 @@ public class ServerAdapter
         outputStm.reset();
         outputStm.writeObject(object);
       } catch (IOException e) {
-        e.printStackTrace();
+        System.out.println("Server shutdown");
       }
     });
   }
@@ -187,7 +187,7 @@ public class ServerAdapter
         Message message = new Message(null, null, "Result", object);
         outputStm.writeObject(message);
       } catch (IOException e) {
-        e.printStackTrace();
+        System.out.println("Connection dropped");
       }
     });
   }
