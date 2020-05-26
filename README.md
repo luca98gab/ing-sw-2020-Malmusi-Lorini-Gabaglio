@@ -1,4 +1,4 @@
-<img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Apollo.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Artemis.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Athena.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Atlas.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Demeter.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Hepheastus.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Minotaur.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Pan.png" alt="alt text" width="95"><img src="src/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Prometheus.png" alt="alt text" width="95">
+<img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Apollo.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Artemis.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Athena.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Atlas.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Demeter.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Hepheastus.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Minotaur.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Pan.png" alt="alt text" width="95"><img src="src/main/resources/Santorini%20Images/SchermataSelezioneGod/LowQuality/Prometheus.png" alt="alt text" width="95">
 
 # Progetto di Ingegneria del Software - Politecnico di Milano
 
@@ -15,7 +15,7 @@
 [Game Rules]: <http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf>
 [OFFICIAL WEBSITE]: <https://roxley.com/products/santorini?currency=EUR>
 
-<img src="src/resources/Santorini%20Images/GameIcon.png" alt="alt text" width="200" height="200">
+<img src="src/main/resources/Santorini%20Images/GameIcon.png" alt="alt text" width="200" height="200">
 
 
 ## STATUS
@@ -24,7 +24,7 @@
 
 * Basic Rules
 * 2 or 3 players
-* [9 standard Gods](src/resources/Santorini%20Images/Gods.txt)
+* [9 standard Gods](src/main/resources/Santorini%20Images/Gods.txt)
 * Client Server over local network
 * Command Line Interface
 

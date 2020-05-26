@@ -2,8 +2,6 @@ package it.polimi.ingsw.PSP32.client;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
-import it.polimi.ingsw.PSP32.view.gui.ConnectionScene;
-import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 
 import java.io.IOException;
@@ -48,12 +46,12 @@ public class Client implements Runnable
   public void run()
   {
 
- //   Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
-    /**
-     * System.out.println("IP address of server?");
-     * String ip = scanner.nextLine();
-     */
+
+      System.out.println("IP address of server?");
+      String ip = scanner.nextLine();
+
 
     Socket server;
     try {

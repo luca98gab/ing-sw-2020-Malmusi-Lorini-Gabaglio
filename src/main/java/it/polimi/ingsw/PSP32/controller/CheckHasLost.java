@@ -35,8 +35,7 @@ public class CheckHasLost {
                 game.getPlayerList().remove(player);
                 return true;
             } else {
-                game.getPlayerList().remove(player);
-                player.getRelatedClient().toClientVoid("endGameGraphics" ,game.getPlayerList().get(0));
+                Utility.toAllClientsVoid(game,"endGameGraphics" , game.getWhosNext(player));
                 while (true);
             }
         }
@@ -62,8 +61,7 @@ public class CheckHasLost {
                 game.getPlayerList().remove(pawn.getPlayer());
                 return true;
             } else {
-                game.getPlayerList().remove(pawn.getPlayer());
-                pawn.getPlayer().getRelatedClient().toClientVoid("endGameGraphics" ,game.getPlayerList().get(0));
+                Utility.toAllClientsVoid(game,"endGameGraphics" , game.getWhosNext(pawn.getPlayer()));
                 while (true);
             }
         }
