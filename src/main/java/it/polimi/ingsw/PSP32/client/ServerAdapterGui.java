@@ -10,8 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.model.*;
-import it.polimi.ingsw.PSP32.view.cli.VirtualCli;
-import it.polimi.ingsw.PSP32.view.gui.*;
+import it.polimi.ingsw.PSP32.view.gui.scenes.*;
 
 @SuppressWarnings({"unchecked", "unused"})
 

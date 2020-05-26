@@ -15,7 +15,7 @@
 [Game Rules]: <http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf>
 [OFFICIAL WEBSITE]: <https://roxley.com/products/santorini?currency=EUR>
 
-<img src="src/resources/Santorini%20Images/GameIcon.png" alt="alt text" width="200" height="200">
+<img src="src/main/resources/Santorini%20Images/GameIcon.png" alt="alt text" width="200" height="200">
 
 
 ## STATUS
@@ -24,7 +24,7 @@
 
 * Basic Rules
 * 2 or 3 players
-* [9 standard Gods](src/resources/Santorini%20Images/Gods.txt)
+* [9 standard Gods](src/main/resources/Santorini%20Images/Gods.txt)
 * Client Server over local network
 * Command Line Interface
 

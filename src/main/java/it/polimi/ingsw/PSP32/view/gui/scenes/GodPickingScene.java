@@ -1,7 +1,9 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.scenes;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.God;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.Hourglass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +11,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
-public class GodPickingScene {
+public class GodPickingScene  extends Gui {
 
   static JLabel godPickingPanel = new JLabel();
 
@@ -46,6 +47,7 @@ public class GodPickingScene {
     window.setVisible(true);
   }
 
+
   public GodPickingScene(int playerNum, God[] allGods){
 
 
@@ -54,7 +56,13 @@ public class GodPickingScene {
 
     imagesImport();
 
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
+    setup();
+
+
+  }
+
+  private void setup(){
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -91,7 +99,7 @@ public class GodPickingScene {
       });
     }
 
-    ImageIcon image = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
+    ImageIcon image = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     emptySpaceIcon = (new ImageIcon(newImg1));
@@ -111,7 +119,7 @@ public class GodPickingScene {
       slot.addActionListener(slotButtonListener);
     }
 
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
     Image img2 = playImage.getImage();
     Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg2);
@@ -123,8 +131,6 @@ public class GodPickingScene {
     playButton.setEnabled(false);
     godPickingPanel.add(playButton);
     playButton.addActionListener(playButtonLister);
-
-
   }
 
   static ActionListener cardButtonListener = e -> {
@@ -180,8 +186,6 @@ public class GodPickingScene {
     godPickingPanel.revalidate();
 
 
-
-
       for (int i=0; i<playerNum; i++){
             if (selectedCards.get(i).getIcon().equals(cardButtons.get(0).getIcon())) gods.add(allGods[0]);
             else if (selectedCards.get(i).getIcon().equals(cardButtons.get(1).getIcon())) gods.add(allGods[1]);
@@ -207,23 +211,23 @@ public class GodPickingScene {
 
   private void imagesImport(){
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Apollo.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Apollo.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Artemis.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Artemis.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Athena.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Athena.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Atlas.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Atlas.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Demeter.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Demeter.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Hephaestus.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Hephaestus.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Minotaur.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Minotaur.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Pan.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Pan.png");
 
-    imageSetup("src/resources/Santorini Images/SchermataSelezioneGod/Prometheus.png");
+    imageSetup("src/main/resources/Santorini Images/SchermataSelezioneGod/Prometheus.png");
   }
 
   private void imageSetup(String path){

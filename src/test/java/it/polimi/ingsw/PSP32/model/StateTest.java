@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class StateTest {
 
     State state = null;
-    ArrayList<Player> players = new Player[3];
+    ArrayList<Player> players;
     Game game1 = null;
 
     @Before

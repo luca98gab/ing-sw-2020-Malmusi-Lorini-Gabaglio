@@ -2,6 +2,7 @@ package it.polimi.ingsw.PSP32.view.gui;
 
 import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,23 +12,25 @@ import java.util.ArrayList;
 
 public class Gui implements Runnable {
 
-  static JFrame window = new JFrame("Santorini");
+  public static JFrame window = new JFrame("Santorini");
 
-  static Font minionPro;
-  static Font minionProSmall;
-  static Font minionProXSmall;
-  static Font lillyBelle;
-  static Color darkBrown = new Color(106, 101, 83);
-  static Color lightBrown = new Color(240, 230, 211);
-  static Color transparent = new Color(240, 230, 211, 0);
+  public static Font minionPro;
+  public static Font minionProSmall;
+  public static Font minionProXSmall;
+  public static Font lillyBelle;
+  public static Color darkBrown = new Color(106, 101, 83);
+  public static Color lightBrown = new Color(240, 230, 211);
+  public static Color transparent = new Color(240, 230, 211, 0);
 
 
-  static double scale = 1;
+  public static double scale = 1;
 
   static public void setupWindow() throws IOException, FontFormatException {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
+    window.setIconImage((new ImageIcon("src/main/resources/Santorini Images/GameIcon.png")).getImage());
+
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     addFont();
@@ -70,12 +73,21 @@ public class Gui implements Runnable {
   }
 
 
-  private static void addFont() throws IOException, FontFormatException {
+  private static void addFont(){
 
-    Font f = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/Santorini Images/LillyBelle.ttf"));
+    Font f;
+    try {
+      f = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Santorini Images/LillyBelle.ttf"));
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      ge.registerFont(f);
+    } catch (FontFormatException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    ge.registerFont(f);
+
+
 
   }
 

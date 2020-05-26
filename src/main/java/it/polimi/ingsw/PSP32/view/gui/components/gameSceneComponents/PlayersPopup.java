@@ -1,35 +1,38 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents;
 
-import it.polimi.ingsw.PSP32.model.*;
+import it.polimi.ingsw.PSP32.model.God;
+import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.Toast;
 
 import javax.swing.*;
-
 import java.awt.*;
+import java.util.ArrayList;
 
-import static it.polimi.ingsw.PSP32.view.gui.GameScene.*;
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
+import static it.polimi.ingsw.PSP32.view.gui.scenes.GameScene.*;
 
-public class SideMenu extends JPanel {
+public class PlayersPopup{
 
   int colorIconW = (int)(80*scale);
   int colorIconH = (int)(80*scale);
 
-  int cardIconW = (int)(80*scale);
-  int cardIconH = (int)(80*scale);
+  static JDialog popup = new JDialog(window, "Players", false);
 
-
-
-  public SideMenu() {
-
+  public PlayersPopup () {
     if (game!=null) {
 
+      JLabel backgroundLabel = new JLabel();
+      backgroundLabel.setSize((int) (game.getPlayerList().size() * 200 * scale), (int) (370 * scale));
+
+      ArrayList<JPanel> playerPanels = new ArrayList<>();
+
       for (int i = 0; i < game.getPlayerList().size(); i++) {
+
         JPanel playerPanel = new JPanel();
-        playerPanel.setLayout(new FlowLayout());
-        playerPanel.setSize(250, 250);
+        playerPanels.add(playerPanel);
 
         Player player = game.getPlayerList().get(i);
         JLabel nameLabel = new JLabel(player.getName());
+        nameLabel.setFont(minionProXSmall);
         JLabel colorLabel = new JLabel();
         JLabel cardLabel = new JLabel();
 
@@ -56,7 +59,6 @@ public class SideMenu extends JPanel {
 
         ImageIcon[] cardIcons = imagesImport(player.getGod());
         cardLabel.setIcon(cardIcons[0]);
-        cardLabel.setBounds((int) (100 * scale), (int) (550 * scale), cardWidth, cardHeight);
         cardLabel.setOpaque(false);
         cardLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 
@@ -73,19 +75,31 @@ public class SideMenu extends JPanel {
         playerPanel.add(colorLabel);
         playerPanel.add(cardLabel);
 
-        add(playerPanel);
+        playerPanel.setVisible(true);
+        playerPanel.setOpaque(false);
+      }
+
+
+      for (int i = 0; i < playerPanels.size(); i++) {
+        backgroundLabel.add(playerPanels.get(i));
+        playerPanels.get(i).setBounds((int) (200 * i * scale), 0, (int) (200 * scale), (int) (370 * scale));
 
       }
-    } else {
-      JLabel label = new JLabel("no Players yet");
-      this.add(label);
-    }
-    setOpaque(true);
-    setBounds((int) ((1200-250) * scale), (int) (0 * scale), (int) (250 * scale), (int) (500 * scale));
-    setBackground(new Color(198, 190, 174));
 
-    setVisible(true);
-    //layeredPane.add(this, 100);
+      ImageIcon image = new ImageIcon("src/main/resources/Santorini Images/Sfondo.png");
+      Image img1 = image.getImage();
+      Image newImg1 = img1.getScaledInstance(backgroundLabel.getWidth(), backgroundLabel.getHeight(), java.awt.Image.SCALE_SMOOTH);
+      backgroundLabel.setIcon(new ImageIcon(newImg1));
+      backgroundLabel.setOpaque(true);
+
+      popup.add(backgroundLabel);
+
+      popup.setSize(backgroundLabel.getSize());
+      popup.setLocationRelativeTo(window);
+      popup.setVisible(true);
+      popup.setResizable(false);
+    } else new Toast("Not Possible Yet", (JLabel) (window.getContentPane()), 2000);
+
   }
 
 
@@ -109,10 +123,11 @@ public class SideMenu extends JPanel {
 
   private ImageIcon[] imagesImport(God god){
 
-    String prefix = "src/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     return imageSetup(prefix + god.getName() + suffix);
 
   }
+
 }

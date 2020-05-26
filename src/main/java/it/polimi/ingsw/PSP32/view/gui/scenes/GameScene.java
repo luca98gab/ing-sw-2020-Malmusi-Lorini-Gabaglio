@@ -1,7 +1,15 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.scenes;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.*;
+import it.polimi.ingsw.PSP32.view.gui.*;
+import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.AboutPage;
+import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PlayersPopup;
+import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PopupRemovedPlayer;
+import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PopupWin;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.DisconnectedPopup;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.LobbyIsFullPopup;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.Toast;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +21,9 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 import static javax.swing.SwingConstants.*;
 
-public class GameScene {
+public class GameScene extends Gui{
 
   static JLabel gamePanel = new JLabel();
 
@@ -45,41 +52,42 @@ public class GameScene {
 
   static int [] buildLocation ={-1,-1};
 
-  static Pawn activePawn;
+  public static Pawn activePawn;
 
-  static Game game;
+  public static Game game;
 
   static ArrayList<JButton> cells = new ArrayList<>();
   static ArrayList<JLabel> buildIconsLayer = new ArrayList<>();
 
 
-  static int cardWidth = (int) (170*scale);
-  static int cardHeight = (int) (240*scale);
+  public static int cardWidth = (int) (170*scale);
+  public static int cardHeight = (int) (240*scale);
 
-  static int cellWidth = (int)(110*scale);
-  static int cellHeight = (int)(110*scale);
+  public static int cellWidth = (int)(110*scale);
+  public static int cellHeight = (int)(110*scale);
 
   static String phase;
 
-  static Player myPlayer;
+  public static Player myPlayer;
 
   static ArrayList<Integer> selectedCells = new ArrayList<>();
 
-  static ImageIcon[] redPawnIcon = new ImageIcon[2];
-  static ImageIcon[] bluePawnIcon = new ImageIcon[2];
-  static ImageIcon[] greenPawnIcon = new ImageIcon[2];
-  static ImageIcon[] myPawnIcon = new ImageIcon[2];
+  public static ImageIcon[] redPawnIcon = new ImageIcon[2];
+  public static ImageIcon[] bluePawnIcon = new ImageIcon[2];
+  public static ImageIcon[] greenPawnIcon = new ImageIcon[2];
+  public static ImageIcon[] myPawnIcon = new ImageIcon[2];
 
   static ImageIcon[] buildingIcons = new ImageIcon[4];
   static ImageIcon[] buildingDomeIcons = new ImageIcon[5];
 
+
+  //setup
 
   public void show(){
     gamePanel.setBounds(0, 0, window.getWidth(), window.getHeight());
     window.setContentPane(gamePanel);
     window.setVisible(true);
   }
-
 
   public GameScene(Player player){
 
@@ -90,29 +98,6 @@ public class GameScene {
     waitGraphics();
 
   }
-
-  static ActionListener phaseButtonListener = e ->{
-    switch (phase){
-     case ("Initial Positioning"):
-       position1[0]= selectedCells.get(0)%5;
-       position1[1]= selectedCells.get(0)/5;
-       position2[0]= selectedCells.get(1)%5;
-       position2[1]= selectedCells.get(1)/5;
-
-
-
-       synchronized(lockFirstPositioning){
-         ServerAdapterGui.flagForFirstPositioning.set(1);
-         lockFirstPositioning.notifyAll();
-       }
-
-       waitGraphics();
-
-       break;
-
-   }
-
-  };
 
   private static void menuSetup(){
 
@@ -128,7 +113,7 @@ public class GameScene {
       public void actionPerformed(ActionEvent e) {
         if (Desktop.isDesktopSupported()) {
           try {
-            File myFile = new File( "src/resources/Santorini Images/Santorini Rulebook.pdf");
+            File myFile = new File( "src/main/resources/Santorini Images/Santorini Rulebook.pdf");
             Desktop.getDesktop().open(myFile);
           } catch (IOException ex) {
 
@@ -211,7 +196,7 @@ public class GameScene {
 
     menuSetup();
 
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataGioco/Sfondo.png");
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/Sfondo.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -261,7 +246,7 @@ public class GameScene {
 
   private static void imagesImport(God god){
 
-    String prefix = "src/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     imageSetup(prefix + god.getName() + suffix);
@@ -283,6 +268,310 @@ public class GameScene {
 
 
   }
+
+  private static void setupBuildingLayer(){
+
+
+    String prefix = "src/main/resources/Santorini Images/SchermataGioco/Floor";
+    String suffix = ".png";
+    String dome = "wDome";
+
+    String path = prefix + "0" + dome + suffix;
+    ImageIcon image = new ImageIcon(path);
+    Image img1 = image.getImage();
+    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    buildingDomeIcons[0] = new ImageIcon(newImg1);
+
+    buildingIcons[0] = null;
+
+    for (int i = 1; i < 4; i++) {
+
+      path = prefix + i + suffix;
+      image = new ImageIcon(path);
+      img1 = image.getImage();
+      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
+      buildingIcons[i] = new ImageIcon(newImg1);
+
+      path = prefix + i + dome + suffix;
+      image = new ImageIcon(path);
+      img1 = image.getImage();
+      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
+      buildingDomeIcons[i] = new ImageIcon(newImg1);
+    }
+
+    buildingDomeIcons[4] = buildingDomeIcons[3];
+
+
+    for (int i = 0; i < 25; i++){
+      JLabel cellSub = new JLabel();
+      cellSub.setBounds((int)((448+140*(i%5))*scale), (int)((150+141*(i/5))*scale), cellWidth, cellHeight);
+      cellSub.setOpaque(false);
+      gamePanel.add(cellSub);
+      buildIconsLayer.add(cellSub);
+    }
+
+  }
+
+  private static void setupPawnIcons(){
+    String path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoRosso.png";
+    ImageIcon image = new ImageIcon(path);
+    Image img1 = image.getImage();
+    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    redPawnIcon[0] = new ImageIcon(newImg1);
+
+    path=path.replace(".png", "Selected.png");
+
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    redPawnIcon[1] = new ImageIcon(newImg1);
+
+    path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoVerde.png";
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    greenPawnIcon[0] = new ImageIcon(newImg1);
+
+    path=path.replace(".png", "Selected.png");
+
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    greenPawnIcon[1] = new ImageIcon(newImg1);
+
+    path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoBlu.png";
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    bluePawnIcon[0] = new ImageIcon(newImg1);
+
+    path=path.replace(".png", "Selected.png");
+
+    image = new ImageIcon(path);
+    img1 = image.getImage();
+    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
+    bluePawnIcon[1] = new ImageIcon(newImg1);
+
+    switch (myPlayer.getColor()){
+      case "\u001B[31m": //red
+        myPawnIcon=redPawnIcon;
+        break;
+      case "\u001B[32m": //green
+        myPawnIcon=greenPawnIcon;
+        break;
+      case "\u001B[34m": //blue
+        myPawnIcon=bluePawnIcon;
+        break;
+    }
+  }
+
+  private static void setupPhaseZone(){
+    phaseLabel.setVisible(false);
+    gamePanel.add(phaseLabel);
+
+    phaseInfo.setVisible(false);
+    gamePanel.add(phaseInfo);
+
+    phaseButton.setVisible(false);
+    gamePanel.add(phaseButton);
+    phaseButton.addActionListener(phaseButtonListener);
+
+
+    divider.setFont(lillyBelle);
+    divider.setHorizontalTextPosition(CENTER);
+    divider.setHorizontalAlignment(CENTER);
+    divider.setForeground(darkBrown);
+    divider.setBounds((int)(60*scale), (int)(366*scale), (int)(240*scale), (int)(20*scale));
+    divider.setVisible(false);
+    gamePanel.add(divider);
+
+    ImageIcon athena = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/AthenaFlag.png");
+    Image img = athena.getImage();
+    Image newImg = img.getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon athenaIcon = new ImageIcon( newImg );
+    athenaFlagImageContainer.setIcon(athenaIcon);
+    athenaFlagImageContainer.setVisible(false);
+    athenaFlagImageContainer.setOpaque(false);
+    athenaFlagImageContainer.setBounds((int)(140*scale), (int)(380*scale), (int)(80*scale), (int)(80*scale));
+    gamePanel.add(athenaFlagImageContainer);
+
+    JLabel divider2 = new JLabel("- - - - - - - - - -");
+    divider2.setFont(lillyBelle);
+    divider2.setHorizontalTextPosition(CENTER);
+    divider2.setHorizontalAlignment(CENTER);
+    divider2.setForeground(darkBrown);
+    divider2.setBounds((int)(60*scale), (int)(456*scale), (int)(240*scale), (int)(20*scale));
+    divider2.setVisible(true);
+    gamePanel.add(divider2);
+
+
+    meLabel.setText("<html>Player Info: " + myPlayer.getName() + "<br/><br/>Color:      </html>");
+    meLabel.setFont(minionProXSmall);
+    meLabel.setHorizontalTextPosition(CENTER);
+    meLabel.setVerticalAlignment(1);
+    meLabel.setForeground(darkBrown);
+    meLabel.setBounds((int)(120*scale), (int)(480*scale), (int)(200*scale), (int)(100*scale));
+    meLabel.setVisible(true);
+    gamePanel.add(meLabel);
+
+    img = myPawnIcon[0].getImage().getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH );
+    ImageIcon myColorIcon = new ImageIcon( img );
+
+    myColor.setIcon(myColorIcon);
+    myColor.setBounds((int)(170*scale), (int)(484*scale), (int)(80*scale), (int)(80*scale));
+    myColor.setOpaque(false);
+    myColor.setVisible(true);
+    gamePanel.add(myColor);
+
+
+  }
+
+
+
+  // phases graphic setup
+
+  private static void initialPosGraphics(){
+
+    for (int i = 0; i < cells.size(); i++){
+      cells.get(i).setEnabled(true);
+    }
+
+    phaseLabel.setText("Place your pawns");
+    phaseLabel.setVisible(true);
+
+
+    phaseInfo.setText("0/2 pawns placed");
+
+    phaseInfo.setVisible(true);
+
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonDone.png");
+    Image img1 = playImage.getImage();
+    Image newImg1 = img1.getScaledInstance( (int)(150*scale), (int)((150/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
+    ImageIcon playImageResized = new ImageIcon(newImg1);
+    phaseButton.setIcon(playImageResized);
+    phaseButton.setBounds((int)(110*scale), (int)(300*scale), (int)(150*scale), (int)((150/1.80)*scale));
+    phaseButton.setOpaque(false);
+    phaseButton.setContentAreaFilled(false);
+    phaseButton.setBorderPainted(false);
+    phaseButton.setVisible(true);
+    phaseButton.setEnabled(false);
+
+
+  }
+
+  private static void waitGraphics(String name){
+    phase = "Wait";
+
+    for (int i = 0; i < cells.size(); i++){
+      cells.get(i).setEnabled(true);
+    }
+
+    phaseLabel.setText("Wait");
+    phaseLabel.setFont(lillyBelle);
+    phaseLabel.setBounds((int)(60*scale), (int)(150*scale), (int)(250*scale), (int)(100*scale));
+    phaseLabel.setForeground(darkBrown);
+    phaseLabel.setHorizontalAlignment(CENTER);
+    phaseLabel.setVisible(true);
+
+
+    phaseInfo.setBounds((int)(55*scale), (int)(220*scale), (int)(255*scale), (int)((100)*scale));
+    if (name!=null){
+      phaseInfo.setText(name.toUpperCase() + " is playing");
+    } else {
+      phaseInfo.setText("Other players are playing");
+    }
+    phaseInfo.setFont(minionProXSmall);
+    phaseInfo.setHorizontalAlignment(CENTER);
+    phaseInfo.setForeground(darkBrown);
+    phaseInfo.setVisible(true);
+
+    phaseButton.setVisible(false);
+  }
+  private static void waitGraphics(){
+    waitGraphics(null);
+  }
+
+  private static void movePhaseGraphics(){
+    phaseLabel.setText("Move Phase");
+    phaseInfo.setText("<html>Select one of your pawns, then<br/>click on a nearby spot to move.</html>");
+    phaseInfo.setHorizontalTextPosition(CENTER);
+    athenaFlagImageContainer.setVisible(game.getAthenaFlag());
+    divider.setVisible(game.getAthenaFlag());
+    phaseInfo.setVisible(true);
+
+  }
+
+  private static void buildPhaseGraphics(){
+    phaseLabel.setText("Build Phase");
+    phaseInfo.setText("Select where to build");
+    phaseButton.setVisible(false);
+    phaseInfo.setVisible(true);
+  }
+
+  private static void buildFirstPhaseGraphics(){
+    phaseLabel.setText("Build Phase");
+    phaseInfo.setText("<html>Select one of your pawns, then<br/>click on a nearby spot to build.</html>");
+    phaseButton.setVisible(false);
+    phaseInfo.setVisible(true);
+  }
+
+
+
+  // actions
+
+  static ActionListener cellClickedListener = e -> {
+    JButton clickedCell = (JButton) e.getSource();
+    if (clickedCell!=null){
+      switch (phase){
+        case "Initial Positioning":
+          if(clickedCell.getIcon()==null || clickedCell.getIcon().equals(myPawnIcon[0])){
+            pawnPositioning(clickedCell);
+            break;
+          }
+        case "Move Phase":
+          movePhaseClick(clickedCell);
+          break;
+        case "Build Phase":
+          buildPhaseClick(clickedCell);
+          break;
+        case "Move Phase 2":
+          movePhase2Click(clickedCell);
+          break;
+        case "Power":
+          break;
+        case "Build Phase 2":
+          buildPhase2Click(clickedCell);
+          break;
+        case "BuildFirst":
+          buildFirstPhaseClick(clickedCell);
+          break;
+      }
+    }
+
+  };
+
+  static ActionListener phaseButtonListener = e ->{
+    switch (phase){
+      case ("Initial Positioning"):
+        position1[0]= selectedCells.get(0)%5;
+        position1[1]= selectedCells.get(0)/5;
+        position2[0]= selectedCells.get(1)%5;
+        position2[1]= selectedCells.get(1)/5;
+
+
+
+        synchronized(lockFirstPositioning){
+          ServerAdapterGui.flagForFirstPositioning.set(1);
+          lockFirstPositioning.notifyAll();
+        }
+
+        waitGraphics();
+
+        break;
+
+    }
+
+  };
 
   private static void movePhaseClick(JButton clickedCell){
     if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
@@ -430,37 +719,6 @@ public class GameScene {
     }
   }
 
-  static ActionListener cellClickedListener = e -> {
-    JButton clickedCell = (JButton) e.getSource();
-    if (clickedCell!=null){
-      switch (phase){
-        case "Initial Positioning":
-          if(clickedCell.getIcon()==null || clickedCell.getIcon().equals(myPawnIcon[0])){
-            pawnPositioning(clickedCell);
-            break;
-          }
-        case "Move Phase":
-          movePhaseClick(clickedCell);
-          break;
-        case "Build Phase":
-          buildPhaseClick(clickedCell);
-          break;
-        case "Move Phase 2":
-          movePhase2Click(clickedCell);
-          break;
-        case "Power":
-          break;
-        case "Build Phase 2":
-          buildPhase2Click(clickedCell);
-          break;
-        case "BuildFirst":
-          buildFirstPhaseClick(clickedCell);
-          break;
-      }
-    }
-
-  };
-
   private static void pawnPositioning(JButton selectedCell){
     int i = cells.indexOf(selectedCell);
 
@@ -478,101 +736,9 @@ public class GameScene {
 
   }
 
-  private static void setupBuildingLayer(){
 
 
-    String prefix = "src/resources/Santorini Images/SchermataGioco/Floor";
-    String suffix = ".png";
-    String dome = "wDome";
-
-    String path = prefix + "0" + dome + suffix;
-    ImageIcon image = new ImageIcon(path);
-    Image img1 = image.getImage();
-    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    buildingDomeIcons[0] = new ImageIcon(newImg1);
-
-    buildingIcons[0] = null;
-
-    for (int i = 1; i < 4; i++) {
-
-      path = prefix + i + suffix;
-      image = new ImageIcon(path);
-      img1 = image.getImage();
-      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
-      buildingIcons[i] = new ImageIcon(newImg1);
-
-      path = prefix + i + dome + suffix;
-      image = new ImageIcon(path);
-      img1 = image.getImage();
-      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
-      buildingDomeIcons[i] = new ImageIcon(newImg1);
-    }
-
-    buildingDomeIcons[4] = buildingDomeIcons[3];
-
-
-    for (int i = 0; i < 25; i++){
-      JLabel cellSub = new JLabel();
-      cellSub.setBounds((int)((448+140*(i%5))*scale), (int)((150+141*(i/5))*scale), cellWidth, cellHeight);
-      cellSub.setOpaque(false);
-      gamePanel.add(cellSub);
-      buildIconsLayer.add(cellSub);
-    }
-
-  }
-
-  private static void setupPawnIcons(){
-    String path = "src/resources/Santorini Images/SchermataGioco/SegnapostoRosso.png";
-    ImageIcon image = new ImageIcon(path);
-    Image img1 = image.getImage();
-    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    redPawnIcon[0] = new ImageIcon(newImg1);
-
-    path=path.replace(".png", "Selected.png");
-
-    image = new ImageIcon(path);
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    redPawnIcon[1] = new ImageIcon(newImg1);
-
-    path = "src/resources/Santorini Images/SchermataGioco/SegnapostoVerde.png";
-    image = new ImageIcon(path);
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    greenPawnIcon[0] = new ImageIcon(newImg1);
-
-    path=path.replace(".png", "Selected.png");
-
-    image = new ImageIcon(path);
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    greenPawnIcon[1] = new ImageIcon(newImg1);
-
-    path = "src/resources/Santorini Images/SchermataGioco/SegnapostoBlu.png";
-    image = new ImageIcon(path);
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    bluePawnIcon[0] = new ImageIcon(newImg1);
-
-    path=path.replace(".png", "Selected.png");
-
-    image = new ImageIcon(path);
-    img1 = image.getImage();
-    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
-    bluePawnIcon[1] = new ImageIcon(newImg1);
-
-    switch (myPlayer.getColor()){
-      case "\u001B[31m": //red
-        myPawnIcon=redPawnIcon;
-        break;
-      case "\u001B[32m": //green
-        myPawnIcon=greenPawnIcon;
-        break;
-      case "\u001B[34m": //blue
-        myPawnIcon=bluePawnIcon;
-        break;
-    }
-  }
+  //events
 
   public static Boolean messageReceived(String newPhase, ArrayList<Object> parameters){
     if (newPhase!=null){
@@ -643,206 +809,8 @@ public class GameScene {
   }
 
 
-  private static void setupPhaseZone(){
-    phaseLabel.setVisible(false);
-    gamePanel.add(phaseLabel);
 
-    phaseInfo.setVisible(false);
-    gamePanel.add(phaseInfo);
-
-    phaseButton.setVisible(false);
-    gamePanel.add(phaseButton);
-    phaseButton.addActionListener(phaseButtonListener);
-
-
-    divider.setFont(lillyBelle);
-    divider.setHorizontalTextPosition(CENTER);
-    divider.setHorizontalAlignment(CENTER);
-    divider.setForeground(darkBrown);
-    divider.setBounds((int)(60*scale), (int)(366*scale), (int)(240*scale), (int)(20*scale));
-    divider.setVisible(false);
-    gamePanel.add(divider);
-
-    ImageIcon athena = new ImageIcon("src/resources/Santorini Images/SchermataGioco/AthenaFlag.png");
-    Image img = athena.getImage();
-    Image newImg = img.getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH ) ;
-    ImageIcon athenaIcon = new ImageIcon( newImg );
-    athenaFlagImageContainer.setIcon(athenaIcon);
-    athenaFlagImageContainer.setVisible(false);
-    athenaFlagImageContainer.setOpaque(false);
-    athenaFlagImageContainer.setBounds((int)(140*scale), (int)(380*scale), (int)(80*scale), (int)(80*scale));
-    gamePanel.add(athenaFlagImageContainer);
-
-    JLabel divider2 = new JLabel("- - - - - - - - - -");
-    divider2.setFont(lillyBelle);
-    divider2.setHorizontalTextPosition(CENTER);
-    divider2.setHorizontalAlignment(CENTER);
-    divider2.setForeground(darkBrown);
-    divider2.setBounds((int)(60*scale), (int)(456*scale), (int)(240*scale), (int)(20*scale));
-    divider2.setVisible(true);
-    gamePanel.add(divider2);
-
-
-    meLabel.setText("<html>Player Info: " + myPlayer.getName() + "<br/><br/>Color:      </html>");
-    meLabel.setFont(minionProXSmall);
-    meLabel.setHorizontalTextPosition(CENTER);
-    meLabel.setVerticalAlignment(1);
-    meLabel.setForeground(darkBrown);
-    meLabel.setBounds((int)(120*scale), (int)(480*scale), (int)(200*scale), (int)(100*scale));
-    meLabel.setVisible(true);
-    gamePanel.add(meLabel);
-
-    img = myPawnIcon[0].getImage().getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH );
-    ImageIcon myColorIcon = new ImageIcon( img );
-
-    myColor.setIcon(myColorIcon);
-    myColor.setBounds((int)(170*scale), (int)(484*scale), (int)(80*scale), (int)(80*scale));
-    myColor.setOpaque(false);
-    myColor.setVisible(true);
-    gamePanel.add(myColor);
-
-
-  }
-
-  private static void initialPosGraphics(){
-
-    for (int i = 0; i < cells.size(); i++){
-      cells.get(i).setEnabled(true);
-    }
-
-    phaseLabel.setText("Place your pawns");
-    phaseLabel.setVisible(true);
-
-
-    phaseInfo.setText("0/2 pawns placed");
-
-    phaseInfo.setVisible(true);
-
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonDone.png");
-    Image img1 = playImage.getImage();
-    Image newImg1 = img1.getScaledInstance( (int)(150*scale), (int)((150/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
-    ImageIcon playImageResized = new ImageIcon(newImg1);
-    phaseButton.setIcon(playImageResized);
-    phaseButton.setBounds((int)(110*scale), (int)(300*scale), (int)(150*scale), (int)((150/1.80)*scale));
-    phaseButton.setOpaque(false);
-    phaseButton.setContentAreaFilled(false);
-    phaseButton.setBorderPainted(false);
-    phaseButton.setVisible(true);
-    phaseButton.setEnabled(false);
-
-
-  }
-
-  private static void waitGraphics(String name){
-    phase = "Wait";
-
-    for (int i = 0; i < cells.size(); i++){
-      cells.get(i).setEnabled(true);
-    }
-
-    phaseLabel.setText("Wait");
-    phaseLabel.setFont(lillyBelle);
-    phaseLabel.setBounds((int)(60*scale), (int)(150*scale), (int)(250*scale), (int)(100*scale));
-    phaseLabel.setForeground(darkBrown);
-    phaseLabel.setHorizontalAlignment(CENTER);
-    phaseLabel.setVisible(true);
-
-
-    phaseInfo.setBounds((int)(55*scale), (int)(220*scale), (int)(255*scale), (int)((100)*scale));
-    if (name!=null){
-      phaseInfo.setText(name.toUpperCase() + " is playing");
-    } else {
-      phaseInfo.setText("Other players are playing");
-    }
-    phaseInfo.setFont(minionProXSmall);
-    phaseInfo.setHorizontalAlignment(CENTER);
-    phaseInfo.setForeground(darkBrown);
-    phaseInfo.setVisible(true);
-
-    phaseButton.setVisible(false);
-  }
-  private static void waitGraphics(){
-    waitGraphics(null);
-  }
-
-
-  private static void movePhaseGraphics(){
-    phaseLabel.setText("Move Phase");
-    phaseInfo.setText("<html>Select one of your pawns, then<br/>click on a nearby spot to move.</html>");
-    phaseInfo.setHorizontalTextPosition(CENTER);
-    athenaFlagImageContainer.setVisible(game.getAthenaFlag());
-    divider.setVisible(game.getAthenaFlag());
-    phaseInfo.setVisible(true);
-
-  }
-
-  private static void buildPhaseGraphics(){
-    phaseLabel.setText("Build Phase");
-    phaseInfo.setText("Select where to build");
-    phaseButton.setVisible(false);
-    phaseInfo.setVisible(true);
-  }
-
-  private static void buildFirstPhaseGraphics(){
-    phaseLabel.setText("Build Phase");
-    phaseInfo.setText("<html>Select one of your pawns, then<br/>click on a nearby spot to build.</html>");
-    phaseButton.setVisible(false);
-    phaseInfo.setVisible(true);
-  }
-
-  public static void refreshScreen(Game game){
-    for (int i=0; i<25; i++){
-      Cell cell = game.getMap()[i%5][i/5];
-      if (cell.getHasDome()) buildIconsLayer.get(i).setIcon(buildingDomeIcons[cell.getFloor()]);
-      else buildIconsLayer.get(i).setIcon(buildingIcons[cell.getFloor()]);
-
-      if (cell.getIsFull()!=null) {
-        cells.get(i).setToolTipText("<html>" + cell.getIsFull().getPlayer().getName() + "<br/>"
-                + cell.getIsFull().getPlayer().getGod().getName() + "<br/>" + cell.getIsFull().getPlayer().getGod().getAbility());
-        switch (cell.getIsFull().getPlayer().getColor()) {
-          case ("\u001B[31m"):
-            if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5)){
-              cells.get(i).setIcon(redPawnIcon[1]);
-            }
-            else
-              cells.get(i).setIcon(redPawnIcon[0]);
-            break;
-          case ("\u001B[32m"):
-            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
-              cells.get(i).setIcon(greenPawnIcon[1]);
-            else
-              cells.get(i).setIcon(greenPawnIcon[0]);
-            break;
-          case ("\u001B[34m"):
-            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
-              cells.get(i).setIcon(bluePawnIcon[1]);
-            else
-              cells.get(i).setIcon(bluePawnIcon[0]);
-            break;
-        }
-      }
-      else cells.get(i).setIcon(null);
-    }
-
-
-  }
-
-  public static int[] getCoords (Boolean first){
-    if (first) return position1;
-    else return position2;
-  }
-
-  public static int[] getBuildLocation(){
-    return buildLocation;}
-
-  public static  Pawn getActivePawn(){ return activePawn; }
-
-  private static int getX (JButton cell){
-    return cells.indexOf(cell)%5;
-  }
-  private static int getY (JButton cell){
-    return cells.indexOf(cell)/5;
-  }
+  // logic
 
   private static boolean near (JButton cell1, JButton cell2){
     if (getX(cell1)- getX(cell2)>=-1 && getX(cell1)-getX(cell2)<=1)
@@ -888,6 +856,67 @@ public class GameScene {
     return null;
   }
 
+
+
+  // utilities
+
+  public static void refreshScreen(Game game){
+    for (int i=0; i<25; i++){
+      Cell cell = game.getMap()[i%5][i/5];
+      if (cell.getHasDome()) buildIconsLayer.get(i).setIcon(buildingDomeIcons[cell.getFloor()]);
+      else buildIconsLayer.get(i).setIcon(buildingIcons[cell.getFloor()]);
+
+      if (cell.getIsFull()!=null) {
+        cells.get(i).setToolTipText("<html>" + cell.getIsFull().getPlayer().getName() + "<br/>"
+                + cell.getIsFull().getPlayer().getGod().getName() + "<br/>" + cell.getIsFull().getPlayer().getGod().getAbility());
+        switch (cell.getIsFull().getPlayer().getColor()) {
+          case ("\u001B[31m"):
+            if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5)){
+              cells.get(i).setIcon(redPawnIcon[1]);
+            }
+            else
+              cells.get(i).setIcon(redPawnIcon[0]);
+            break;
+          case ("\u001B[32m"):
+            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
+              cells.get(i).setIcon(greenPawnIcon[1]);
+            else
+              cells.get(i).setIcon(greenPawnIcon[0]);
+            break;
+          case ("\u001B[34m"):
+            if (activePawn!=null &&  i==activePawn.getX()+(activePawn.getY()*5))
+              cells.get(i).setIcon(bluePawnIcon[1]);
+            else
+              cells.get(i).setIcon(bluePawnIcon[0]);
+            break;
+        }
+      }
+      else {
+        cells.get(i).setIcon(null);
+        cells.get(i).setToolTipText(null);
+      }
+    }
+
+
+  }
+
+  public static int[] getCoords (Boolean first){
+    if (first) return position1;
+    else return position2;
+  }
+
+  public static int[] getBuildLocation(){
+    return buildLocation;}
+
+  public static  Pawn getActivePawn(){ return activePawn; }
+
+  private static int getX (JButton cell){
+    return cells.indexOf(cell)%5;
+  }
+  private static int getY (JButton cell){
+    return cells.indexOf(cell)/5;
+  }
+
   public static Boolean getWantsToUsePower() {
     return wantsToUsePower;
   }
@@ -898,12 +927,12 @@ public class GameScene {
 
 
     final Boolean[] result = new Boolean[1];
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonYes.png");
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonYes.png");
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon yesIcon = new ImageIcon(newImg1);
 
-    playImage = new ImageIcon("src/resources/Santorini Images/SchermataGioco/PhaseButtonNO.png");
+    playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonNO.png");
     img1 = playImage.getImage();
     newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon noIcon = new ImageIcon(newImg1);

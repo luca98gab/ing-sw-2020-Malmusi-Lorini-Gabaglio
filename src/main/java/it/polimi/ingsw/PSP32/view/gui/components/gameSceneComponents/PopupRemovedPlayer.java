@@ -1,5 +1,5 @@
 
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents;
 
         import it.polimi.ingsw.PSP32.model.Player;
 
@@ -7,7 +7,7 @@ package it.polimi.ingsw.PSP32.view.gui;
         import java.awt.*;
         import java.awt.event.ActionListener;
 
-        import static it.polimi.ingsw.PSP32.view.gui.GameScene.myPlayer;
+        import static it.polimi.ingsw.PSP32.view.gui.scenes.GameScene.myPlayer;
         import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
 public class PopupRemovedPlayer{
@@ -20,12 +20,12 @@ public class PopupRemovedPlayer{
     JButton b = new JButton();
     JLabel winnerLabel = new JLabel();
 
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/PopupBackground.png");
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/PopupBackground.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int)(750*scale), (int)(285*scale),  java.awt.Image.SCALE_SMOOTH );
     ImageIcon backgroundIcon = new ImageIcon( newImg );
 
-    background = new ImageIcon("src/resources/Santorini Images/escButton.png");
+    background = new ImageIcon("src/main/resources/Santorini Images/escButton.png");
     img = background.getImage();
     newImg = img.getScaledInstance( (int)(40*scale), (int)(40*scale),  java.awt.Image.SCALE_SMOOTH );
     ImageIcon escIcon = new ImageIcon( newImg );

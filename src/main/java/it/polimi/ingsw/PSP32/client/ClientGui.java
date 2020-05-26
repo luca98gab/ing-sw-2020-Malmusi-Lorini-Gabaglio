@@ -1,8 +1,7 @@
 package it.polimi.ingsw.PSP32.client;
 
-import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
 import it.polimi.ingsw.PSP32.server.Server;
-import it.polimi.ingsw.PSP32.view.gui.ConnectionScene;
+import it.polimi.ingsw.PSP32.view.gui.scenes.ConnectionScene;
 import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 

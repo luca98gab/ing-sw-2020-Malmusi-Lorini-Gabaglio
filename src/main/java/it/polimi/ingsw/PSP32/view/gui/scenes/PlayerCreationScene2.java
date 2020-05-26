@@ -1,7 +1,9 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.scenes;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.Hourglass;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -10,9 +12,8 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
-public class PlayerCreationScene2 {
+public class PlayerCreationScene2  extends Gui {
 
   static JLabel playerCreationPanel = new JLabel();
   static JLabel nameLabel = new JLabel("Nickname:");
@@ -53,7 +54,7 @@ public class PlayerCreationScene2 {
 
     PlayerCreationScene2.players = players;
 
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -80,12 +81,12 @@ public class PlayerCreationScene2 {
     colorGroup.add(greenPawn);
 
 
-    ImageIcon bluePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBlu.png");
+    ImageIcon bluePawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBlu.png");
     Image imgb = bluePawnImage.getImage();
     Image newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     bluePawnIcon = new ImageIcon(newImgb);
 
-    bluePawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBluSelezionato.png");
+    bluePawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaBluSelezionato.png");
     imgb = bluePawnImage.getImage();
     newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     bluePawnSelIcon = new ImageIcon(newImgb);
@@ -100,12 +101,12 @@ public class PlayerCreationScene2 {
 
 
 
-    ImageIcon redPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossa.png");
+    ImageIcon redPawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossa.png");
     Image imgr = redPawnImage.getImage();
     Image newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnIcon = new ImageIcon(newImgr);
 
-    redPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossaSelezionato.png");
+    redPawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaRossaSelezionato.png");
     imgr = redPawnImage.getImage();
     newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnSelIcon = new ImageIcon(newImgr);
@@ -120,12 +121,12 @@ public class PlayerCreationScene2 {
 
 
 
-    ImageIcon greenPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerde.png");
+    ImageIcon greenPawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerde.png");
     Image imgg = greenPawnImage.getImage();
     Image newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     greenPawnIcon = new ImageIcon(newImgg);
 
-    greenPawnImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerdeSelezionato.png");
+    greenPawnImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/PedinaVerdeSelezionato.png");
     imgg = greenPawnImage.getImage();
     newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;
     greenPawnSelIcon = new ImageIcon(newImgg);
@@ -140,7 +141,7 @@ public class PlayerCreationScene2 {
 
 
 
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataCreazioneGiocatore/StartButton.png");
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataCreazioneGiocatore/StartButton.png");
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg1);

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.components.generic;
 
 
 import javax.swing.*;
@@ -32,7 +32,7 @@ public class Hourglass extends JLabel {
 
     for (int i = 1; i < 4 ; i++) {
 
-      ImageIcon hourglass = new ImageIcon("src/resources/Santorini Images/Clessidra/Clessidra" + i +".png");
+      ImageIcon hourglass = new ImageIcon("src/main/resources/Santorini Images/Clessidra/Clessidra" + i +".png");
       Image img = hourglass.getImage();
       Image newImg = img.getScaledInstance(this.getWidth(), this.getHeight(), java.awt.Image.SCALE_SMOOTH);
 

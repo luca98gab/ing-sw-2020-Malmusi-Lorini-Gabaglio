@@ -1,6 +1,7 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.scenes;
 
 import it.polimi.ingsw.PSP32.client.ClientGui;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -28,9 +29,7 @@ public class ConnectionScene extends Gui {
 
   public ConnectionScene(){
 
-    //JPanel for initial setup
-
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/Sfondo+Titolo.png");
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataConnessioneServer/Sfondo+Titolo.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -61,7 +60,7 @@ public class ConnectionScene extends Gui {
     connInfo.setVisible(false);
     serverConnectionPanel.add(connInfo);
 
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg1);

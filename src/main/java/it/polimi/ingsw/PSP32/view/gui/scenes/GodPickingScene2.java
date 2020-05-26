@@ -1,7 +1,9 @@
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.scenes;
 
 import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
 import it.polimi.ingsw.PSP32.model.God;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
+import it.polimi.ingsw.PSP32.view.gui.components.generic.Hourglass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +11,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockOwnGod;
-import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
 
-public class GodPickingScene2 {
+public class GodPickingScene2  extends Gui {
 
   static JLabel godPickingPanel = new JLabel();
 
-  static JButton startButton = new JButton();
   static ArrayList<JButton> cardButtons = new ArrayList<>();
 
   static ArrayList<ImageIcon> frontIcons = new ArrayList<>();
@@ -35,12 +35,20 @@ public class GodPickingScene2 {
     window.setVisible(true);
   }
 
+
   public GodPickingScene2(ArrayList<God> availableGods){
 
     GodPickingScene2.availableGods = availableGods;
     imagesImport(availableGods);
 
-    ImageIcon background = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
+    setup();
+
+
+
+  }
+
+  private void setup(){
+    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -77,7 +85,7 @@ public class GodPickingScene2 {
       });
     }
 
-    ImageIcon image = new ImageIcon("src/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
+    ImageIcon image = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     emptySpaceIcon = (new ImageIcon(newImg1));
@@ -92,7 +100,7 @@ public class GodPickingScene2 {
     godPickingPanel.add(slot);
     slot.addActionListener(slotButtonListener);
 
-    ImageIcon playImage = new ImageIcon("src/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
     Image img2 = playImage.getImage();
     Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg2);
@@ -104,9 +112,6 @@ public class GodPickingScene2 {
     playButton.setEnabled(false);
     godPickingPanel.add(playButton);
     playButton.addActionListener(playButtonLister);
-
-
-
   }
 
   static ActionListener playButtonLister = e -> {
@@ -150,10 +155,9 @@ public class GodPickingScene2 {
 
   };
 
-
   private void imagesImport(ArrayList<God> availableGods){
 
-    String prefix = "src/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     for (int i = 0; i < availableGods.size(); i++) {

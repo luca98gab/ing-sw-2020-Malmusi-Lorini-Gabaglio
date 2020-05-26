@@ -1,5 +1,5 @@
 
-package it.polimi.ingsw.PSP32.view.gui;
+package it.polimi.ingsw.PSP32.view.gui.components.generic;
 
 import javax.swing.*;
 import java.awt.*;

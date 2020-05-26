@@ -34,20 +34,17 @@ Titan Benefactor of Mankind - Your Turn: If your Worker does not move up, it may
 
 
 
+Hypnus
+God of Sleep - Start of Opponent's Turn: If one of your opponent's Workers is higher than all of their others, it cannot move.
+
+
+
 
 Limus
 Goddess of Famine - Opponent's Turn: Opponent Workers cannot build on spaces neighboring your Workers, unless building a dome to create a Complete Tower.
 
-
-
-
-
-
 Hestia
 Goddess of Hearth and Home - Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.
-
-Hypnus
-God of Sleep - Start of Opponent's Turn: If one of your opponent's Workers is higher than all of their others, it cannot move.
 
 Hera
 Goddess of Marriage - Opponent's Turn: An opponent cannot win by moving into a perimeter space.
