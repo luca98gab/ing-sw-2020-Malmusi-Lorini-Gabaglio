@@ -28,7 +28,7 @@ public class CheckCanMove {
         if (pawn.getX()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()-1>0){
                 Cell opponentNewCell = game.getMap()[pawn.getX()-2][pawn.getY()];
@@ -48,7 +48,7 @@ public class CheckCanMove {
         if (pawn.getX()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()+1<4){
                 Cell opponentNewCell = game.getMap()[pawn.getX()+2][pawn.getY()];
@@ -68,7 +68,7 @@ public class CheckCanMove {
         if (pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()][pawn.getY()-1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getY()-1>0){
                 Cell opponentNewCell = game.getMap()[pawn.getX()][pawn.getY()-2];
@@ -88,7 +88,7 @@ public class CheckCanMove {
         if (pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()][pawn.getY()+1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getY()+1<4){
                 Cell opponentNewCell = game.getMap()[pawn.getX()][pawn.getY()+2];
@@ -108,7 +108,7 @@ public class CheckCanMove {
         if (pawn.getX()>0 && pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()-1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()-1>0 && pawn.getY()-1>0){
                 Cell opponentNewCell = game.getMap()[pawn.getX()-2][pawn.getY()-2];
@@ -128,7 +128,7 @@ public class CheckCanMove {
         if (pawn.getX()<4 && pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()-1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()+1<4 && pawn.getY()-1>0){
                 Cell opponentNewCell = game.getMap()[pawn.getX()+2][pawn.getY()-2];
@@ -148,7 +148,7 @@ public class CheckCanMove {
         if (pawn.getX()<4 && pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()+1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()+1<4 && pawn.getY()+1<4){
                 Cell opponentNewCell = game.getMap()[pawn.getX()+2][pawn.getY()+2];
@@ -168,7 +168,7 @@ public class CheckCanMove {
         if (pawn.getX()>0 && pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()+1];
-            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || god.equals("Apollo")) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
+            if (!newCell.equals(restriction) && (newCell.getIsFull() == null || (god.equals("Apollo") && !newCell.getIsFull().getPlayer().getGod().getName().equals("Apollo"))) && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && newCell.getHasDome().equals(false)){
                 return true;
             } else if (god.equals("Minotaur") && newCell.getFloor() < currentCell.getFloor()+1+climbableFloor && !newCell.getHasDome() && pawn.getX()-1>0 && pawn.getY()+1<4){
                 Cell opponentNewCell = game.getMap()[pawn.getX()-2][pawn.getY()+2];

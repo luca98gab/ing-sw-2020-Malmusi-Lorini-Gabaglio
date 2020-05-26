@@ -344,7 +344,7 @@ public class ServerAdapterGui
         break;
       case "waitTurnMessage":
         GameScene.messageReceived("Playing Player", message.getParameters());
-        System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
+      //  System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
         break;
       case "Disconnection":
         GameScene.messageReceived("Disconnection", null);
