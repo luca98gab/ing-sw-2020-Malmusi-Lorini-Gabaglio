@@ -40,7 +40,7 @@ public class Toast extends JLabel {
 
   public void showToast(String message, JLabel currentPanel){
 
-    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/ToastBackground.png");
+    ImageIcon background = new ImageIcon(getClass().getResource("/Santorini Images/SchermataGioco/ToastBackground.png"));
     Image img = background.getImage();
     newImg = img.getScaledInstance( (int)(500*scale), (int)(125*scale),  java.awt.Image.SCALE_SMOOTH );
 

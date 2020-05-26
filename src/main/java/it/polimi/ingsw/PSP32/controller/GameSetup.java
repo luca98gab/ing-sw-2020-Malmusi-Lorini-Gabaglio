@@ -5,11 +5,9 @@ import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Pawn;
 import it.polimi.ingsw.PSP32.model.Player;
 import it.polimi.ingsw.PSP32.server.ClientHandler;
+import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -78,8 +76,9 @@ public class GameSetup {
     private static God[] allGods(){
 
         try {
-            FileReader f = new FileReader("src/main/resources/Santorini Images/Gods.txt");
-            BufferedReader b = new BufferedReader(f);
+            InputStream is = GameSetup.class.getResourceAsStream("/Santorini Images/Gods.txt");
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader b = new BufferedReader(isr);
             int godsNum = Integer.parseInt(b.readLine());
             String string;
             God[] allGods = new God[godsNum];

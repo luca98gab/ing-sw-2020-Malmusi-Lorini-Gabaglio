@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -113,9 +115,9 @@ public class GameScene extends Gui{
       public void actionPerformed(ActionEvent e) {
         if (Desktop.isDesktopSupported()) {
           try {
-            File myFile = new File( "src/main/resources/Santorini Images/Santorini Rulebook.pdf");
+            File myFile = new File(getClass().getResource("/Santorini Images/Santorini Rulebook.pdf").toURI());
             Desktop.getDesktop().open(myFile);
-          } catch (IOException ex) {
+          } catch (IOException | URISyntaxException ex) {
 
           }
         }
@@ -196,7 +198,7 @@ public class GameScene extends Gui{
 
     menuSetup();
 
-    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/Sfondo.png");
+    ImageIcon background = new ImageIcon(GameScene.class.getResource("/Santorini Images/SchermataGioco/Sfondo.png"));
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -231,14 +233,14 @@ public class GameScene extends Gui{
   }
 
   private static void imageSetup(String path){
-    ImageIcon image = new ImageIcon(path);
+    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     myCardIconFront = new ImageIcon(newImg1);
 
     path=path.replace(".png", "Turned.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     myCardIconBack = new ImageIcon(newImg1);
@@ -246,7 +248,7 @@ public class GameScene extends Gui{
 
   private static void imagesImport(God god){
 
-    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     imageSetup(prefix + god.getName() + suffix);
@@ -272,12 +274,12 @@ public class GameScene extends Gui{
   private static void setupBuildingLayer(){
 
 
-    String prefix = "src/main/resources/Santorini Images/SchermataGioco/Floor";
+    String prefix = "/Santorini Images/SchermataGioco/Floor";
     String suffix = ".png";
     String dome = "wDome";
 
     String path = prefix + "0" + dome + suffix;
-    ImageIcon image = new ImageIcon(path);
+    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     buildingDomeIcons[0] = new ImageIcon(newImg1);
@@ -287,13 +289,13 @@ public class GameScene extends Gui{
     for (int i = 1; i < 4; i++) {
 
       path = prefix + i + suffix;
-      image = new ImageIcon(path);
+      image = new ImageIcon(GameScene.class.getResource(path));
       img1 = image.getImage();
       newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
       buildingIcons[i] = new ImageIcon(newImg1);
 
       path = prefix + i + dome + suffix;
-      image = new ImageIcon(path);
+      image = new ImageIcon(GameScene.class.getResource(path));
       img1 = image.getImage();
       newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);
       buildingDomeIcons[i] = new ImageIcon(newImg1);
@@ -313,41 +315,41 @@ public class GameScene extends Gui{
   }
 
   private static void setupPawnIcons(){
-    String path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoRosso.png";
-    ImageIcon image = new ImageIcon(path);
+    String path = "/Santorini Images/SchermataGioco/SegnapostoRosso.png";
+    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnIcon[0] = new ImageIcon(newImg1);
 
     path=path.replace(".png", "Selected.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     redPawnIcon[1] = new ImageIcon(newImg1);
 
-    path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoVerde.png";
-    image = new ImageIcon(path);
+    path = "/Santorini Images/SchermataGioco/SegnapostoVerde.png";
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     greenPawnIcon[0] = new ImageIcon(newImg1);
 
     path=path.replace(".png", "Selected.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     greenPawnIcon[1] = new ImageIcon(newImg1);
 
-    path = "src/main/resources/Santorini Images/SchermataGioco/SegnapostoBlu.png";
-    image = new ImageIcon(path);
+    path = "/Santorini Images/SchermataGioco/SegnapostoBlu.png";
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     bluePawnIcon[0] = new ImageIcon(newImg1);
 
     path=path.replace(".png", "Selected.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(GameScene.class.getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     bluePawnIcon[1] = new ImageIcon(newImg1);
@@ -385,7 +387,7 @@ public class GameScene extends Gui{
     divider.setVisible(false);
     gamePanel.add(divider);
 
-    ImageIcon athena = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/AthenaFlag.png");
+    ImageIcon athena = new ImageIcon(GameScene.class.getResource("/Santorini Images/SchermataGioco/AthenaFlag.png"));
     Image img = athena.getImage();
     Image newImg = img.getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon athenaIcon = new ImageIcon( newImg );
@@ -444,7 +446,7 @@ public class GameScene extends Gui{
 
     phaseInfo.setVisible(true);
 
-    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonDone.png");
+    ImageIcon playImage = new ImageIcon(GameScene.class.getResource("/Santorini Images/SchermataGioco/PhaseButtonDone.png"));
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int)(150*scale), (int)((150/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg1);
@@ -927,12 +929,12 @@ public class GameScene extends Gui{
 
 
     final Boolean[] result = new Boolean[1];
-    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonYes.png");
+    ImageIcon playImage = new ImageIcon(GameScene.class.getResource("/Santorini Images/SchermataGioco/PhaseButtonYes.png"));
     Image img1 = playImage.getImage();
     Image newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon yesIcon = new ImageIcon(newImg1);
 
-    playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataGioco/PhaseButtonNO.png");
+    playImage = new ImageIcon(GameScene.class.getResource("/Santorini Images/SchermataGioco/PhaseButtonNo.png"));
     img1 = playImage.getImage();
     newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon noIcon = new ImageIcon(newImg1);

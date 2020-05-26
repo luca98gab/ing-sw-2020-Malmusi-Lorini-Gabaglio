@@ -48,7 +48,7 @@ public class GodPickingScene2  extends Gui {
   }
 
   private void setup(){
-    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/Sfondo.png");
+    ImageIcon background = new ImageIcon(getClass().getResource("/Santorini Images/SchermataSelezioneGod/Sfondo.png"));
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon backgroundResized = new ImageIcon( newImg );
@@ -85,7 +85,7 @@ public class GodPickingScene2  extends Gui {
       });
     }
 
-    ImageIcon image = new ImageIcon("src/main/resources/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png");
+    ImageIcon image = new ImageIcon(getClass().getResource("/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png"));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     emptySpaceIcon = (new ImageIcon(newImg1));
@@ -100,7 +100,7 @@ public class GodPickingScene2  extends Gui {
     godPickingPanel.add(slot);
     slot.addActionListener(slotButtonListener);
 
-    ImageIcon playImage = new ImageIcon("src/main/resources/Santorini Images/SchermataConnessioneServer/PlayButton.png");
+    ImageIcon playImage = new ImageIcon(getClass().getResource("/Santorini Images/SchermataConnessioneServer/PlayButton.png"));
     Image img2 = playImage.getImage();
     Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;
     ImageIcon playImageResized = new ImageIcon(newImg2);
@@ -157,7 +157,7 @@ public class GodPickingScene2  extends Gui {
 
   private void imagesImport(ArrayList<God> availableGods){
 
-    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     for (int i = 0; i < availableGods.size(); i++) {
@@ -167,14 +167,14 @@ public class GodPickingScene2  extends Gui {
   }
 
   private void imageSetup(String path){
-    ImageIcon image = new ImageIcon(path);
+    ImageIcon image = new ImageIcon(getClass().getResource(path));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     frontIcons.add(new ImageIcon(newImg1));
 
     path=path.replace(".png", "Turned.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(getClass().getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     backIcons.add(new ImageIcon(newImg1));

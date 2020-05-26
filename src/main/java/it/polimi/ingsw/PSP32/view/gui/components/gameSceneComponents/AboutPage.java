@@ -19,12 +19,12 @@ public class AboutPage {
     JLabel iconLabel = new JLabel();
     JButton b = new JButton();
 
-    ImageIcon background = new ImageIcon("src/main/resources/Santorini Images/GameIcon.png");
+    ImageIcon background = new ImageIcon(getClass().getResource("/Santorini Images/GameIcon.png"));
     Image img = background.getImage();
     Image newImg = img.getScaledInstance( (int)(250*scale), (int)(250*scale),  java.awt.Image.SCALE_SMOOTH );
     ImageIcon backgroundIcon = new ImageIcon( newImg );
 
-    background = new ImageIcon("src/main/resources/Santorini Images/escButton.png");
+    background = new ImageIcon(getClass().getResource("/Santorini Images/escButton.png"));
     img = background.getImage();
     newImg = img.getScaledInstance( (int)(40*scale), (int)(40*scale),  java.awt.Image.SCALE_SMOOTH );
     ImageIcon escIcon = new ImageIcon( newImg );

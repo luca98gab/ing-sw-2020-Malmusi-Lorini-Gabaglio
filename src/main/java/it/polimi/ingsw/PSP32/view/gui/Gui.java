@@ -6,9 +6,12 @@ import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.awt.Taskbar;
+
 
 public class Gui implements Runnable {
 
@@ -25,11 +28,12 @@ public class Gui implements Runnable {
 
   public static double scale = 1;
 
+
   static public void setupWindow() throws IOException, FontFormatException {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
-    window.setIconImage((new ImageIcon("src/main/resources/Santorini Images/GameIcon.png")).getImage());
+    window.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -77,7 +81,8 @@ public class Gui implements Runnable {
 
     Font f;
     try {
-      f = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Santorini Images/LillyBelle.ttf"));
+      InputStream is = Gui.class.getResourceAsStream("/Santorini Images/LillyBelle.ttf");
+      f = Font.createFont(Font.TRUETYPE_FONT, is);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       ge.registerFont(f);
     } catch (FontFormatException e) {
@@ -85,9 +90,6 @@ public class Gui implements Runnable {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-
-
 
   }
 

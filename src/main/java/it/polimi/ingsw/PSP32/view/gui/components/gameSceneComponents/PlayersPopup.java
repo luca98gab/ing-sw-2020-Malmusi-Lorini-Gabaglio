@@ -86,7 +86,7 @@ public class PlayersPopup{
 
       }
 
-      ImageIcon image = new ImageIcon("src/main/resources/Santorini Images/Sfondo.png");
+      ImageIcon image = new ImageIcon(getClass().getResource("/Santorini Images/Sfondo.png"));
       Image img1 = image.getImage();
       Image newImg1 = img1.getScaledInstance(backgroundLabel.getWidth(), backgroundLabel.getHeight(), java.awt.Image.SCALE_SMOOTH);
       backgroundLabel.setIcon(new ImageIcon(newImg1));
@@ -106,14 +106,14 @@ public class PlayersPopup{
   private ImageIcon[] imageSetup(String path){
     ImageIcon[] cardIcons = new ImageIcon[2];
 
-    ImageIcon image = new ImageIcon(path);
+    ImageIcon image = new ImageIcon(getClass().getResource(path));
     Image img1 = image.getImage();
     Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     cardIcons[0] = new ImageIcon(newImg1);
 
     path=path.replace(".png", "Turned.png");
 
-    image = new ImageIcon(path);
+    image = new ImageIcon(getClass().getResource(path));
     img1 = image.getImage();
     newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;
     cardIcons[1] = new ImageIcon(newImg1);
@@ -123,7 +123,7 @@ public class PlayersPopup{
 
   private ImageIcon[] imagesImport(God god){
 
-    String prefix = "src/main/resources/Santorini Images/SchermataSelezioneGod/";
+    String prefix = "/Santorini Images/SchermataSelezioneGod/";
     String suffix = ".png";
 
     return imageSetup(prefix + god.getName() + suffix);
