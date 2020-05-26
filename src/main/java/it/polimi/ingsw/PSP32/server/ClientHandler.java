@@ -249,8 +249,8 @@ public class ClientHandler implements Runnable
       }catch (SocketTimeoutException s) {
         synchronized (lockPlayer) {
           Server.flagForSync.set(1);
-          lockPlayer.notifyAll();
           Server.flagForTimeout.set(1);
+          lockPlayer.notifyAll();
           client.close();
           this.stop();
         }
