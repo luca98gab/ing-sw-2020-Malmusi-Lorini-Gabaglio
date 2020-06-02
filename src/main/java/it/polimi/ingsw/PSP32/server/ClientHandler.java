@@ -57,9 +57,12 @@ public class ClientHandler implements Runnable
     try {
       handleClientConnection();
     } catch (IOException e) {
+      exit = true;
       synchronized (lockNum) {
-        exit = true;
         lockNum.notifyAll();
+      }
+      synchronized (lockPlayer) {
+        lockPlayer.notifyAll();
       }
 
 
@@ -162,6 +165,9 @@ public class ClientHandler implements Runnable
           case "checkCanBuildNE":
             valid = CheckCanBuild.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
           break;
+          case "checkCanBuildBelow":
+            valid = CheckCanBuild.checkCanBuildBelow((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            break;
         }
         Message outboundMessageInner = null;
         if (valid!=null){
@@ -171,6 +177,8 @@ public class ClientHandler implements Runnable
         output.reset();
         output.writeObject(outboundMessageInner);
         inboundMessage = (Message) input.readObject();
+        while(inboundMessage.getTypeOfMessage().equals("Heartbeat")){inboundMessage = (Message) input.readObject();}
+
       }
       if (inboundMessage.getTypeOfMessage().equals("Result")){
         object = inboundMessage.getResult();
@@ -181,7 +189,7 @@ public class ClientHandler implements Runnable
     }
     return object;
   }
-  public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
+  public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException{
     return toClientGetObject(methodName, par1, par2, par3, par4, null);
   }
   public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3) throws IOException {

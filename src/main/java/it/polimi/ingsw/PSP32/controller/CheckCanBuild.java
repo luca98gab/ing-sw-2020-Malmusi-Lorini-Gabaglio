@@ -102,4 +102,12 @@ public class CheckCanBuild {
         }
         return false;
     }
+    public static Boolean checkCanBuildBelow(Game game, Pawn pawn, Cell restriction){
+        Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
+        if (currentCell.getFloor()==3) return false;
+        else if (pawn.getPlayer().getGod().getName().equals("Zeus")) return true;
+        return false;
+
+    }
+
 }

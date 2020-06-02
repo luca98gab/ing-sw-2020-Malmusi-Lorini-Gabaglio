@@ -356,6 +356,12 @@ public class VirtualCli implements Runnable {
                     y = pawn.getY()-1;
                     valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNE", game, pawn, restriction);
                     break;
+                case "5":
+                case "s":
+                    x=pawn.getX();
+                    y=pawn.getY();
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildBelow", game, pawn, restriction);
+                    break;
             }
             if (!valid) outln("INVALID LOCATION");
         } while (!valid);

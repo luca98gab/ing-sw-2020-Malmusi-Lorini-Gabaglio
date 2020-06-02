@@ -551,7 +551,6 @@ public class GameScene extends Gui{
     }
 
   };
-
   static ActionListener phaseButtonListener = e ->{
     switch (phase){
       case ("Initial Positioning"):
@@ -575,6 +574,10 @@ public class GameScene extends Gui{
 
   };
 
+  /**Methods invoked by the cell's listener, based on the current phase
+   *
+   * @param clickedCell :JButton the clicked button(cell)
+   */
   private static void movePhaseClick(JButton clickedCell){
     if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
       if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
@@ -609,7 +612,6 @@ public class GameScene extends Gui{
       }
     }
   }
-
   private static void movePhase2Click(JButton clickedCell){
 
     if(clickedCell.getIcon()==null){
@@ -634,7 +636,6 @@ public class GameScene extends Gui{
       }
     }
   }
-
   private static void buildPhaseClick(JButton clickedCell){
     String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
     Boolean valid1=false;
@@ -645,7 +646,7 @@ public class GameScene extends Gui{
         ex.printStackTrace();
       }
     }
-    if(valid1){
+    if(valid1!=null && valid1){
       buildLocation [0]= getX(clickedCell);
       buildLocation [1]= getY(clickedCell);
       activePawn=null;
@@ -659,7 +660,6 @@ public class GameScene extends Gui{
       new Toast("Invalid Build Location", gamePanel, 2000);
     }
   }
-
   private static void buildPhase2Click(JButton clickedCell){
     String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
     Boolean valid1=false;
@@ -684,7 +684,6 @@ public class GameScene extends Gui{
       new Toast("Invalid Build Location", gamePanel, 2000);
     }
   }
-
   private static void buildFirstPhaseClick(JButton clickedCell){
     if(clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[0])){
       if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
@@ -720,7 +719,6 @@ public class GameScene extends Gui{
       }
     }
   }
-
   private static void pawnPositioning(JButton selectedCell){
     int i = cells.indexOf(selectedCell);
 
@@ -742,6 +740,12 @@ public class GameScene extends Gui{
 
   //events
 
+  /**Method that handle phases, and the received parameters from the server
+   *
+   * @param newPhase :String the new phase we are going into
+   * @param parameters :ArrayList<Object> parameters useful for the methods that are being called
+   * @return Boolean (used to let the server know if the player decided to use the ability of his god)
+   */
   public static Boolean messageReceived(String newPhase, ArrayList<Object> parameters){
     if (newPhase!=null){
       switch (newPhase){
@@ -805,6 +809,7 @@ public class GameScene extends Gui{
           game = (Game) parameters.get(0);
           buildFirstPhaseGraphics();
           phase=newPhase;
+          break;
       }
     }
     return false;
@@ -814,12 +819,24 @@ public class GameScene extends Gui{
 
   // logic
 
+  /**Method to know if two buttons are near each other in the grid
+   *
+   * @param cell1 :JButton first button
+   * @param cell2 :JButton second button
+   * @return Boolean (true if the 2 cells are close, false otherwise)
+   */
   private static boolean near (JButton cell1, JButton cell2){
     if (getX(cell1)- getX(cell2)>=-1 && getX(cell1)-getX(cell2)<=1)
       if (getY(cell1)- getY(cell2)>=-1 && getY(cell1)-getY(cell2)<=1) return true;
     return false;
   }
 
+  /**Method to know where is "newCell" compared to "centralCell", only if they are close(invoke 'near' method)
+   *
+   * @param centralCell :JButton point of reference for our direction
+   * @param newCell :JButton cell whose position we want
+   * @return String (the direction expressed with cardinal points: E,W,S,N,NE,.... Null if the cells aren't close)
+   */
   private static String direction (JButton centralCell, JButton newCell){
     if (near(centralCell, newCell)){
       switch (getX(centralCell)-getX(newCell)){
@@ -838,7 +855,7 @@ public class GameScene extends Gui{
             case 1:
               return "N";
             case 0:
-              return null;
+              return "Below";
             case -1:
               return "S";
           }
@@ -862,6 +879,10 @@ public class GameScene extends Gui{
 
   // utilities
 
+  /**Method to refresh the screen with the latest info about the board
+   *
+   * @param game :Game current status of the game
+   */
   public static void refreshScreen(Game game){
     for (int i=0; i<25; i++){
       Cell cell = game.getMap()[i%5][i/5];
@@ -902,19 +923,43 @@ public class GameScene extends Gui{
 
   }
 
+  /** Method to know the pawn position
+   *
+   * @param first :Boolean to know if you are looking for the first or the second pawn
+   * @return int[] Array of int containing the pawn position
+   */
   public static int[] getCoords (Boolean first){
     if (first) return position1;
     else return position2;
   }
 
+  /** Method to know the cell selected in the building phase
+   *
+   * @return int[] Array of int containing the position of the selected cell where to build
+   */
   public static int[] getBuildLocation(){
     return buildLocation;}
 
+  /** Method to know the active pawn
+   *
+   * @return Pawn active pawn
+   */
   public static  Pawn getActivePawn(){ return activePawn; }
 
+  /**Method to know the corresponding X coordinate of a button on the board
+   *
+   * @param cell :JButton
+   * @return int x coord. of the button
+   */
   private static int getX (JButton cell){
     return cells.indexOf(cell)%5;
   }
+
+  /**Method to know the corresponding Y coordinate of a button on the board
+   *
+   * @param cell :JButton
+   * @return int Y coord. of the button
+   */
   private static int getY (JButton cell){
     return cells.indexOf(cell)/5;
   }
@@ -922,6 +967,7 @@ public class GameScene extends Gui{
   public static Boolean getWantsToUsePower() {
     return wantsToUsePower;
   }
+
 
   private static Boolean askPower(){
     final Object lock = new Object();

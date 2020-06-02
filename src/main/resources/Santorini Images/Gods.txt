@@ -1,4 +1,4 @@
-9
+10
 
 Apollo
 God of Music - Your Move: Your Worker may move into an opponent's square, and trade places with him.
@@ -26,3 +26,8 @@ God of the Wild - Win Condition: You also win if your Worker moves down two or m
 
 Prometheus
 Titan Benefactor of Mankind - Your Turn: If your Worker does not move up, it may build both before and after moving.
+
+Zeus
+kdslfodsjf.
+
+
