@@ -1,8 +1,10 @@
 package it.polimi.ingsw.PSP32.view.gui;
 
+import it.polimi.ingsw.PSP32.controller.GameSetup;
 import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
 import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
+import it.polimi.ingsw.PSP32.view.gui.scenes.GodPickingScene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +65,9 @@ public class Gui implements Runnable {
     ArrayList<Player> players = new ArrayList<>();
     players.add( new Player("Gio", "\u001B[31m", new God("Apollo", null)));
 
-    GameScene scene = new GameScene(players.get(0));
+
+
+    GodPickingScene scene = new GodPickingScene(2, null);
     scene.show();
 
 

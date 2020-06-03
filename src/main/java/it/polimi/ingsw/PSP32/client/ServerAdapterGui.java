@@ -244,7 +244,7 @@ public class ServerAdapterGui
           sendResultMessage(power1);
           break;
         }
-        else if ((Boolean) message.getParameters().get(3)){
+        else if ((message.getParameters().get(3)!=null && ((Boolean) message.getParameters().get(3))) || (message.getParameters().get(4)!=null &&  ((Boolean) message.getParameters().get(4)))){
           power1 = GameScene.messageReceived("Power", message.getParameters());
           if (power1){
           GameScene.messageReceived("Build Phase 2", message.getParameters());
@@ -264,7 +264,7 @@ public class ServerAdapterGui
           }
           else {
             GameScene.messageReceived("Wait", message.getParameters()) ;
-          sendResultMessage(!power1);
+            sendResultMessage(!power1);
             break;
           }
         }

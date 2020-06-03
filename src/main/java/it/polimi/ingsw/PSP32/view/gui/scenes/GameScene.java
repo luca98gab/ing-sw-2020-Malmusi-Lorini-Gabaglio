@@ -795,8 +795,8 @@ public class GameScene extends Gui{
           phase = "Build Phase 2";
           game = (Game) parameters.get(0);
           activePawn= (Pawn) parameters.get(1);
-          restrictedCell= (Cell) parameters.get(4);
-          bordersAllowed = (Boolean) parameters.get(5);
+          if (parameters.get(4) instanceof Cell) restrictedCell= (Cell) parameters.get(4);
+          else bordersAllowed = (Boolean) parameters.get(4);
           buildPhaseGraphics();
           //cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
           break;

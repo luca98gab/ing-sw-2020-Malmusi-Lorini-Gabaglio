@@ -57,7 +57,7 @@ public class Building {
             if (!CheckHasLost.checkHasLostForBuild(game, pawn, false,  null, false)) {
                 Cell restriction = cell;
                 cell = null;
-                if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true).equals(false)) {
+                if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, null,true).equals(false)) {
                     cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction, false);
                     cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 }

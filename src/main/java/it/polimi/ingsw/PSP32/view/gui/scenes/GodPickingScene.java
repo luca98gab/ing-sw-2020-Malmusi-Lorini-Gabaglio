@@ -21,8 +21,8 @@ public class GodPickingScene  extends Gui {
 
   static ArrayList<ImageIcon> frontIcons = new ArrayList<>();
   static ArrayList<ImageIcon> backIcons = new ArrayList<>();
-  static int cardWidth = (int) (170*scale);
-  static int cardHeight = (int) (240*scale);
+  static int cardWidth = (int) (170*scale*0.9);
+  static int cardHeight = (int) (240*scale*0.9);
   static ImageIcon emptySpaceIcon;
   static ArrayList<JButton> selectedCards = new ArrayList<>();
   static JButton playButton = new JButton();
@@ -74,10 +74,10 @@ public class GodPickingScene  extends Gui {
       cardButtons.add(new JButton());
       JButton card = cardButtons.get(i);
       card.setIcon(frontIcons.get(i));
-      if (i<5){
-        card.setBounds((int) ((100+200*i)*scale), (int) (120*scale), cardWidth, cardHeight);
+      if (i<7){
+        card.setBounds((int) ((50+160*i)*scale), (int) (120*scale), cardWidth, cardHeight);
       } else {
-        card.setBounds((int) ((200+200*(i-5))*scale), (int) (350*scale), cardWidth, cardHeight);
+        card.setBounds((int) ((50+160*(i-7))*scale), (int) (340*scale), cardWidth, cardHeight);
       }
 
       card.setOpaque(false);
@@ -196,6 +196,11 @@ public class GodPickingScene  extends Gui {
             else if (selectedCards.get(i).getIcon().equals(cardButtons.get(6).getIcon())) gods.add(allGods[6]);
             else if (selectedCards.get(i).getIcon().equals(cardButtons.get(7).getIcon())) gods.add(allGods[7]);
             else if (selectedCards.get(i).getIcon().equals(cardButtons.get(8).getIcon())) gods.add(allGods[8]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(9).getIcon())) gods.add(allGods[9]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(10).getIcon())) gods.add(allGods[10]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(11).getIcon())) gods.add(allGods[11]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(12).getIcon())) gods.add(allGods[12]);
+            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(13).getIcon())) gods.add(allGods[13]);
           }
     synchronized (lockGods) {
       ServerAdapterGui.flagForGods.set(1);
@@ -228,6 +233,16 @@ public class GodPickingScene  extends Gui {
     imageSetup("/Santorini Images/SchermataSelezioneGod/Pan.png");
 
     imageSetup("/Santorini Images/SchermataSelezioneGod/Prometheus.png");
+
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Hera.png");
+
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Chronus.png");
+
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Hestia.png");
+
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Zeus.png");
+
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Zeus.png");
   }
 
   private void imageSetup(String path){

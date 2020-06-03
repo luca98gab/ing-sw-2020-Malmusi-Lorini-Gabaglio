@@ -42,7 +42,7 @@ public class CheckHasWon {
         if (player.getGod().getName().equals("Chronus")){
             int n = 0;
             for (int i = 0; i < 5; i++){
-                for (int j = 0; i < 5; j++){
+                for (int j = 0; j < 5; j++){
                     if (game.getMap()[i][j].getHasDome().equals(true) && game.getMap()[i][j].getFloor()>2){
                         n++;
                     }
