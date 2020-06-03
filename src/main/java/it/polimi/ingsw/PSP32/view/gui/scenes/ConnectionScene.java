@@ -8,7 +8,6 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-
 import static it.polimi.ingsw.PSP32.client.ClientGui.lockAddress;
 
 public class ConnectionScene extends Gui {

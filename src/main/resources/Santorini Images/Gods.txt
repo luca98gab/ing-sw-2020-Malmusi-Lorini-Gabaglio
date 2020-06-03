@@ -1,4 +1,4 @@
-10
+13
 
 Apollo
 God of Music - Your Move: Your Worker may move into an opponent's square, and trade places with him.
@@ -27,7 +27,14 @@ God of the Wild - Win Condition: You also win if your Worker moves down two or m
 Prometheus
 Titan Benefactor of Mankind - Your Turn: If your Worker does not move up, it may build both before and after moving.
 
+Hera
+Goddess of Marriage - Opponent's Turn: An opponent cannot win by moving into a perimeter space.
+
+Chronus
+God of Time - Win Condition: You also win when there are at least five Complete Towers on the board.
+
+Hestia
+Goddess of Hearth and Home - Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.
+
 Zeus
-kdslfodsjf.
-
-
+God of the Sky - Your Build: Your Worker may build a block under itself.

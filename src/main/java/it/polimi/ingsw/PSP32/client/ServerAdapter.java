@@ -127,7 +127,7 @@ public class ServerAdapter
         sendResultMessage(bool2);
         break;
       case "getBuildLocationViaArrows":
-        int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2) );
+        int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3) );
         sendResultMessage(cell);
         break;
       case "waitForMoveCommand":

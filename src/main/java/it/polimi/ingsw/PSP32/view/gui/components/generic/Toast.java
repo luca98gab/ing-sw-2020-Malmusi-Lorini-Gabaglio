@@ -86,7 +86,7 @@ public class Toast extends JLabel {
     Graphics2D g2d = (Graphics2D) g;
 
 
-
+    if (alpha < 0) alpha = 0;
     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     g2d.drawImage(newImg, 0, 0, null);
 

@@ -142,28 +142,28 @@ public class ClientHandler implements Runnable
             valid = CheckCanMove.checkCanMoveNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
             break;
           case "checkCanBuildSW":
-            valid = CheckCanBuild.checkCanBuildSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildSW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildS":
-            valid = CheckCanBuild.checkCanBuildS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildS((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildSE":
-            valid = CheckCanBuild.checkCanBuildSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildSE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildW":
-            valid = CheckCanBuild.checkCanBuildW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildE":
-            valid = CheckCanBuild.checkCanBuildE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildNW":
-            valid = CheckCanBuild.checkCanBuildNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildNW((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildN":
-            valid = CheckCanBuild.checkCanBuildN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildN((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
             break;
           case "checkCanBuildNE":
-            valid = CheckCanBuild.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));
+            valid = CheckCanBuild.checkCanBuildNE((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2), (Boolean) inboundMessage.getParameters().get(3));
           break;
           case "checkCanBuildBelow":
             valid = CheckCanBuild.checkCanBuildBelow((Game)inboundMessage.getParameters().get(0), (Pawn)inboundMessage.getParameters().get(1), (Cell)inboundMessage.getParameters().get(2));

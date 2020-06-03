@@ -26,7 +26,7 @@ public class Building {
         if (god.equals("Atlas")) wantsDome = (Boolean) client.toClientGetObject("waitForBuildCommand",game, pawn, true, false);
         else wantsDome = (Boolean) client.toClientGetObject("waitForBuildCommand",game, pawn, false, false);
 
-        int[] cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, null);
+        int[] cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, null, true);
 
         Cell cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
 
@@ -40,11 +40,25 @@ public class Building {
         Utility.toAllClientsVoid(game, "printBoardColored", game);
 
         if (god.equals("Demeter")) {
-            if(!CheckHasLost.checkHasLostForBuild(game, pawn, true, cell)) {
+            if (!CheckHasLost.checkHasLostForBuild(game, pawn, true, cell)) {
                 Cell restriction = cell;
-                cell=null;
+                cell = null;
                 if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true, restriction).equals(false)) {
-                    cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction);
+                    cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction, true);
+                    cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
+                }
+                if (cell != null) {
+                    cell.setFloor(cell.getFloor() + 1);
+                    if (cell.getFloor() == 4) cell.setHasDome(true);
+                    Utility.toAllClientsVoid(game, "printBoardColored", game);
+                }
+            }
+        } else if (god.equals("Hestia")){
+            if (!CheckHasLost.checkHasLostForBuild(game, pawn, false,  null, false)) {
+                Cell restriction = cell;
+                cell = null;
+                if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true).equals(false)) {
+                    cellCoordinates = (int[]) client.toClientGetObject("getBuildLocationViaArrows", game, pawn, restriction, false);
                     cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 }
                 if (cell != null) {

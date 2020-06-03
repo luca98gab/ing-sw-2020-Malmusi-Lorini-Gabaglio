@@ -82,6 +82,8 @@ public class GameScene extends Gui{
   static ImageIcon[] buildingIcons = new ImageIcon[4];
   static ImageIcon[] buildingDomeIcons = new ImageIcon[5];
 
+  static Boolean bordersAllowed = true;
+
 
   //setup
 
@@ -641,7 +643,7 @@ public class GameScene extends Gui{
     Boolean valid1=false;
     if(direction!=null) {
       try {
-        valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, null);
+        valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, null, true);
       } catch (IOException ex) {
         ex.printStackTrace();
       }
@@ -665,7 +667,7 @@ public class GameScene extends Gui{
     Boolean valid1=false;
     if(direction!=null) {
       try {
-        valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, restrictedCell);
+        valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, restrictedCell, bordersAllowed);
       } catch (IOException ex) {
         ex.printStackTrace();
       }
@@ -794,6 +796,7 @@ public class GameScene extends Gui{
           game = (Game) parameters.get(0);
           activePawn= (Pawn) parameters.get(1);
           restrictedCell= (Cell) parameters.get(4);
+          bordersAllowed = (Boolean) parameters.get(5);
           buildPhaseGraphics();
           //cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
           break;

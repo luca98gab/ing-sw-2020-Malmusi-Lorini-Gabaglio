@@ -302,7 +302,7 @@ public class VirtualCli implements Runnable {
      * @param restriction: Cell possible restricted cells
      * @return Cell selected cell to build on
      */
-    public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction) throws IOException {
+    public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed) throws IOException {
         int x=0, y=0;
         Boolean valid = false;
         do {
@@ -312,49 +312,49 @@ public class VirtualCli implements Runnable {
                 case "z":
                     x = pawn.getX()-1;
                     y = pawn.getY()+1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSW", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSW", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "2":
                 case "x":
                     x = pawn.getX();
                     y = pawn.getY()+1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildS", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildS", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "3":
                 case "c":
                     x = pawn.getX()+1;
                     y = pawn.getY()+1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSE", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildSE", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "4":
                 case "a":
                     x = pawn.getX()-1;
                     y = pawn.getY();
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildW", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildW", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "6":
                 case "d":
                     x = pawn.getX()+1;
                     y = pawn.getY();
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildE", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildE", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "7":
                 case "q":
                     x = pawn.getX()-1;
                     y = pawn.getY()-1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNW", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNW", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "8":
                 case "w":
                     x = pawn.getX();
                     y = pawn.getY()-1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildN", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildN", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "9":
                 case "e":
                     x = pawn.getX()+1;
                     y = pawn.getY()-1;
-                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNE", game, pawn, restriction);
+                    valid = (Boolean) ServerAdapter.toServerGetObject("checkCanBuildNE", game, pawn, restriction, edgeCellsAllowed);
                     break;
                 case "5":
                 case "s":

@@ -194,30 +194,28 @@ public class ServerAdapterGui
         GameScene.messageReceived("Refresh Screen", message.getParameters());
         break;
       case "getActivePawn":
-        if(((Player) message.getParameters().get(1)).getGod().getName().equals("Prometheus")) {
-          if (GameScene.messageReceived("Power", message.getParameters())) {
-            GameScene.messageReceived("BuildFirst", message.getParameters());
+        if(((Player) message.getParameters().get(1)).getGod().getName().equals("Prometheus"))
+          if(GameScene.messageReceived("Power", message.getParameters())){
+              GameScene.messageReceived("BuildFirst", message.getParameters());
             synchronized (lockActivePawn) {
               while (flagForActivePawn.get() == 0) {
                 try {
                   lockActivePawn.wait();
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) {}
               }
             }
             flagForActivePawn.set(0);
 
-            sendResultMessage(GameScene.getActivePawn());
-            break;
+              sendResultMessage(GameScene.getActivePawn());
+              break;
           }
-        }
         GameScene.messageReceived("Move Phase", message.getParameters());
 
         synchronized (lockActivePawn) {
           while (flagForActivePawn.get() == 0) {
             try {
               lockActivePawn.wait();
-            } catch (InterruptedException e) {e.printStackTrace();}
+            } catch (InterruptedException e) {}
           }
         }
         flagForActivePawn.set(0);
@@ -345,6 +343,7 @@ public class ServerAdapterGui
         break;
       case "waitTurnMessage":
         GameScene.messageReceived("Playing Player", message.getParameters());
+      //  System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
         break;
       case "Disconnection":
         GameScene.messageReceived("Disconnection", null);

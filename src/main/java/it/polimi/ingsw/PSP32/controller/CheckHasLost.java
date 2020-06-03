@@ -72,22 +72,23 @@ public class CheckHasLost {
      *
      * @param game : Game
      * @param pawn : Pawn active pawn
-     * @param demeter : Boolean flag to know if this is the first build of demeter (i.e. the player can't use his power)
+     * @param demeterPower : Boolean flag to know if this is the first build of demeter (i.e. the player can't use his power)
      * @param cell : Cell current cell
      * @return Boolean(True= no valid build locations, False= there are valid build locations)
      * @throws IOException
      */
-    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeter, Cell cell) throws IOException {
+    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeterPower, Cell cell, Boolean edgeCellsAllowed) throws IOException {
         Player player = pawn.getPlayer();
 
-        if (CheckCanBuild.checkCanBuildE(game, pawn, cell) || CheckCanBuild.checkCanBuildW(game, pawn, cell) ||
-                CheckCanBuild.checkCanBuildN(game, pawn, cell) || CheckCanBuild.checkCanBuildS(game, pawn, cell) ||
-                CheckCanBuild.checkCanBuildSE(game, pawn, cell) || CheckCanBuild.checkCanBuildNE(game, pawn, cell) ||
-                CheckCanBuild.checkCanBuildSW(game, pawn, cell) || CheckCanBuild.checkCanBuildNW(game, pawn, cell)){
+
+        if (CheckCanBuild.checkCanBuildE(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildW(game, pawn, cell, edgeCellsAllowed) ||
+                CheckCanBuild.checkCanBuildN(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildS(game, pawn, cell, edgeCellsAllowed) ||
+                CheckCanBuild.checkCanBuildSE(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildNE(game, pawn, cell, edgeCellsAllowed) ||
+                CheckCanBuild.checkCanBuildSW(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildNW(game, pawn, cell, edgeCellsAllowed)){
             return false;
         }
         else {
-            if(demeter) {
+            if(demeterPower) {
                 if (game.getPlayerList().size() == 3) {
                     Utility.toAllClientsVoid(game, "removedPlayerGraphics", player);
                     game.getPlayerList().remove(player);
@@ -100,6 +101,12 @@ public class CheckHasLost {
             }
             else return true;
         }
+
+
+
+    }
+    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeter, Cell cell) throws IOException {
+        return checkHasLostForBuild(game, pawn, false, null, true);
     }
     protected static Boolean checkHasLostForBuild(Game game, Pawn pawn) throws IOException {
         return checkHasLostForBuild(game, pawn, false, null);

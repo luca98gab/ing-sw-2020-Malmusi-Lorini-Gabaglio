@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.awt.Taskbar;
 
 
 public class Gui implements Runnable {
