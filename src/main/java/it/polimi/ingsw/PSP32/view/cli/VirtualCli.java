@@ -389,6 +389,76 @@ public class VirtualCli implements Runnable {
         return checkForValidYNInput(null);
     }
 
+    public static int[] aresPower(Game game, Pawn pawn){
+        int x=0;
+        int y=0;
+        Boolean valid=false;
+        do {
+            out(pawn.getPlayer().getColor() + "\nWhere do you want to remove the floor?\nUse Number Keypad or QWEASDZXC keys: ");
+            switch (checkForValidStringInput(true, false , 1, 1, "INVALID LOCATION")){
+                case "1":
+                case "z":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()+1;
+
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "2":
+                case "x":
+                    x = pawn.getX();
+                    y = pawn.getY()+1;
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "3":
+                case "c":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()+1;
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "4":
+                case "a":
+                    x = pawn.getX()-1;
+                    y = pawn.getY();
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "6":
+                case "d":
+                    x = pawn.getX()+1;
+                    y = pawn.getY();
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "7":
+                case "q":
+                    x = pawn.getX()-1;
+                    y = pawn.getY()-1;
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "8":
+                case "w":
+                    x = pawn.getX();
+                    y = pawn.getY()-1;
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "9":
+                case "e":
+                    x = pawn.getX()+1;
+                    y = pawn.getY()-1;
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+                case "5":
+                case "s":
+                    x=pawn.getX();
+                    y=pawn.getY();
+                    if (0<x && x<4 && 0<y && y<4 && game.getMap()[x][y].getFloor()>0 && !game.getMap()[x][y].getHasDome() && game.getMap()[x][y].getIsFull()==null) valid=true;
+                    break;
+            }
+            if (!valid) outln("INVALID LOCATION");
+        } while (!valid);
+
+
+        return (new int[]{x, y});
+    }
+
 
 
     //methods to check input

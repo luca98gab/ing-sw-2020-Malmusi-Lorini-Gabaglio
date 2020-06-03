@@ -161,6 +161,10 @@ public class ServerAdapter
         System.out.println("\n"+   "\u001b[31m" +"   ## WARNING ## \n"+  "\u001b[0m" );
         System.out.println("Someone left the match, the game is being shutted down");
         return true;
+      case "aresPower":
+        int [] coords =VirtualCli.aresPower((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1));
+        sendResultMessage(coords);
+        break;
     }
     return false;
   }

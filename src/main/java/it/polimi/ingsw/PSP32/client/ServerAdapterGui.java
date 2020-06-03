@@ -37,6 +37,8 @@ public class ServerAdapterGui
   public static AtomicInteger flagForBuilding = new AtomicInteger(0);
   public static final Object lockMove2 = new Object();
   public static AtomicInteger flagForMove2 = new AtomicInteger(0);
+  public static final Object lockAresPower = new Object();
+  public static AtomicInteger flagForAresPower = new AtomicInteger(0);
 
 
 
@@ -348,6 +350,19 @@ public class ServerAdapterGui
       case "Disconnection":
         GameScene.messageReceived("Disconnection", null);
         return true;
+      case "aresPower":
+        GameScene.messageReceived("aresPower", message.getParameters());
+        synchronized (lockAresPower) {
+          while (flagForAresPower.get() == 0) {
+            try {
+              lockAresPower.wait();
+            } catch (InterruptedException e) {}
+          }
+        }
+        flagForAresPower.set(0);
+
+        sendResultMessage(GameScene.getDeleteCoords());
+        break;
 
     }
     return false;

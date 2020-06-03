@@ -52,6 +52,8 @@ public class GameScene extends Gui{
   static int [] position1= {-1,-1};
   static int [] position2= {-1,-1};
 
+  static int [] deleteCoords = {-1, -1};
+
   static int [] buildLocation ={-1,-1};
 
   public static Pawn activePawn;
@@ -549,6 +551,9 @@ public class GameScene extends Gui{
         case "BuildFirst":
           buildFirstPhaseClick(clickedCell);
           break;
+        case "aresPower":
+          removeBuildPhaseClick(clickedCell);
+          break;
       }
     }
 
@@ -737,7 +742,17 @@ public class GameScene extends Gui{
     }
 
   }
+  private static void  removeBuildPhaseClick(JButton selectedCell){
+    if (near(selectedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && (game.getMap()[selectedCell.getX()] [selectedCell.getY()]).getFloor()>0 && !(game.getMap()[selectedCell.getX()] [selectedCell.getY()]).getHasDome() && game.getMap()[selectedCell.getX()] [selectedCell.getY()].getIsFull()==null){
+      deleteCoords[0]=getX(selectedCell);
+      deleteCoords[1]=getY(selectedCell);
+      synchronized(lockAresPower) {
+        flagForAresPower.set(1);
+        lockAresPower.notifyAll();
+      }
+    }
 
+  }
 
 
   //events
@@ -812,6 +827,12 @@ public class GameScene extends Gui{
           game = (Game) parameters.get(0);
           buildFirstPhaseGraphics();
           phase=newPhase;
+          break;
+        case"aresPower":
+          phase=newPhase;
+          activePawn= (Pawn) parameters.get(1);
+          game= (Game) parameters.get(0);
+          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
           break;
       }
     }
@@ -970,6 +991,8 @@ public class GameScene extends Gui{
   public static Boolean getWantsToUsePower() {
     return wantsToUsePower;
   }
+
+  public static  int[] getDeleteCoords(){ return deleteCoords; }
 
 
   private static Boolean askPower(){

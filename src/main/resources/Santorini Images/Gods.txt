@@ -1,4 +1,4 @@
-13
+14
 
 Apollo
 God of Music - Your Move: Your Worker may move into an opponent's square, and trade places with him.
@@ -38,3 +38,6 @@ Goddess of Hearth and Home - Your Build: Your Worker may build one additional ti
 
 Zeus
 God of the Sky - Your Build: Your Worker may build a block under itself.
+
+Ares
+God of War -

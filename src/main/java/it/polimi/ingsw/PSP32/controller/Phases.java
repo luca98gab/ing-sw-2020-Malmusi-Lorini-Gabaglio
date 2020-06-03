@@ -35,6 +35,7 @@ public class Phases {
      * @throws IOException
      */
     private static Boolean turn(Game game, Player player) throws IOException {
+        Pawn activePawn=null;
         if (player.getGod().getName().equals("Athena")) game.setAthenaFlag(false);
 
         player.getRelatedClient().toClientVoid("printTurnInfo", player);
@@ -43,7 +44,7 @@ public class Phases {
 
         if (CheckHasLost.checkHasLostForMoves(game, player).equals(false)){
 
-            Pawn activePawn = Moving.movePhase(game, player);
+            activePawn = Moving.movePhase(game, player);
             if (activePawn==null) return true;
 
             if(!CheckHasLost.checkHasLostForBuild(game, activePawn)){
@@ -52,6 +53,15 @@ public class Phases {
             }
             else return true;
         } else return true;
+
+        if (player.getGod().getName().equals("Ares") && CheckCanBuild.checkAresPower(game, activePawn))
+        {
+            if ((Boolean)player.getRelatedClient().toClientGetObject("wantsToUsePower",player)){
+                Building.aresPower(game, activePawn);
+            }
+            Utility.toAllClientsVoid(game, "printBoardColored", game);
+        }
+
         return false;
 
     }

@@ -76,4 +76,14 @@ public class Building {
 
 
     }
+
+    public static void aresPower(Game game, Pawn usedPawn) throws IOException {
+        Pawn activePawn= null;
+        if (usedPawn.getId()==1) activePawn= usedPawn.getPlayer().getPawns()[1];
+        else activePawn= usedPawn.getPlayer().getPawns()[0];
+
+        int [] coords = (int []) usedPawn.getPlayer().getRelatedClient().toClientGetObject("aresPower" , game, activePawn);
+
+        game.getMap()[coords[0]][coords[1]].setFloor(game.getMap()[coords[0]] [coords[1]].getFloor()-1);
+    }
 }
