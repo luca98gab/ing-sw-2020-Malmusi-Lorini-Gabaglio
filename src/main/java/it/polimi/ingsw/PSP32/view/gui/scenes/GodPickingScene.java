@@ -242,7 +242,7 @@ public class GodPickingScene  extends Gui {
 
     imageSetup("/Santorini Images/SchermataSelezioneGod/Zeus.png");
 
-    imageSetup("/Santorini Images/SchermataSelezioneGod/Zeus.png");
+    imageSetup("/Santorini Images/SchermataSelezioneGod/Ares.png");
   }
 
   private void imageSetup(String path){
