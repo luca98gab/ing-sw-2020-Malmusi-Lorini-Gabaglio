@@ -40,4 +40,5 @@ Zeus
 God of the Sky - Your Build: Your Worker may build a block under itself.
 
 Ares
-God of War -
+God of War - End of Your Turn: You may remove an unoccupied block (not dome) neighboring your unmoved Worker.
+
