@@ -25,7 +25,7 @@
 * Basic Rules
 * 2 or 3 players
 * [9 standard Gods + 4 advanced](/Santorini%20Images/Gods.txt)
-* Client Server over local network
+* Client Server over local network or internet
 * Command Line Interface
 * Gui
 
@@ -45,6 +45,5 @@
 * Advanced rules
 * 4 players
 * Multiple games on the same server
-* Client Server over internet
 * In-Game Chat
 * Resizable window
