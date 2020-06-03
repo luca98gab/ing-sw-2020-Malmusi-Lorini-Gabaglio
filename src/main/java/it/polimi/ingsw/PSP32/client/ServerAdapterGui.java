@@ -225,6 +225,10 @@ public class ServerAdapterGui
         sendResultMessage(pawn);
         break;
       case "wantsToUsePower":
+        if(((Player) message.getParameters().get(0)).getGod().getName().equals("Ares")) {
+          sendResultMessage(GameScene.messageReceived("Power", message.getParameters()));
+          break;
+        }
         Boolean bool1=GameScene.getWantsToUsePower();
         sendResultMessage(bool1);
         break;

@@ -521,6 +521,14 @@ public class GameScene extends Gui{
     phaseInfo.setVisible(true);
   }
 
+  private static void removeBlockPhaseGraphics(){
+    phaseLabel.setText("Remove Block Phase");
+    phaseInfo.setText("<html>Select a floor to remove next<br/> to the pawn you didn't move.</html>");
+    phaseButton.setVisible(false);
+    phaseInfo.setVisible(true);
+
+  }
+
 
 
   // actions
@@ -742,15 +750,19 @@ public class GameScene extends Gui{
     }
 
   }
-  private static void  removeBuildPhaseClick(JButton selectedCell){
-    if (near(selectedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && (game.getMap()[selectedCell.getX()] [selectedCell.getY()]).getFloor()>0 && !(game.getMap()[selectedCell.getX()] [selectedCell.getY()]).getHasDome() && game.getMap()[selectedCell.getX()] [selectedCell.getY()].getIsFull()==null){
-      deleteCoords[0]=getX(selectedCell);
-      deleteCoords[1]=getY(selectedCell);
-      synchronized(lockAresPower) {
-        flagForAresPower.set(1);
-        lockAresPower.notifyAll();
-      }
+  private static void  removeBuildPhaseClick(JButton clickedCell){
+
+    if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && !(getX(clickedCell)==activePawn.getX() && getY(clickedCell)==activePawn.getY()) && (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null &&  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()>0 && !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){
+          deleteCoords[0]=getX(clickedCell);
+          deleteCoords[1]=getY(clickedCell);
+          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
+          synchronized(lockAresPower) {
+            flagForAresPower.set(1);
+            lockAresPower.notifyAll();
+          }
     }
+    else
+      new Toast("Invalid Location", gamePanel, 2000);
 
   }
 
@@ -829,6 +841,7 @@ public class GameScene extends Gui{
           phase=newPhase;
           break;
         case"aresPower":
+          removeBlockPhaseGraphics();
           phase=newPhase;
           activePawn= (Pawn) parameters.get(1);
           game= (Game) parameters.get(0);

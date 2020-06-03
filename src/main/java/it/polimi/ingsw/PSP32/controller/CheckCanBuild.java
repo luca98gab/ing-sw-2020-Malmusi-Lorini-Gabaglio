@@ -162,10 +162,10 @@ public class CheckCanBuild {
     public static Boolean checkAresPower(Game game, Pawn pawn){
         if (pawn.getId()==1) pawn= pawn.getPlayer().getPawns()[1];
         else pawn= pawn.getPlayer().getPawns()[0];
-        for (int i=pawn.getY()-1; i<pawn.getY()+1; i++){
+        for (int i=pawn.getY()-1; i<pawn.getY()+2; i++){
             if (i>=0) {
-                for (int j=pawn.getX()-1; j<pawn.getX()+1; j++){
-                    if( game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null) return true;
+                for (int j=pawn.getX()-1; j<pawn.getX()+2; j++){
+                    if( j>=0 && game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null) return true;
                 }
             }
         }
