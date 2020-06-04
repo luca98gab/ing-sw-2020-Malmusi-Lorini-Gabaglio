@@ -66,7 +66,7 @@ $ java -jar Santorini.jar
 > to run your client using the CLI type:
 
 ```shell
-$ java -jar Santorini.jar -cli
+$ java -jar Santorini.jar CLI
 ```
 
 ---
