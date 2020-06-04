@@ -28,7 +28,7 @@ public class Server implements Runnable {
   public static AtomicInteger flagForSync = new AtomicInteger();
   public static volatile Boolean exit;
   public static AtomicInteger flagForTimeout = new AtomicInteger();
-  private int timeout=20000;
+  private int timeout=200000000;
 
     /** Method to stop the clients after someone won or someone left the match
      *
