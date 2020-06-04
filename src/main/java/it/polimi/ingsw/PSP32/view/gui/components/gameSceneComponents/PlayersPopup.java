@@ -2,6 +2,7 @@ package it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents;
 
 import it.polimi.ingsw.PSP32.model.God;
 import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.view.gui.Gui;
 import it.polimi.ingsw.PSP32.view.gui.components.generic.Toast;
 
 import javax.swing.*;
@@ -82,7 +83,7 @@ public class PlayersPopup{
 
       for (int i = 0; i < playerPanels.size(); i++) {
         backgroundLabel.add(playerPanels.get(i));
-        playerPanels.get(i).setBounds((int) (200 * i * scale), 0, (int) (200 * scale), (int) (370 * scale));
+        playerPanels.get(i).setBounds((int) (200 * i * scale), 0, (int) (200 * scale), (int) (390 * scale));
 
       }
 
@@ -94,10 +95,12 @@ public class PlayersPopup{
 
       popup.add(backgroundLabel);
 
-      popup.getContentPane().setPreferredSize(backgroundLabel.getSize());
+      popup.setSize(backgroundLabel.getSize());
       popup.setLocationRelativeTo(window);
       popup.setVisible(true);
       popup.setResizable(false);
+      popup.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
+
     } else new Toast("Not Possible Yet", (JLabel) (window.getContentPane()), 2000);
 
   }
