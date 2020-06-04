@@ -92,7 +92,6 @@ $ java -jar Santorini.jar CLI
 ### Todo list:
 
 * UML
-* .jar files
 
 ### Possible Future Features:
 
