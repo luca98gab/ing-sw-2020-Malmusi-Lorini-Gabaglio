@@ -94,7 +94,7 @@ public class PlayersPopup{
 
       popup.add(backgroundLabel);
 
-      popup.setSize(backgroundLabel.getSize());
+      popup.getContentPane().setPreferredSize(backgroundLabel.getSize());
       popup.setLocationRelativeTo(window);
       popup.setVisible(true);
       popup.setResizable(false);
