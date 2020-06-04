@@ -1,9 +1,6 @@
 package it.polimi.ingsw.PSP32.client;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import it.polimi.ingsw.PSP32.model.Message;
 
 public class ClientHeartbeat implements Runnable {
 

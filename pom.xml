@@ -29,6 +29,17 @@
                                             <mainClass>it.polimi.ingsw.PSP32.client.ClientMain</mainClass>
                                         </transformer>
                                     </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <excludes>
+                                                <exclude>**/screnshotSantorini/*</exclude>
+                                                <exclude>**/controller/*</exclude>
+                                                <exclude>**/Full Size/**</exclude>
+                                                <exclude>**/Full size/*</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
                                 </configuration>
                             </execution>
                         </executions>
@@ -60,6 +71,19 @@
                                             <mainClass>it.polimi.ingsw.PSP32.server.Server</mainClass>
                                         </transformer>
                                     </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <excludes>
+                                                <exclude>**/*.png</exclude>
+                                                <exclude>**/*.pdf</exclude>
+                                                <exclude>**/*.ttf</exclude>
+                                                <exclude>**/*.icns</exclude>
+                                                <exclude>**/view/**</exclude>
+                                                <exclude>**/client/*</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
                                 </configuration>
                             </execution>
                         </executions>

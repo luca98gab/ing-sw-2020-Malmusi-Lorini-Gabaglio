@@ -1,4 +1,4 @@
-package it.polimi.ingsw.PSP32.client;
+package it.polimi.ingsw.PSP32.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

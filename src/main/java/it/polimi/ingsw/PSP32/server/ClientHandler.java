@@ -1,6 +1,6 @@
 package it.polimi.ingsw.PSP32.server;
 
-import it.polimi.ingsw.PSP32.client.Message;
+import it.polimi.ingsw.PSP32.model.Message;
 import it.polimi.ingsw.PSP32.controller.CheckCanBuild;
 import it.polimi.ingsw.PSP32.controller.CheckCanMove;
 import it.polimi.ingsw.PSP32.controller.Utility;
