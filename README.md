@@ -20,17 +20,67 @@
 
 <img src="src/main/resources/Santorini%20Images/GameIcon.png" alt="icon" width="200" height="200">
 
+---
+
+## USAGE
+
+### Requirements
+
+> For both Server and Client `Java 13+` is required
+- To install Java refer to the [Official Java Website](https://java.com/en/download/help/download_options.xml)
+
+- To check your Java version click [here](https://www.java.com/en/download/help/version_manual.xml) or type:
+
+```shell
+$ java -version
+```
+
+
+### Startup
+
+To play the game you need a running game server.
+You can either start it on the same computer as your client (the `Server address` will be your private ip address or `localhost`) or on a different one, in which case you will need to open a port on your router and share your public address to all the players.
+
+#### Server:
+
+- Locate the `SantoriniServer.jar` file in the `deliveries/final/jar` folder.
+
+> to run it double click on the file icon or type:
+
+```shell
+$ java -jar SantoriniServer.jar
+```
+
+#### Client:
+
+- Locate the `Santorini.jar` file in the `deliveries/final/jar` folder.
+
+The client can be used both through CLI or GUI
+
+> to run your client using the GUI double click on the file icon or type:
+
+```shell
+$ java -jar Santorini.jar
+```
+
+> to run your client using the CLI type:
+
+```shell
+$ java -jar Santorini.jar -cli
+```
+
+---
 
 ## STATUS
 
 ### Current Features:
 
-* Basic Rules
+* Complete Rules
 * 2 or 3 players
 * [9 standard + 5 advanced Gods](src/main/resources/Santorini%20Images/Gods.txt)
 * Client Server over local network or internet
 * Command Line Interface
-* Gui
+* Graphic User Interface
 
 ### Working on:
 
@@ -49,3 +99,9 @@
 * Multiple games on the same server
 * In-Game Chat
 * Resizable window
+
+---
+
+## GRAPHICS
+
+<img src="src/main/resources/Santorini%20Images/screnshotSantorini/Connection.png" alt="icon" width="400" height="300"><img src="src/main/resources/Santorini%20Images/screnshotSantorini/Schermata 2020-06-03 alle 21.27.58.png" alt="icon" width="400" height="300"><img src="src/main/resources/Santorini%20Images/screnshotSantorini/Schermata 2020-06-03 alle 21.28.16.png" alt="icon" width="400" height="300"><img src="src/main/resources/Santorini%20Images/screnshotSantorini/Schermata 2020-06-03 alle 21.28.51.png" alt="icon" width="400" height="300"><img src="src/main/resources/Santorini%20Images/screnshotSantorini/Schermata 2020-06-03 alle 21.29.46.png" alt="icon" width="400" height="300"><img src="src/main/resources/Santorini%20Images/screnshotSantorini/Schermata 2020-06-03 alle 21.32.45.png" alt="icon" width="400" height="300">
