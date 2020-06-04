@@ -71,10 +71,9 @@ public class Moving {
             Pawn opponentPawn = game.getMap()[move[0]][move[1]].getIsFull();
             if (god.equals("Apollo")){
                 switchPawns(game, activePawn, opponentPawn);
-            } else if (god.equals("Minotaur")){
+            }
+            else if (god.equals("Minotaur")){
                 pushPawns(game, activePawn, opponentPawn);
-                Cell startCellOpponent = game.getMap()[opponentPawn.getX()][opponentPawn.getY()];
-                CheckHasWon.checkHasWon(game, opponentPawn, startCellOpponent);
             }
         } else movePawnSecure(game, activePawn, move[0], move[1]);
 

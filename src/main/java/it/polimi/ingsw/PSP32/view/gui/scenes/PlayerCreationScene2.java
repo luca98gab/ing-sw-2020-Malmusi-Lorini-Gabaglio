@@ -180,7 +180,7 @@ public class PlayerCreationScene2  extends Gui {
     Boolean existing = false;
     if (str.matches("[a-zA-Z]+") || str.equals(" ")){
       for(int i=0; i<players.size(); i++){
-        if (textField.getText().equals(players.get(i).getName())) existing=true;
+        if (textField.getText().toUpperCase().equals(players.get(i).getName().toUpperCase())) existing=true;
       }
       if (!existing){
           validName=true;
