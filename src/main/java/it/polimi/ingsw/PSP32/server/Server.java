@@ -62,8 +62,9 @@ public class Server implements Runnable {
     serverWindow.setResizable(false);
     serverWindow.setIconImage((new ImageIcon(getClass().getResource("/Santorini Images/GameIconServer.jpeg")).getImage()));
     Taskbar taskbar=Taskbar.getTaskbar();
-    taskbar.setIconImage(serverWindow.getIconImage());
-
+    if(taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) taskbar.setIconImage(serverWindow.getIconImage());
+    serverWindow.pack();
+    serverWindow.setVisible(true);
       ServerSocket socket=null;
       try{
 
@@ -244,11 +245,6 @@ public class Server implements Runnable {
           exit=false;
       }while (true);
      // System.exit(0);
-
-
-
-
-
   }
 
 

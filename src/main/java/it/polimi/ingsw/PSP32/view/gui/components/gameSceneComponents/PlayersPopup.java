@@ -22,7 +22,7 @@ public class PlayersPopup{
     if (game!=null) {
 
       JLabel backgroundLabel = new JLabel();
-      backgroundLabel.setSize((int) (game.getPlayerList().size() * 200 * scale), (int) (370 * scale));
+      backgroundLabel.setSize((int) (game.getPlayerList().size() * 200 * scale), (int) (390 * scale));
 
       ArrayList<JPanel> playerPanels = new ArrayList<>();
 

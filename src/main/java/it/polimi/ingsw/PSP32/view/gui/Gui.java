@@ -29,14 +29,13 @@ public class Gui implements Runnable {
 
   public static double scale = 1;
 
-
   static public void setupWindow() throws IOException, FontFormatException {
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setUndecorated(false);
     window.setResizable(false);
     window.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
     Taskbar taskbar=Taskbar.getTaskbar();
-    taskbar.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
+    if(taskbar.isSupported(Taskbar.Feature.ICON_IMAGE))taskbar.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
