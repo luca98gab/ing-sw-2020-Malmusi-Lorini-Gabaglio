@@ -6,6 +6,9 @@ import it.polimi.ingsw.PSP32.model.Game;
 import it.polimi.ingsw.PSP32.model.Player;
 import it.polimi.ingsw.PSP32.controller.Utility;
 
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,6 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Server implements Runnable {
+
+  private static JFrame serverWindow = new JFrame("SantoriniServer");
+
   public final static int SOCKET_PORT = 7778;
 
   public static volatile ArrayList<ClientHandler> clients = new ArrayList<>();
@@ -51,6 +57,13 @@ public class Server implements Runnable {
 
   @Override
   public void run() {
+
+    serverWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    serverWindow.setResizable(false);
+    serverWindow.setIconImage((new ImageIcon(getClass().getResource("/Santorini Images/GameIconServer.jpeg")).getImage()));
+    Taskbar taskbar=Taskbar.getTaskbar();
+    taskbar.setIconImage(serverWindow.getIconImage());
+
       ServerSocket socket=null;
       try{
 

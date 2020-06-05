@@ -35,6 +35,8 @@ public class Gui implements Runnable {
     window.setUndecorated(false);
     window.setResizable(false);
     window.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
+    Taskbar taskbar=Taskbar.getTaskbar();
+    taskbar.setIconImage((new ImageIcon(Gui.class.getResource("/Santorini Images/GameIcon.png")).getImage()));
 
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
