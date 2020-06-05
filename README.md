@@ -45,13 +45,11 @@ You can either start it on the same computer as your client (the `Server address
 
 - Locate the `SantoriniServer.jar` file in the `deliveries/final/jar` folder.
 
-> to run it type:
+> to run double click on it or type:
 
 ```shell
 $ java -jar SantoriniServer.jar
 ```
-
-**N.B. Double clicking on the file icon will launch it, but you won't be able to easily kill it**
 
 #### Client:
 
