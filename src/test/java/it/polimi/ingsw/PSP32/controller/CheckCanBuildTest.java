@@ -1,31 +1,27 @@
-package it.polimi.ingsw.PSP32.model;
+package it.polimi.ingsw.PSP32.controller;
 
+import it.polimi.ingsw.PSP32.model.Game;
+import it.polimi.ingsw.PSP32.model.Player;
+import it.polimi.ingsw.PSP32.model.State;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class StateTest {
+public class CheckCanBuildTest {
 
     State state = null;
     ArrayList<Player> players;
     Game game1 = null;
-    Player player1 = null;
-    Player player2 = null;
-    Player player3 = null;
 
     @Before
     public void setup() {
-        players = new ArrayList<>();
-        player1 = new Player("Giorgio", "Blu", null);
-        player2 = new Player("Davide", "Rosso", null);
-        player3 = new Player("Luca", "Verde", null);
-        players.add(0, player1);
-        players.add(1, player2);
-        players.add(2, player3);
+        players.set(0, new Player("Giorgio", "Blu", null));
+        players.set(1, new Player("Davide", "Rosso", null));
+        players.set(2, new Player("Luca", "Verde", null));
 
         game1 = new Game(3);
         game1.setPlayerList(players);
@@ -37,13 +33,10 @@ public class StateTest {
         players = null;
         state = null;
         game1 = null;
-        player1 = null;
-        player2 = null;
-        player3 = null;
     }
 
     @Test
-    public void getTurn_setTurn_correctI_correctO() {
+    public void get_setTurn_correctI_correctO() {
         state.setNextTurn(game1);
         assertEquals(state.getTurn().getName(), "Davide");
         state.setNextTurn(game1);
@@ -51,4 +44,5 @@ public class StateTest {
         state.setNextTurn(game1);
         assertEquals(state.getTurn().getName(), "Giorgio");
     }
+
 }

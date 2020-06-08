@@ -41,6 +41,8 @@ public class CellTest {
     public void set_getHasDome_correctI_correctO() {
         cell1.setHasDome(true);
         assertEquals(cell1.getHasDome(), true);
+        cell1.setHasDome(false);
+        assertEquals(cell1.getHasDome(), false);
     }
 
 }

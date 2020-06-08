@@ -23,10 +23,6 @@ public class Message implements Serializable {
     return result;
   }
 
-  public void setResult(Object result) {
-    this.result = result;
-  }
-
   public ArrayList<Object> getParameters() {
     return parameters;
   }
