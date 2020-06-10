@@ -74,7 +74,7 @@ public class Client implements Runnable
 
     while (!exit){
       try {
-        exit =serverAdapter.answerToServer();
+        exit = serverAdapter.answerToServer();
 
       } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
         return;
