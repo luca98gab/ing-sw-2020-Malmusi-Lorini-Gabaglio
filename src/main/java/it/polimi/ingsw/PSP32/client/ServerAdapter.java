@@ -1,10 +1,12 @@
 package it.polimi.ingsw.PSP32.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
@@ -19,6 +21,8 @@ public class ServerAdapter
   private static ObjectOutputStream outputStm;
   private static ObjectInputStream inputStm;
   private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
+  private static Thread refuseInputThread = null;
+
 
 
   public ServerAdapter(Socket server) throws IOException
@@ -26,6 +30,7 @@ public class ServerAdapter
     this.server = server;
     outputStm = new ObjectOutputStream(server.getOutputStream());
     inputStm = new ObjectInputStream(server.getInputStream());
+    refuseInput();
   }
 
 
@@ -75,6 +80,7 @@ public class ServerAdapter
   public Boolean answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
 
     Object incomingObject = executionQueue.submit(() -> inputStm.readObject()).get();
+
     Message message = (Message)incomingObject;
 
     if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint")) System.out.println(message.getResult());
@@ -83,31 +89,39 @@ public class ServerAdapter
 
     switch (message.getMethodName()){
       case "getNumOfPlayers":
+        allowInput();
         int n = VirtualCli.getNumOfPlayers();
         sendResultMessage(n);
         break;
       case "createPlayer":
+        allowInput();
         Player p = VirtualCli.createPlayer((CopyOnWriteArrayList<Player>) message.getParameters().get(0), (int)message.getParameters().get(1));
         sendResultMessage(p);
+        refuseInput();
         break;
       case "gameGodsPicking":
+        allowInput();
         God[] g = VirtualCli.gameGodsPicking(((ArrayList<Player>) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));
         sendResultMessage(g);
         break;
       case "ownGodSelection":
+        allowInput();
         God[] god = {VirtualCli.ownGodSelection(((Player) message.getParameters().get(0)), ((ArrayList<God>) message.getParameters().get(1)))};
         sendResultMessage(god);
         break;
       case "player1GodAssignment":
+        allowInput();
         VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));
         break;
       case "printPlayerInfo":
+        allowInput();
         VirtualCli.printPlayerInfo(((ArrayList<Player>) message.getParameters().get(0)), ((Boolean) message.getParameters().get(1)));
         break;
       case "printTurnInfo":
         VirtualCli.printTurnInfo((Player) message.getParameters().get(0));
         break;
       case "getPawnInitialPosition":
+        allowInput();
         int[] position = VirtualCli.getPawnInitialPosition((Game) message.getParameters().get(0));
         sendResultMessage(position);
         break;
@@ -115,30 +129,37 @@ public class ServerAdapter
         VirtualCli.printBoardColored((Game) message.getParameters().get(0));
         break;
       case "getActivePawn":
+        allowInput();
         Pawn pawn=VirtualCli.getActivePawn((Game) message.getParameters().get(0), (Player) message.getParameters().get(1) );
         sendResultMessage(pawn);
         break;
       case "wantsToUsePower":
+        allowInput();
         Boolean bool1=VirtualCli.wantsToUsePower((Player) message.getParameters().get(0));
         sendResultMessage(bool1);
         break;
       case "waitForBuildCommand":
+        allowInput();
         Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
         sendResultMessage(bool2);
         break;
       case "getBuildLocationViaArrows":
+        allowInput();
         int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3) );
         sendResultMessage(cell);
         break;
       case "waitForMoveCommand":
+        allowInput();
         Boolean bool3=VirtualCli.waitForMoveCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );
         sendResultMessage(bool3);
         break;
       case "getValidMoveViaArrows":
+        allowInput();
         int[] move=VirtualCli.getValidMoveViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1), (Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3));
         sendResultMessage(move);
         break;
       case "askBuildTwice":
+        allowInput();
         Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));
         sendResultMessage(bool4);
         break;
@@ -150,26 +171,29 @@ public class ServerAdapter
         break;
       case "waitTurnMessage":
         System.out.println("\n"+ message.getParameters().get(1) +message.getParameters().get(0)+ "\u001b[0m "+ "is playing his turn...");
+        refuseInput();
         break;
       case "waitGodsPicking":
         System.out.println(""+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting the gods...");
+        refuseInput();
         break;
       case "waitOwnGodSelection":
         System.out.println("\n"+ message.getParameters().get(1) + message.getParameters().get(0)+ "\u001b[0m "+ "is selecting his own god...");
+        refuseInput();
         break;
       case "Disconnection":
         System.out.println("\n"+   "\u001b[31m" +"   ## WARNING ## \n"+  "\u001b[0m" );
         System.out.println("Someone left the match, the game is being shutted down");
         return true;
       case "aresPower":
+        allowInput();
         int [] coords =VirtualCli.aresPower((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1));
         sendResultMessage(coords);
         break;
     }
     return false;
   }
-  public void requestSendObject(Object object)
-  {
+  public void requestSendObject(Object object) {
     executionQueue.submit(() -> {
       try {
         outputStm.reset();
@@ -234,6 +258,32 @@ public class ServerAdapter
   }
   public static Object toServerGetObject(String methodName, Object par) throws IOException {
     return toServerGetObject(methodName, par, null, null, null);
+  }
+
+  private static void refuseInput(){
+    Thread thread = new Thread(() -> {
+      while (!Thread.interrupted()){
+
+        try {
+          if ((System.in).available()!=0){
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+            System.out.println("Wait for your turn");
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+      }
+    });
+    thread.start();
+    refuseInputThread = thread;
+  }
+  private static void allowInput(){
+    if (refuseInputThread != null){
+      refuseInputThread.interrupt();
+      refuseInputThread = null;
+    }
   }
 }
 

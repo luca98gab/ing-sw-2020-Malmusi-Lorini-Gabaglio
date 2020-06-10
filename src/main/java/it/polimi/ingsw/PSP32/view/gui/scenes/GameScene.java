@@ -927,8 +927,6 @@ public class GameScene extends Gui{
       else buildIconsLayer.get(i).setIcon(buildingIcons[cell.getFloor()]);
 
       if (cell.getIsFull()!=null) {
-        cells.get(i).setToolTipText("<html>" + cell.getIsFull().getPlayer().getName() + "<br/>"
-                + cell.getIsFull().getPlayer().getGod().getName() + "<br/>" + cell.getIsFull().getPlayer().getGod().getAbility());
         switch (cell.getIsFull().getPlayer().getColor()) {
           case ("\u001B[31m"):
             if (activePawn!=null && i==activePawn.getX()+(activePawn.getY()*5)){
@@ -953,7 +951,6 @@ public class GameScene extends Gui{
       }
       else {
         cells.get(i).setIcon(null);
-        cells.get(i).setToolTipText(null);
       }
     }
 
