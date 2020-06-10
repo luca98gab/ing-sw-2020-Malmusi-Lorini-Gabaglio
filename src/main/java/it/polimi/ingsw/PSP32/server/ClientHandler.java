@@ -28,7 +28,7 @@ public class ClientHandler implements Runnable
   private final Boolean first;
   private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
 
-  ClientHandler(Socket client, Boolean first) {
+  public ClientHandler(Socket client, Boolean first) {
     this.client = client;
     this.first = first;
   }
