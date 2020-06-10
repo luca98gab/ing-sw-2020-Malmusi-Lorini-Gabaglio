@@ -39,6 +39,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildE(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getX()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -55,6 +56,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildN(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -71,6 +73,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildS(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -87,6 +90,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildNW(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getX()>0 && pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -103,6 +107,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildNE(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getX()<4 && pawn.getY()>0){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -119,6 +124,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildSE(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getX()<4 && pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -135,6 +141,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildSW(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed){
         if (pawn.getX()>0 && pawn.getY()<4){
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
@@ -151,6 +158,7 @@ public class CheckCanBuild {
         }
         return false;
     }
+
     public static Boolean checkCanBuildBelow(Game game, Pawn pawn, Cell restriction){
         Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
         if (currentCell.getFloor()==3) return false;
@@ -163,9 +171,9 @@ public class CheckCanBuild {
         if (pawn.getId()==1) pawn= pawn.getPlayer().getPawns()[1];
         else pawn= pawn.getPlayer().getPawns()[0];
         for (int i=pawn.getY()-1; i<pawn.getY()+2; i++){
-            if (i>=0) {
+            if (i>=0 && i<=4) {
                 for (int j=pawn.getX()-1; j<pawn.getX()+2; j++){
-                    if( j>=0 && game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null) return true;
+                    if( j>=0 && j<=4 && game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null) return true;
                 }
             }
         }
