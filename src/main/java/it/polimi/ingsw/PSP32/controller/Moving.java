@@ -9,6 +9,22 @@ import java.io.IOException;
 
 public class Moving {
 
+    private final CheckHasWon checkHasWon;
+    private final CheckHasLost checkHasLost;
+    private final Utility utility;
+
+    Moving(CheckHasLost checkHasLost, CheckHasWon checkHasWon, Utility utility){
+        this.utility = utility;
+        this.checkHasLost = checkHasLost;
+        this.checkHasWon = checkHasWon;
+    }
+
+    public Moving(){
+        this.utility = new Utility();
+        this.checkHasWon = new CheckHasWon(utility);
+        this.checkHasLost = new CheckHasLost(utility);
+    }
+
 
     /** Method that manages the move phase, handling the various gods powers
      *
@@ -17,7 +33,7 @@ public class Moving {
      * @return Pawn: return the pawn that just moved
      * @throws IOException
      */
-    protected static Pawn movePhase(Game game, Player player) throws IOException {
+    protected Pawn movePhase(Game game, Player player) throws IOException {
 
         for (int i=0; i<game.getPlayerList().size(); i++){
             if (!player.equals(game.getPlayer(i)))
@@ -44,7 +60,7 @@ public class Moving {
                 Cell cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) cell.setHasDome(true);
-                Utility.toAllClientsVoid(game, "printBoardColored", game);
+                utility.toAllClientsVoid(game, "printBoardColored", game);
 
                 Boolean changedFlag;
                 if (game.getAthenaFlag().equals(true)) {
@@ -54,7 +70,7 @@ public class Moving {
                     game.setAthenaFlag(true);
                 }
 
-                if(!CheckHasLost.checkHasLostForMoves(game, activePawn)) {
+                if(!checkHasLost.checkHasLostForMoves(game, activePawn)) {
                     player.getRelatedClient().toClientGetObject("waitForMoveCommand", game, activePawn, false, false);
                     move = (int[]) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, false);
 
@@ -77,16 +93,16 @@ public class Moving {
             }
         } else movePawnSecure(game, activePawn, move[0], move[1]);
 
-        Utility.toAllClientsVoid(game, "printBoardColored", game);
+        utility.toAllClientsVoid(game, "printBoardColored", game);
 
         if (god.equals("Artemis")) {
-            if(!CheckHasLost.checkHasLostForMoves(game, player, true)) {
+            if(!checkHasLost.checkHasLostForMoves(game, player, true)) {
                 if (player.getRelatedClient().toClientGetObject("waitForMoveCommand", game, activePawn, false, true).equals(true)) {
                         move = (int[]) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, startPosition, false);
                 }
                 if (move != null) {
                     movePawnSecure(game, activePawn, move[0], move[1]);
-                    Utility.toAllClientsVoid(game, "printBoardColored", game);
+                    utility.toAllClientsVoid(game, "printBoardColored", game);
                 }
             }
         } else if (god.equals("Athena")){
@@ -95,7 +111,7 @@ public class Moving {
             }
         }
 
-        CheckHasWon.checkHasWon(game, activePawn, startPosition);
+        checkHasWon.checkHasWon(game, activePawn, startPosition);
 
         return activePawn;
     }
@@ -107,7 +123,7 @@ public class Moving {
      * @param x : int new x coord. of the pawn
      * @param y : int new y coord. of the pawn
      */
-    private static void movePawnSecure(Game game, Pawn pawn, int x, int y){
+    private void movePawnSecure(Game game, Pawn pawn, int x, int y){
         game.getMap()[pawn.getX()][pawn.getY()].setIsFull(null);
         game.getMap()[x][y].setIsFull(pawn);
         pawn.moves(x, y);
@@ -119,7 +135,7 @@ public class Moving {
      * @param pawn1 : Pawn first of the couple
      * @param pawn2 : Pawn second pawn of the couple
      */
-    private static void switchPawns(Game game, Pawn pawn1, Pawn pawn2){
+    private void switchPawns(Game game, Pawn pawn1, Pawn pawn2){
         int x1 = pawn1.getX();
         int y1 = pawn1.getY();
         int x2 = pawn2.getX();
@@ -138,7 +154,7 @@ public class Moving {
      * @param pawn : Pawn pawn that's pushing
      * @param opponentPawn : Pawn that gets pushed
      */
-    private static void pushPawns(Game game, Pawn pawn, Pawn opponentPawn){
+    private void pushPawns(Game game, Pawn pawn, Pawn opponentPawn){
 
         int x0 = pawn.getX();
         int y0 = pawn.getY();

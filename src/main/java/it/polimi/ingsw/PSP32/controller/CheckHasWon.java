@@ -9,6 +9,11 @@ import java.io.IOException;
 
 public class CheckHasWon {
 
+    Utility utility;
+
+    CheckHasWon(Utility utility){
+        this.utility = utility;
+    }
 
     /** Method to check if the current player won
      *
@@ -17,7 +22,7 @@ public class CheckHasWon {
      * @param startCell : Cell pawn location before moving
      * @throws IOException
      */
-    protected static void checkHasWon(Game game, Pawn pawn, Cell startCell) throws IOException {
+    protected void checkHasWon(Game game, Pawn pawn, Cell startCell) throws IOException {
         Boolean heraInGame = false;
         for (int i = 0; i < game.getPlayerList().size(); i++){
             if (game.getPlayerList().get(i).getGod().getName().equals("Hera")){
@@ -27,18 +32,18 @@ public class CheckHasWon {
         if (!heraInGame || pawn.getPlayer().getGod().getName().equals("Hera")){
             if (game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3 ||
                     (pawn.getPlayer().getGod().getName().equals("Pan") && startCell.getFloor()-game.getMap()[pawn.getX()][pawn.getY()].getFloor()==2)) {
-                Utility.toAllClientsVoid(game, "endGameGraphics", pawn.getPlayer());
+                endGameGraphics(game, pawn.getPlayer());
             }
         } else {
             if ((game.getMap()[pawn.getX()][pawn.getY()].getFloor() == 3 ||
                     (pawn.getPlayer().getGod().getName().equals("Pan") && startCell.getFloor()-game.getMap()[pawn.getX()][pawn.getY()].getFloor()==2)) && (pawn.getX()<4 && pawn.getY()<4 && pawn.getX()>0 && pawn.getY()>0)) {
-                Utility.toAllClientsVoid(game, "endGameGraphics", pawn.getPlayer());
+                endGameGraphics(game, pawn.getPlayer());
             }
         }
 
     }
 
-    protected static void checkHasWon5Domes(Game game, Player player) throws IOException {
+    protected void checkHasWon5Domes(Game game, Player player) throws IOException {
         if (player.getGod().getName().equals("Chronus")){
             int n = 0;
             for (int i = 0; i < 5; i++){
@@ -48,7 +53,11 @@ public class CheckHasWon {
                     }
                 }
             }
-            if (n >= 5)  Utility.toAllClientsVoid(game, "endGameGraphics", player);
+            if (n >= 5) endGameGraphics(game, player);
         }
+    }
+
+    void endGameGraphics(Game game, Player player) throws IOException {
+        utility.toAllClientsVoid(game, "endGameGraphics", player);
     }
 }

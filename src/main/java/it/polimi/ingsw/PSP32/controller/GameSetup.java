@@ -6,6 +6,7 @@ import it.polimi.ingsw.PSP32.model.Pawn;
 import it.polimi.ingsw.PSP32.model.Player;
 import it.polimi.ingsw.PSP32.server.ClientHandler;
 import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
+import jdk.jshell.execution.Util;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -115,13 +116,16 @@ public class GameSetup {
      * @throws IOException
      */
     public static void firstPawnPositioning(Game game) throws IOException {
+
+        Utility utility = new Utility();
+
         for (int i = 0; i < game.getPlayerList().size(); i++){
 
             ClientHandler client = game.getPlayerList().get(i).getRelatedClient();
 
             client.toClientVoid("printTurnInfo", game.getPlayerList().get(i));
 
-            Utility.toAllClientsVoid(game,"printBoardColored", game);
+            utility.toAllClientsVoid(game,"printBoardColored", game);
 
             for (int j = 0; j < 2; j++) {
 

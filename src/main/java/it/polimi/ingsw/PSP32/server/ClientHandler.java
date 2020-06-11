@@ -26,9 +26,11 @@ public class ClientHandler implements Runnable
   private  ObjectInputStream input;
   private final Socket client;
   private final Boolean first;
+  private final Utility utility;
   private ExecutorService executionQueue = Executors.newSingleThreadExecutor();
 
-  public ClientHandler(Socket client, Boolean first) {
+  public ClientHandler(Socket client, Boolean first, Utility utility) {
+    this.utility = utility;
     this.client = client;
     this.first = first;
   }
@@ -264,7 +266,7 @@ public class ClientHandler implements Runnable
         }
       }
       catch (IOException e){
-        Utility.notifyClosingGame(clients);
+        utility.notifyClosingGame(clients);
         exit=true;
         synchronized(lockPlayer){
           Server.flagForSync.set(1);

@@ -36,6 +36,9 @@ public class Server implements Runnable {
   public static AtomicInteger flagForTimeout = new AtomicInteger();
   private int timeout=20000;
 
+  private final Utility utility = new Utility();
+  private final Phases phases = new Phases(utility);
+
     /** Method to stop the clients after someone won or someone left the match
      *
      * @param socket : Socket
@@ -86,7 +89,7 @@ public class Server implements Runnable {
           /* accepts connections; for every connection we accept,
            * create a new Thread executing a ClientHandler */
           client = socket.accept();
-          ClientHandler clientHandler = new ClientHandler(client, true);
+          ClientHandler clientHandler = new ClientHandler(client, true, utility);
           clients.add(clientHandler);
           Thread thread = new Thread(clientHandler, "server_" + client.getInetAddress());
           thread.start();
@@ -127,7 +130,7 @@ public class Server implements Runnable {
               /* accepts connections; for every connection we accept,
                * create a new Thread executing a ClientHandler */
               client = socket.accept();
-              ClientHandler clientHandler = new ClientHandler(client, false);
+              ClientHandler clientHandler = new ClientHandler(client, false, utility);
               clients.add(clientHandler);
               Thread thread = new Thread(clientHandler, "server_" + i + client.getInetAddress());
               i++;
@@ -184,19 +187,19 @@ public class Server implements Runnable {
               game.getPlayerList().get(i).getRelatedClient().toClientVoid("printPlayerInfo", game.getPlayerList(), false);
           }
           GameSetup.firstPawnPositioning(game);
-          Utility.toAllClientsVoid(game, "printBoardColored", game);
+          utility.toAllClientsVoid(game, "printBoardColored", game);
 
       } catch (IOException e) {
-          Utility.notifyClosingGame(clients);
+          utility.notifyClosingGame(clients);
           StopClients(socket, players.size());
           return;
       }
 
       try {
-          Phases.startGame(game);
+          phases.startGame(game);
       } catch (SocketTimeoutException s) {
           System.out.println("Someone left, the game is being restarted");
-          Utility.notifyClosingGame(clients);
+          utility.notifyClosingGame(clients);
           try {
               socket.close();
           } catch (IOException e) {
@@ -205,7 +208,7 @@ public class Server implements Runnable {
           return;
       } catch (IOException e) {
           System.out.println("Someone left, the game is being restarted");
-          Utility.notifyClosingGame(clients);
+          utility.notifyClosingGame(clients);
           try {
               socket.close();
           } catch (IOException t) {
@@ -218,7 +221,7 @@ public class Server implements Runnable {
   }catch(SocketException | SocketTimeoutException s)
     {
         System.out.println("Someone disconnected, the game is being restarted");
-        Utility.notifyClosingGame(clients);
+        utility.notifyClosingGame(clients);
         try {
             socket.close();
         } catch (IOException e) {

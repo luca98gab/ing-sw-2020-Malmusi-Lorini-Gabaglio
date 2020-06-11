@@ -19,15 +19,15 @@ public class Utility {
       * @param par2 : Object possible parameter of the function
       * @throws IOException possible communication errors on the socket
       */
-    public static void toAllClientsVoid(Game game, String methodName, Object par1, Object par2) throws IOException {
+    public void toAllClientsVoid(Game game, String methodName, Object par1, Object par2) throws IOException {
         for (int i = 0; i < game.getPlayerList().size(); i++){
             game.getPlayerList().get(i).getRelatedClient().toClientVoid(methodName, par1, par2);
         }
     }
-    public static void toAllClientsVoid(Game game, String methodName, Object par1) throws IOException {
+    public void toAllClientsVoid(Game game, String methodName, Object par1) throws IOException {
         toAllClientsVoid(game, methodName, par1, null);
     }
-    public static void toAllClientsVoid(Game game, String methodName) throws IOException {
+    public void toAllClientsVoid(Game game, String methodName) throws IOException {
         toAllClientsVoid(game, methodName, null);
     }
 
@@ -36,7 +36,7 @@ public class Utility {
       *
       * @param clients: ArrayList clienthandlers of each client
       */
-    public static void notifyClosingGame(ArrayList<ClientHandler> clients) {
+    public void notifyClosingGame(ArrayList<ClientHandler> clients) {
         for (int i = 0; i < clients.size(); i++) {
                 try {
                     clients.get(i).toClientVoid("Disconnection");

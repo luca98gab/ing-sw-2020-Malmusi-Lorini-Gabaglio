@@ -9,6 +9,11 @@ import java.io.IOException;
 
 public class CheckHasLost {
 
+    Utility utility;
+
+    CheckHasLost(Utility utility){
+        this.utility = utility;
+    }
 
     /** Method to check if the player can move anywhere (Overload)
      *
@@ -18,8 +23,7 @@ public class CheckHasLost {
      * @return Boolean(True= no valid build locations, False= there are valid build locations)
      * @throws IOException
      */
-
-    protected static Boolean checkHasLostForMoves(Game game, Player player, Boolean artemis) throws IOException {
+    Boolean checkHasLostForMoves(Game game, Player player, Boolean artemis) throws IOException {
         int movablePawns = 0;
         for (int j = 0; j < player.getPawns().length; j++){
             if (CheckCanMove.checkCanMoveE(game, player.getPawns()[j], null) || CheckCanMove.checkCanMoveW(game, player.getPawns()[j], null) ||
@@ -31,23 +35,35 @@ public class CheckHasLost {
         }
         if (movablePawns == 0 && !artemis){
             if (game.getPlayerList().size()==3){
-                Utility.toAllClientsVoid(game, "removedPlayerGraphics", player);
+                toAllClientsVoid(game, player, "removedPlayerGraphics");
                 game.getPlayerList().remove(player);
+                game.getMap()[player.getPawns()[0].getX()][player.getPawns()[0].getY()].setIsFull(null);
+                game.getMap()[player.getPawns()[1].getX()][player.getPawns()[1].getY()].setIsFull(null);
+                printBoardColored(game);
                 return true;
             } else {
-                Utility.toAllClientsVoid(game,"endGameGraphics" , game.getWhosNext(player));
-                while (true);
+                toAllClientsVoid(game, game.getWhosNext(player), "endGameGraphics");
+                return true;
+                /*
+                blockExecution();
+                //never returned, only for testing
+                return null;
+                 */
             }
         }
         else {
-            if(movablePawns==0 && artemis) return true;
+            if(movablePawns==0 && artemis) {
+                return true;
+            }
         }
         return false;
     }
-    protected static Boolean checkHasLostForMoves(Game game, Player player) throws IOException {
+
+    Boolean checkHasLostForMoves(Game game, Player player) throws IOException {
         return checkHasLostForMoves(game, player, false);
     }
-    protected static Boolean checkHasLostForMoves(Game game, Pawn pawn) throws IOException {
+
+    Boolean checkHasLostForMoves(Game game, Pawn pawn) throws IOException {
         int movablePawns = 0;
         if (CheckCanMove.checkCanMoveE(game, pawn, null) || CheckCanMove.checkCanMoveW(game, pawn, null) ||
                 CheckCanMove.checkCanMoveN(game, pawn, null) || CheckCanMove.checkCanMoveS(game, pawn, null) ||
@@ -57,12 +73,20 @@ public class CheckHasLost {
         }
         if (movablePawns == 0){
             if (game.getPlayerList().size()==3){
-                Utility.toAllClientsVoid(game, "removedPlayerGraphics", pawn.getPlayer());
+                toAllClientsVoid(game, pawn.getPlayer(), "removedPlayerGraphics");
                 game.getPlayerList().remove(pawn.getPlayer());
+                game.getMap()[pawn.getPlayer().getPawns()[0].getX()][pawn.getPlayer().getPawns()[0].getY()].setIsFull(null);
+                game.getMap()[pawn.getPlayer().getPawns()[1].getX()][pawn.getPlayer().getPawns()[1].getY()].setIsFull(null);
+                printBoardColored(game);
                 return true;
             } else {
-                Utility.toAllClientsVoid(game,"endGameGraphics" , game.getWhosNext(pawn.getPlayer()));
-                while (true);
+                toAllClientsVoid(game, game.getWhosNext(pawn.getPlayer()), "endGameGraphics");
+                return true;
+                /*
+                blockExecution();
+                //never returned, only for testing
+                return null;
+                 */
             }
         }
         return false;
@@ -77,9 +101,8 @@ public class CheckHasLost {
      * @return Boolean(True= no valid build locations, False= there are valid build locations)
      * @throws IOException
      */
-    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeterPower, Cell cell, Boolean edgeCellsAllowed) throws IOException {
+    Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeterPower, Cell cell, Boolean edgeCellsAllowed) throws IOException {
         Player player = pawn.getPlayer();
-
 
         if (CheckCanBuild.checkCanBuildE(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildW(game, pawn, cell, edgeCellsAllowed) ||
                 CheckCanBuild.checkCanBuildN(game, pawn, cell, edgeCellsAllowed) || CheckCanBuild.checkCanBuildS(game, pawn, cell, edgeCellsAllowed) ||
@@ -90,25 +113,53 @@ public class CheckHasLost {
         else {
             if(demeterPower) {
                 if (game.getPlayerList().size() == 3) {
-                    Utility.toAllClientsVoid(game, "removedPlayerGraphics", player);
+                    toAllClientsVoid(game, player, "removedPlayerGraphics");
                     game.getPlayerList().remove(player);
+                    game.getMap()[player.getPawns()[0].getX()][player.getPawns()[0].getY()].setIsFull(null);
+                    game.getMap()[player.getPawns()[1].getX()][player.getPawns()[1].getY()].setIsFull(null);
+                    printBoardColored(game);
                     return true;
                 } else {
                     game.getPlayerList().remove(player);
-                    player.getRelatedClient().toClientVoid("endGameGraphics", game.getPlayerList().get(0));
-                    while (true) ;
+                    toClientVoid(game, player, "endGameGraphics");
+
+                    /*
+                    blockExecution();
+                    //never returned, only for testing
+                    return null;
+                     */
+                    return true;
                 }
             }
-            else return true;
+            else {
+                return true;
+            }
         }
-
-
-
     }
-    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeter, Cell cell) throws IOException {
+
+    Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeter, Cell cell) throws IOException {
         return checkHasLostForBuild(game, pawn, false, null, true);
     }
-    protected static Boolean checkHasLostForBuild(Game game, Pawn pawn) throws IOException {
+
+    Boolean checkHasLostForBuild(Game game, Pawn pawn) throws IOException {
         return checkHasLostForBuild(game, pawn, false, null);
     }
+
+    void toAllClientsVoid(Game game, Player player, String message) throws IOException {
+        utility.toAllClientsVoid(game, message, player);
+    }
+
+    void toClientVoid(Game game, Player player, String string) throws IOException {
+        player.getRelatedClient().toClientVoid(string, game.getPlayerList().get(0));
+    }
+
+    void printBoardColored(Game game) throws IOException {
+        utility.toAllClientsVoid(game, "printBoardColored", game);
+    }
+
+    /*
+    private Boolean blockExecution() {
+        while (true) ;
+    }
+     */
 }

@@ -9,6 +9,21 @@ import java.io.IOException;
 
 public class Building {
 
+    private final CheckHasWon checkHasWon;
+    private final CheckHasLost checkHasLost;
+    private final Utility utility;
+
+    Building(CheckHasLost checkHasLost, CheckHasWon checkHasWon, Utility utility){
+        this.utility = utility;
+        this.checkHasLost = checkHasLost;
+        this.checkHasWon = checkHasWon;
+    }
+
+    public Building(){
+        this.utility = new Utility();
+        this.checkHasWon = new CheckHasWon(utility);
+        this.checkHasLost = new CheckHasLost(utility);
+    }
 
     /** Method that manages the build phase
      *
@@ -17,7 +32,7 @@ public class Building {
      * @throws IOException
      */
 
-    protected static void buildPhase(Game game, Pawn pawn) throws IOException {
+    protected void buildPhase(Game game, Pawn pawn) throws IOException {
 
         String god = pawn.getPlayer().getGod().getName();
 
@@ -37,10 +52,10 @@ public class Building {
             if (cell.getFloor() == 4) cell.setHasDome(true);
         }
 
-        Utility.toAllClientsVoid(game, "printBoardColored", game);
+        utility.toAllClientsVoid(game, "printBoardColored", game);
 
         if (god.equals("Demeter")) {
-            if (!CheckHasLost.checkHasLostForBuild(game, pawn, true, cell)) {
+            if (!checkHasLost.checkHasLostForBuild(game, pawn, true, cell)) {
                 Cell restriction = cell;
                 cell = null;
                 if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true, restriction).equals(false)) {
@@ -50,11 +65,11 @@ public class Building {
                 if (cell != null) {
                     cell.setFloor(cell.getFloor() + 1);
                     if (cell.getFloor() == 4) cell.setHasDome(true);
-                    Utility.toAllClientsVoid(game, "printBoardColored", game);
+                    utility.toAllClientsVoid(game, "printBoardColored", game);
                 }
             }
         } else if (god.equals("Hestia")){
-            if (!CheckHasLost.checkHasLostForBuild(game, pawn, false,  null, false)) {
+            if (!checkHasLost.checkHasLostForBuild(game, pawn, false,  null, false)) {
                 Cell restriction = cell;
                 cell = null;
                 if (client.toClientGetObject("waitForBuildCommand", game, pawn, false, true,false).equals(false)) {
@@ -64,20 +79,20 @@ public class Building {
                 if (cell != null) {
                     cell.setFloor(cell.getFloor() + 1);
                     if (cell.getFloor() == 4) cell.setHasDome(true);
-                    Utility.toAllClientsVoid(game, "printBoardColored", game);
+                    utility.toAllClientsVoid(game, "printBoardColored", game);
                 }
             }
         } else if (god.equals("Hephaestus")) {
             if (cell.getFloor()<3 && (Boolean) client.toClientGetObject("askBuildTwice" , pawn.getPlayer())){
                 cell.setFloor(cell.getFloor()+1);
-                Utility.toAllClientsVoid(game, "printBoardColored", game);
+                utility.toAllClientsVoid(game, "printBoardColored", game);
             }
         }
 
 
     }
 
-    public static void aresPower(Game game, Pawn usedPawn) throws IOException {
+    public void aresPower(Game game, Pawn usedPawn) throws IOException {
         Pawn activePawn= null;
         if (usedPawn.getId()==1) activePawn= usedPawn.getPlayer().getPawns()[1];
         else activePawn= usedPawn.getPlayer().getPawns()[0];
