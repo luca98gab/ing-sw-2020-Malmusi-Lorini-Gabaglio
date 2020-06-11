@@ -19,11 +19,10 @@ public class CheckHasLost {
      *
      * @param game : Game
      * @param player : Pawn active pawn
-     * @param artemis : Boolean flag to know if this is the second move of artemis (i.e. if she can't move, the player hasn't lost yet)
      * @return Boolean(True= no valid build locations, False= there are valid build locations)
      * @throws IOException
      */
-    Boolean checkHasLostForMoves(Game game, Player player, Boolean artemis) throws IOException {
+    Boolean checkHasLostForMoves(Game game, Player player) throws IOException {
         int movablePawns = 0;
         for (int j = 0; j < player.getPawns().length; j++){
             if (CheckCanMove.checkCanMoveE(game, player.getPawns()[j], null) || CheckCanMove.checkCanMoveW(game, player.getPawns()[j], null) ||
@@ -33,7 +32,7 @@ public class CheckHasLost {
                 movablePawns++;
             }
         }
-        if (movablePawns == 0 && !artemis){
+        if (movablePawns == 0){
             if (game.getPlayerList().size()==3){
                 toAllClientsVoid(game, player, "removedPlayerGraphics");
                 game.getPlayerList().remove(player);
@@ -51,25 +50,22 @@ public class CheckHasLost {
                  */
             }
         }
-        else {
-            if(movablePawns==0 && artemis) {
-                return true;
-            }
-        }
         return false;
     }
 
-    Boolean checkHasLostForMoves(Game game, Player player) throws IOException {
-        return checkHasLostForMoves(game, player, false);
-    }
-
-    Boolean checkHasLostForMoves(Game game, Pawn pawn) throws IOException {
+    Boolean checkHasLostForMoves(Game game, Pawn pawn, Boolean artemis, Cell restriction) throws IOException {
         int movablePawns = 0;
-        if (CheckCanMove.checkCanMoveE(game, pawn, null) || CheckCanMove.checkCanMoveW(game, pawn, null) ||
-                CheckCanMove.checkCanMoveN(game, pawn, null) || CheckCanMove.checkCanMoveS(game, pawn, null) ||
-                CheckCanMove.checkCanMoveSE(game, pawn, null) || CheckCanMove.checkCanMoveNE(game, pawn, null) ||
-                CheckCanMove.checkCanMoveSW(game, pawn, null) || CheckCanMove.checkCanMoveNW(game, pawn, null)){
+        if (CheckCanMove.checkCanMoveE(game, pawn, restriction) || CheckCanMove.checkCanMoveW(game, pawn, restriction) ||
+                CheckCanMove.checkCanMoveN(game, pawn, restriction) || CheckCanMove.checkCanMoveS(game, pawn, restriction) ||
+                CheckCanMove.checkCanMoveSE(game, pawn, restriction) || CheckCanMove.checkCanMoveNE(game, pawn, restriction) ||
+                CheckCanMove.checkCanMoveSW(game, pawn, restriction) || CheckCanMove.checkCanMoveNW(game, pawn, restriction)){
             movablePawns++;
+        }
+        if(artemis && movablePawns==0){
+            return true;
+        }
+        if(artemis) {
+            return false;
         }
         if (movablePawns == 0){
             if (game.getPlayerList().size()==3){
@@ -90,6 +86,10 @@ public class CheckHasLost {
             }
         }
         return false;
+    }
+
+    Boolean checkHasLostForMoves(Game game, Pawn pawn) throws IOException{
+        return checkHasLostForMoves(game, pawn, false, null);
     }
 
     /** Method to check if the player can build anywhere (Overload)
