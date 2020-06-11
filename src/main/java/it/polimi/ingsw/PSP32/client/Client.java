@@ -27,31 +27,13 @@ public class Client implements Runnable
     System.exit(0);
   }
 
-  public String receiveMessage(ServerAdapter serverAdapter1) {
-    Future<String> stringFuture = serverAdapter1.requestRead();
-    String response = null;
-    while (response == null){
-      try {
-        response = stringFuture.get(5, TimeUnit.SECONDS);
-      } catch (InterruptedException | TimeoutException e) {
-      } catch (ExecutionException e) {
-        return "server not reachable";
-      }
-    }
-    return response;
-  }
-
-
   @Override
   public void run()
   {
 
     Scanner scanner = new Scanner(System.in);
-
-
-      System.out.println("IP address of server?");
-      String ip = scanner.nextLine();
-
+    System.out.println("IP address of server?");
+    String ip = scanner.nextLine();
 
     Socket server;
     try {
@@ -75,31 +57,10 @@ public class Client implements Runnable
     while (!exit){
       try {
         exit = serverAdapter.answerToServer();
-
-      } catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
+      }
+      catch (ExecutionException | InterruptedException | IOException | NullPointerException | LobbyIsFullException e) {
         return;
       }
     }
-
-
-    /**
-     * String receivedMessage = null;
-     *     do {
-     *       receivedMessage = receiveMessage(serverAdapter);
-     *       System.out.println(receivedMessage);
-     *       String str = scanner.nextLine();
-     *       while ("".equals(str));
-     *
-     *       serverAdapter.requestSend(str);
-     *       System.out.println("message sent");
-     *     } while (!receivedMessage.equals("esc"));
-     *     serverAdapter.stop();
-     */
-
-
-
-
   }
-
-
 }

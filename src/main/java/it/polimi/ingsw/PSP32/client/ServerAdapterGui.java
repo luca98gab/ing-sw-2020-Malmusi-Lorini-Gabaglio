@@ -28,7 +28,6 @@ public class ServerAdapterGui
   public static AtomicInteger flagForGods = new AtomicInteger(0);
   public static final Object lockOwnGod = new Object();
   public static AtomicInteger flagForOwnGod = new AtomicInteger(0);
-  static boolean firstTime= true;
   public static final Object lockFirstPositioning = new Object();
   public static AtomicInteger flagForFirstPositioning = new AtomicInteger(0);
   public static final Object lockActivePawn = new Object();
@@ -39,39 +38,36 @@ public class ServerAdapterGui
   public static AtomicInteger flagForMove2 = new AtomicInteger(0);
   public static final Object lockAresPower = new Object();
   public static AtomicInteger flagForAresPower = new AtomicInteger(0);
+  static boolean firstTime= true;
 
 
 
-
-  public ServerAdapterGui(Socket server) throws IOException
-  {
+  public ServerAdapterGui(Socket server) throws IOException {
     this.server = server;
     outputStm = new ObjectOutputStream(server.getOutputStream());
     inputStm = new ObjectInputStream(server.getInputStream());
   }
 
-
-  public void stop()
-  {
+  public void stop() {
     executionQueue.execute(() -> {
       try {
         server.close();
-      } catch (IOException e) {e.printStackTrace(); }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
     executionQueue.shutdown();
   }
 
 
-  public Future<String> requestConversion(String input)
-  {
+  public Future<String> requestConversion(String input) {
     return executionQueue.submit(() -> {
       outputStm.writeObject(input);
       return (String)inputStm.readObject();
     });
   }
 
-  public void requestSend(String input)
-  {
+  public void requestSend(String input) {
     executionQueue.submit(() -> {
       try {
         outputStm.writeObject(input);
@@ -101,7 +97,6 @@ public class ServerAdapterGui
 
     if (message.getTypeOfMessage()!=null && message.getTypeOfMessage().equals("StringInfoToPrint") && message.getResult().equals("Lobby is full\n")) GameScene.messageReceived("Lobby Is Full", message.getParameters());
 
-
     switch (message.getMethodName()){
       case "getNumOfPlayers":
         PlayerCreationScene playerCreationScene = new PlayerCreationScene();
@@ -116,12 +111,10 @@ public class ServerAdapterGui
         int n = PlayerCreationScene.getPlayerNum();
         sendResultMessage(n);
         break;
-
       case "createPlayer":
         if( ((CopyOnWriteArrayList<Player>) message.getParameters().get(0)).size() != 0  ) {
           PlayerCreationScene2 playerCreationScene2 = new PlayerCreationScene2(((CopyOnWriteArrayList<Player>) message.getParameters().get(0)));
           playerCreationScene2.show();
-
           synchronized (lockPlayer) {
             while (flagForPlayer.get() == 0) {
               try {
@@ -135,7 +128,6 @@ public class ServerAdapterGui
         }
         else sendResultMessage(PlayerCreationScene.getPlayer());
         break;
-
       case "gameGodsPicking":
        GodPickingScene godSelectionScene = new GodPickingScene (((ArrayList<Player>) message.getParameters().get(0)).size(), ((God[]) message.getParameters().get(1)));
        godSelectionScene.show();
@@ -150,7 +142,6 @@ public class ServerAdapterGui
         God[] g = GodPickingScene.getSelectedGods();
         sendResultMessage(g);
         break;
-
       case "ownGodSelection":
         GodPickingScene2 ownGodSelection = new GodPickingScene2 (((ArrayList<God>) message.getParameters().get(1)));
         ownGodSelection.show();
@@ -170,7 +161,6 @@ public class ServerAdapterGui
         gameScene.show();
         break;
       case "getPawnInitialPosition":
-
         if (firstTime) {
           Player player1 = (Player) message.getParameters().get(1);
           if (((Game) message.getParameters().get(0)).getPlayerList().get(0).equals(player1)){
@@ -180,7 +170,6 @@ public class ServerAdapterGui
           GameScene.messageReceived("Refresh Screen", message.getParameters());
           GameScene.messageReceived("Initial Positioning", message.getParameters());
         }
-
         synchronized (lockFirstPositioning) {
           while (flagForFirstPositioning.get() == 0) {
             try {
@@ -190,7 +179,6 @@ public class ServerAdapterGui
         }
        sendResultMessage(GameScene.getCoords(firstTime));
         firstTime=false;
-
         break;
       case "printBoardColored":
         GameScene.messageReceived("Refresh Screen", message.getParameters());
@@ -207,9 +195,8 @@ public class ServerAdapterGui
               }
             }
             flagForActivePawn.set(0);
-
-              sendResultMessage(GameScene.getActivePawn());
-              break;
+            sendResultMessage(GameScene.getActivePawn());
+            break;
           }
         GameScene.messageReceived("Move Phase", message.getParameters());
 

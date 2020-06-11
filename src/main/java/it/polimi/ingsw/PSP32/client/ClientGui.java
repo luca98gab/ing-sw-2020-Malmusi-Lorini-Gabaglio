@@ -19,8 +19,7 @@ public class ClientGui implements Runnable
 {
   public static final Object lockAddress = new Object();
   public static String ip;
-  public static AtomicInteger flagForAddr = new AtomicInteger();
-
+  public static AtomicInteger flagForAddr = new AtomicInteger(0);
 
   public static void main(String[] args )
   {
@@ -28,26 +27,9 @@ public class ClientGui implements Runnable
     client.run();
   }
 
-  public String receiveMessage(ServerAdapter serverAdapter1) {
-    Future<String> stringFuture = serverAdapter1.requestRead();
-    String response = null;
-    while (response == null){
-      try {
-        response = stringFuture.get(5, TimeUnit.SECONDS);
-      } catch (InterruptedException | TimeoutException e) {
-      } catch (ExecutionException e) {
-        return "server not reachable";
-      }
-    }
-    return response;
-  }
-
-
   @Override
   public void run()
   {
-    flagForAddr.set(0);
-
     try {
       Gui.setupWindow();
     } catch (IOException | FontFormatException e) {
@@ -57,9 +39,7 @@ public class ClientGui implements Runnable
     ConnectionScene connectionScene = new ConnectionScene();
     connectionScene.show();
 
-    //missing get ip from connectionScene
     Socket server = null;
-
     do {
       synchronized (lockAddress) {
         while (flagForAddr.get() == 0) {
@@ -89,13 +69,9 @@ public class ClientGui implements Runnable
     while (true){
       try {
         serverAdapter.answerToServer();
-
       } catch (ExecutionException | InterruptedException  | NullPointerException  e) {e.printStackTrace();
         return;
       }
     }
-
   }
-
-
 }

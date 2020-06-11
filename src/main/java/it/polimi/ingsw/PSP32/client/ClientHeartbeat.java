@@ -7,13 +7,11 @@ public class ClientHeartbeat implements Runnable {
     final private ServerAdapter serverAdapter;
     final private ServerAdapterGui serverAdapterGui;
 
-    public ClientHeartbeat(ServerAdapter serverAdapter)
-    {
+    public ClientHeartbeat(ServerAdapter serverAdapter) {
         this.serverAdapter=serverAdapter;
         this.serverAdapterGui=null;
     }
-    public ClientHeartbeat(ServerAdapterGui serverAdapterGui)
-    {
+    public ClientHeartbeat(ServerAdapterGui serverAdapterGui) {
         this.serverAdapterGui=serverAdapterGui;
         this.serverAdapter=null;
     }
@@ -22,15 +20,13 @@ public class ClientHeartbeat implements Runnable {
     public void run() {
         Message heartbeatMessage = new Message(null, null,"Heartbeat", null);
 
-        while(true)
-        {
+        while(true) {
             try{
                 if(serverAdapterGui==null) { serverAdapter.requestSendObject(heartbeatMessage); }
                 else {serverAdapterGui.requestSendObject(heartbeatMessage); }
                 Thread.sleep(10000);
-            }
-            catch(InterruptedException e){
-            }
+            } catch(InterruptedException e){
+                e.printStackTrace();}
         }
     }
 }

@@ -167,6 +167,12 @@ public class CheckCanBuild {
 
     }
 
+    /**Method to check if Ares can use his power
+     *
+     * @param game: Game
+     * @param pawn: Pawn, the active pawn
+     * @return Boolean (true if you can use the power, false otherwise)
+     */
     public static Boolean checkAresPower(Game game, Pawn pawn){
         if (pawn.getId()==1) pawn= pawn.getPlayer().getPawns()[1];
         else pawn= pawn.getPlayer().getPawns()[0];
