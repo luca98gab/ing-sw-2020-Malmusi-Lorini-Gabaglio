@@ -257,6 +257,12 @@ public class ServerAdapter
     return toServerGetObject(methodName, par, null, null, null);
   }
 
+
+  /**Method that starts a thread to handle user's input not in his turn.
+   * It's called right after the user finishes his turn or ,more in general, when
+   * he finishes to write the expected inputs
+   *
+   */
   private static void refuseInput(){
     Thread thread = new Thread(() -> {
       while (!Thread.interrupted()){
@@ -274,6 +280,11 @@ public class ServerAdapter
     thread.start();
     refuseInputThread = thread;
   }
+
+  /**Method that stops the "refuseInputThread" allowing the user to write.
+   * It's called right before is asked anything to the client.
+   *
+   */
   private static void allowInput(){
     if (refuseInputThread != null){
       refuseInputThread.interrupt();

@@ -31,7 +31,6 @@ public class Building {
      * @param pawn : Pawn active pawn
      * @throws IOException
      */
-
     protected void buildPhase(Game game, Pawn pawn) throws IOException {
 
         String god = pawn.getPlayer().getGod().getName();
@@ -92,6 +91,15 @@ public class Building {
 
     }
 
+
+    /**Method that handles the ares power server-side.
+     * First of all it selects the correct pawn (the one not used during the turn),
+     * then it asks to the client which block he wants to delete, and at the end it updates the game status.
+     *
+     * @param game: Game
+     * @param usedPawn: Pawn, the pawn next to which we will delete a block
+     * @throws IOException
+     */
     public void aresPower(Game game, Pawn usedPawn) throws IOException {
         Pawn activePawn= null;
         if (usedPawn.getId()==1) activePawn= usedPawn.getPlayer().getPawns()[1];

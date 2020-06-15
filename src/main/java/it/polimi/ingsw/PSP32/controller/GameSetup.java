@@ -22,9 +22,6 @@ public class GameSetup {
      *  -God picking by every player
      *  -Adds God information to the related Player object
      *
-     *
-     *  !!! It is possible for different players to use the same God
-     *
      * @param playersList : type Player[] array containing the players in the game
      */
     public static void godPicking(ArrayList<Player> playersList) throws IOException {

@@ -755,11 +755,14 @@ public class GameScene extends Gui{
     if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && !(getX(clickedCell)==activePawn.getX() && getY(clickedCell)==activePawn.getY()) && (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null &&  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()>0 && !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){
           deleteCoords[0]=getX(clickedCell);
           deleteCoords[1]=getY(clickedCell);
-          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);
+          cells.get(activePawn.getX() + (activePawn.getY()*5)).setIcon(myPawnIcon[0]);
+          activePawn=null;
+
           synchronized(lockAresPower) {
             flagForAresPower.set(1);
             lockAresPower.notifyAll();
           }
+
     }
     else
       new Toast("Invalid Location", gamePanel, 2000);
@@ -1004,7 +1007,10 @@ public class GameScene extends Gui{
 
   public static  int[] getDeleteCoords(){ return deleteCoords; }
 
-
+  /**Method to ask the player if he wants to use the power of his god
+   *
+   * @return Boolean, true if he wants to use the power, false otherwise.
+   */
   private static Boolean askPower(){
     final Object lock = new Object();
     AtomicInteger flagForLock = new AtomicInteger(0);

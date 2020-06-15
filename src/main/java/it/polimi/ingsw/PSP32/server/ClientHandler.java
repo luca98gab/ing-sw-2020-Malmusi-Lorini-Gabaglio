@@ -244,8 +244,17 @@ public class ClientHandler implements Runnable
         }
 
       }
-
+    try{
       playerCreation(players);
+      }
+    catch (IOException e) {
+      utility.notifyClosingGame(clients);
+      exit = true;
+      synchronized (lockPlayer) {
+        Server.flagForSync.set(1);
+        lockPlayer.notifyAll();
+      }
+    }
 
       synchronized(lockNum){
         Server.flagForSync.set(1);

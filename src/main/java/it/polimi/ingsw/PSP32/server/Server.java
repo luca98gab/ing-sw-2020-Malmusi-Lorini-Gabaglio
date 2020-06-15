@@ -34,7 +34,7 @@ public class Server implements Runnable {
   public static AtomicInteger flagForSync = new AtomicInteger();
   public static volatile Boolean exit;
   public static AtomicInteger flagForTimeout = new AtomicInteger();
-  private int timeout=20000;
+  private int timeout=2000000;
 
   private final Utility utility = new Utility();
   private final Phases phases = new Phases(utility);
@@ -116,6 +116,7 @@ public class Server implements Runnable {
       if (exit) {
           try {
               socket.close();
+              return;
           } catch (IOException e) {
               e.printStackTrace();
           }
@@ -135,7 +136,6 @@ public class Server implements Runnable {
               Thread thread = new Thread(clientHandler, "server_" + i + client.getInetAddress());
               i++;
               thread.start();
-
           } catch (IOException e) {
               try {
                   socket.close();
@@ -146,7 +146,6 @@ public class Server implements Runnable {
               return;
           }
           client.setSoTimeout(timeout);
-
           synchronized (lockPlayer) {
               while (flagForSync.get() == 0) {
                   try {
@@ -156,20 +155,21 @@ public class Server implements Runnable {
                   }
               }
           }
+          if (exit) {
+              try {
+                  socket.close();
+                  return;
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+          }
           flagForSync.set(0);
           if(flagForTimeout.get()==1)
           {
               throw new SocketTimeoutException();
           }
       }
-      if (exit) {
-          try {
-              socket.close();
-              return;
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
-      }
+
 
 
       new Thread(new UnwantedClientHandler(socket)).start();

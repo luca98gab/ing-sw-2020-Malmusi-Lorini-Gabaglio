@@ -43,6 +43,12 @@ public class CheckHasWon {
 
     }
 
+    /** Method to check if Chronus won with his power
+     *
+     * @param game: Game
+     * @param player: Player
+     * @throws IOException
+     */
     protected void checkHasWon5Domes(Game game, Player player) throws IOException {
         if (player.getGod().getName().equals("Chronus")){
             int n = 0;

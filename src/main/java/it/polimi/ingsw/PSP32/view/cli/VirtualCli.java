@@ -71,7 +71,7 @@ public class VirtualCli implements Runnable {
      */
     public static Player createPlayer(CopyOnWriteArrayList<Player> playerList, int num ) throws IOException {
         String str;
-        Boolean boolName=true;
+        Boolean boolName;
 
 
         do {
@@ -389,6 +389,12 @@ public class VirtualCli implements Runnable {
         return checkForValidYNInput(null);
     }
 
+    /**Method that implements the Ares power, it returns the coords of the block to remove
+     *
+     * @param game: Game
+     * @param pawn: Pawn, active pawn
+     * @return: int[], the coords of the block the player wants to remove
+     */
     public static int[] aresPower(Game game, Pawn pawn){
         int x=0;
         int y=0;
