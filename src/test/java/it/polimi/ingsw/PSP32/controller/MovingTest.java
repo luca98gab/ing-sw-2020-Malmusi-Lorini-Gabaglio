@@ -244,8 +244,43 @@ public class MovingTest {
 
     @Test
     public void movePhase_Apollo_correctI_correctO() throws IOException {
+        //setup
+        player0.setGod(apollo);
+        pawn2.moves(1,1);
+        game0.getMap()[1][1].setIsFull(pawn2);
+        game0.getMap()[0][0].setIsFull(pawn0);
+        game1.getMap()[1][1].setIsFull(pawn2);
+        game1.getMap()[0][0].setIsFull(pawn0);
 
+        //Mockito setup
+        Mockito.doReturn(pawn0).when(clientHandler).toClientGetObject("getActivePawn", game0, player0);
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game0, pawn0, true, false);
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game0, pawn0, null, true);
+        Mockito.doReturn(pawn0).when(clientHandler).toClientGetObject("getActivePawn", game1, player0);
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game1, pawn0, true, false);
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game1, pawn0, null, true);
 
+        //test 2 players
+        assertEquals(moving.movePhase(game0, player0), pawn0);
+        assertEquals(pawn0.getX(), 1);
+        assertEquals(pawn0.getY(), 1);
+        assertEquals(game0.getMap()[1][1].getIsFull(), pawn0);
+        assertEquals(pawn2.getX(), 0);
+        assertEquals(pawn2.getY(), 0);
+        assertEquals(game0.getMap()[0][0].getIsFull(), pawn2);
+
+        //reset pawn0 and pawn2
+        pawn0.moves(0, 0);
+        pawn2.moves(1,1);
+
+        //test 3 players
+        assertEquals(moving.movePhase(game1, player0), pawn0);
+        assertEquals(pawn0.getX(), 1);
+        assertEquals(pawn0.getY(), 1);
+        assertEquals(game1.getMap()[1][1].getIsFull(), pawn0);
+        assertEquals(pawn2.getX(), 0);
+        assertEquals(pawn2.getY(), 0);
+        assertEquals(game1.getMap()[0][0].getIsFull(), pawn2);
     }
 
     @Test
