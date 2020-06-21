@@ -50,7 +50,9 @@ public class Moving {
 
             activePawnId =((Pawn) player.getRelatedClient().toClientGetObject("getActivePawn", game, player)).getId();
             for (int i = 0; i < player.getPawns().length; i++){
-                if (player.getPawns()[i].getId()==activePawnId) activePawn = player.getPawns()[i];
+                if (player.getPawns()[i].getId()==activePawnId) {
+                    activePawn = player.getPawns()[i];
+                }
             }
             activePawn.getPlayer().setRelatedClient(player.getRelatedClient());
             startPosition = game.getMap()[activePawn.getX()][activePawn.getY()];
@@ -61,7 +63,9 @@ public class Moving {
                 int[] cellCoordinates = ((int[]) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
                 Cell cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 cell.setFloor(cell.getFloor()+1);
-                if (cell.getFloor() == 4) cell.setHasDome(true);
+                if (cell.getFloor() == 4) {
+                    cell.setHasDome(true);
+                }
                 utility.toAllClientsVoid(game, "printBoardColored", game);
 
                 Boolean changedFlag;
@@ -76,7 +80,9 @@ public class Moving {
                     player.getRelatedClient().toClientGetObject("waitForMoveCommand", game, activePawn, false, false);
                     move = (int[]) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, false);
 
-                    if (changedFlag.equals(true)) game.setAthenaFlag(false);
+                    if (changedFlag.equals(true)) {
+                        game.setAthenaFlag(false);
+                    }
                 }
                 else return null;
             }

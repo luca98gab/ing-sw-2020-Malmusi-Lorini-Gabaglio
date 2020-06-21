@@ -44,6 +44,7 @@ public class MovingTest {
     Pawn pawn5 = null;
     int[] cellCoordinates = null;
     int[] cellCoordinates1 = null;
+    int[] cellCoordinates2 = null;
 
     @Before
     public void setup() {
@@ -59,12 +60,15 @@ public class MovingTest {
         cellCoordinates1 = new int[2];
         cellCoordinates1[0]=2;
         cellCoordinates1[1]=2;
+        cellCoordinates2 = new int[2];
+        cellCoordinates2[0]=1;
+        cellCoordinates2[1]=0;
 
         game0 = new Game(2);
         game1 = new Game(3);
 
-        arraylist0 = new ArrayList<Player>();
-        arraylist1 = new ArrayList<Player>();
+        arraylist0 = new ArrayList<>();
+        arraylist1 = new ArrayList<>();
 
         cell = new Cell();
         god = new God("god", "ability");
@@ -137,6 +141,7 @@ public class MovingTest {
         pawn5 = null;
         cellCoordinates = null;
         cellCoordinates1 = null;
+        cellCoordinates2 = null;
     }
 
     @Test
@@ -167,8 +172,38 @@ public class MovingTest {
 
     @Test
     public void movePhase_Prometheus_correctI_correctO() throws IOException {
+        //setup
+        player0.setGod(prometheus);
+        game0.setAthenaFlag(true);
+        game1.setAthenaFlag(false);
+        game0.getMap()[1][0].setFloor(3);
 
+        //Mockito setup
+        Mockito.doReturn(pawn0).when(clientHandler).toClientGetObject("getActivePawn", game0, player0);
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game0, pawn0, true, false);
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game0, pawn0, null, false);
+        Mockito.doReturn(pawn0).when(clientHandler).toClientGetObject("getActivePawn", game1, player0);
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game1, pawn0, true, false);
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game1, pawn0, null, false);
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("wantsToUsePower"), any(Player.class));
+        Mockito.doReturn(cellCoordinates2).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"),any(Game.class), any(Pawn.class), eq(null));
+        Mockito.doReturn(true).when(checkHasLost).checkHasLostForMoves(game0, pawn0);
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForMoves(game1, pawn0);
 
+        //test 2 players, AthenaFlag not changed and checkHasLost true
+        assertNull(moving.movePhase(game0, player0));
+        assertEquals(game0.getMap()[1][0].getFloor(), 4);
+        assertNull(game0.getMap()[1][1].getIsFull());
+
+        //reset pawn0 position
+        pawn0.moves(0,0);
+
+        //test 3 players and AthenaFlag changed
+        assertEquals(moving.movePhase(game1, player0), pawn0);
+        assertEquals(game1.getMap()[1][0].getFloor(), 1);
+        assertEquals(pawn0.getX(), 1);
+        assertEquals(pawn0.getY(), 1);
+        assertEquals(game1.getMap()[1][1].getIsFull(), pawn0);
     }
 
     @Test
