@@ -54,6 +54,8 @@ public class Moving {
             }
             activePawn.getPlayer().setRelatedClient(player.getRelatedClient());
             startPosition = game.getMap()[activePawn.getX()][activePawn.getY()];
+
+            //Only if Prometheus
             if (god.equals("Prometheus") && ((Boolean) player.getRelatedClient().toClientGetObject("wantsToUsePower", player))){
 
                 int[] cellCoordinates = ((int[]) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
@@ -78,6 +80,8 @@ public class Moving {
                 }
                 else return null;
             }
+            //end of Prometheus only code
+
             else if ((Boolean) player.getRelatedClient().toClientGetObject("waitForMoveCommand",game, activePawn, true, false)){
                 move = (int []) player.getRelatedClient().toClientGetObject("getValidMoveViaArrows", game, activePawn, null, true);
             }
@@ -91,7 +95,9 @@ public class Moving {
             else if (god.equals("Minotaur")){
                 pushPawns(game, activePawn, opponentPawn);
             }
-        } else movePawnSecure(game, activePawn, move[0], move[1]);
+        } else {
+            movePawnSecure(game, activePawn, move[0], move[1]);
+        }
 
         utility.toAllClientsVoid(game, "printBoardColored", game);
 
