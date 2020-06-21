@@ -159,6 +159,7 @@ public class BuildingTest {
         building.buildPhase(game0, pawn0);
         assertEquals(game0.getMap()[1][1].getHasDome(), true);
         game0.getMap()[1][1].setHasDome(false);
+        verify(utility, times(1)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test with atlas and wantsDome true, 2 players
         player0.setGod(atlas);
@@ -166,11 +167,13 @@ public class BuildingTest {
         assertEquals(game0.getMap()[1][1].getHasDome(), true);
         game0.getMap()[1][1].setHasDome(false);
         player0.setGod(god);
+        verify(utility, times(2)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test without atlas and wantsDome true, 3 players
         building.buildPhase(game1, pawn0);
         assertEquals(game1.getMap()[1][1].getHasDome(), true);
         game1.getMap()[1][1].setHasDome(false);
+        verify(utility, times(3)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test with atlas and wantsDome true, 3 players
         player0.setGod(atlas);
@@ -178,6 +181,7 @@ public class BuildingTest {
         assertEquals(game1.getMap()[1][1].getHasDome(), true);
         game1.getMap()[1][1].setHasDome(false);
         player0.setGod(god);
+        verify(utility, times(4)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //changing values returned for wantsDome to false
         Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(true), eq(false));
@@ -187,6 +191,7 @@ public class BuildingTest {
         building.buildPhase(game0, pawn0);
         assertEquals(game0.getMap()[1][1].getFloor(), 1);
         game0.getMap()[1][1].setFloor(0);
+        verify(utility, times(5)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test with atlas and wantsDome false, 2 players
         player0.setGod(atlas);
@@ -194,11 +199,13 @@ public class BuildingTest {
         assertEquals(game0.getMap()[1][1].getFloor(), 1);
         game0.getMap()[1][1].setFloor(0);
         player0.setGod(god);
+        verify(utility, times(6)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test without atlas and wantsDome false, 3 players
         building.buildPhase(game1, pawn0);
         assertEquals(game1.getMap()[1][1].getFloor(), 1);
         game1.getMap()[1][1].setFloor(0);
+        verify(utility, times(7)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test with atlas and wantsDome false, 3 players
         player0.setGod(atlas);
@@ -206,6 +213,7 @@ public class BuildingTest {
         assertEquals(game1.getMap()[1][1].getFloor(), 1);
         game1.getMap()[1][1].setFloor(0);
         player0.setGod(god);
+        verify(utility, times(8)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
 
         //test with Demeter (2 and 3 players)
         player0.setGod(demeter);
@@ -213,6 +221,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][0].getFloor(), 1);
         assertEquals(game1.getMap()[1][0].getFloor(), 1);
+        verify(utility, times(12)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][0].setFloor(0);
         game1.getMap()[1][0].setFloor(0);
         game0.getMap()[1][1].setFloor(0);
@@ -223,6 +232,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][0].getFloor(), 0);
         assertEquals(game1.getMap()[1][0].getFloor(), 0);
+        verify(utility, times(14)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][1].setFloor(0);
         game1.getMap()[1][1].setFloor(0);
 
@@ -232,6 +242,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][1].getFloor(), 2);
         assertEquals(game1.getMap()[1][1].getFloor(), 2);
+        verify(utility, times(18)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][1].setFloor(0);
         game1.getMap()[1][1].setFloor(0);
         //test when Hestia doesn't want to build twice
@@ -240,6 +251,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][1].getFloor(), 1);
         assertEquals(game1.getMap()[1][1].getFloor(), 1);
+        verify(utility, times(20)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][1].setFloor(0);
         game1.getMap()[1][1].setFloor(0);
 
@@ -249,6 +261,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][1].getFloor(), 2);
         assertEquals(game1.getMap()[1][1].getFloor(), 2);
+        verify(utility, times(24)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
     }
 
     @Test
