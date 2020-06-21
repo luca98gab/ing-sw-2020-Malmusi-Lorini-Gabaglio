@@ -27,7 +27,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY() == 0 || pawn.getY() == 4) newCellIsOnBorder = true;
+            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY() == 0 || pawn.getY() == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -45,7 +47,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY() == 0 || pawn.getY() == 4) newCellIsOnBorder = true;
+            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY() == 0 || pawn.getY() == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -62,7 +66,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()][pawn.getY()-1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX() == 0 || pawn.getX() == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX() == 0 || pawn.getX() == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -79,7 +85,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()][pawn.getY()+1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX() == 0 || pawn.getX() == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX() == 0 || pawn.getX() == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -96,7 +104,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()-1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -113,7 +123,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()-1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY()-1 == 0 || pawn.getY()-1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -130,7 +142,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()+1][pawn.getY()+1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX()+1 == 0 || pawn.getX()+1 == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -147,7 +161,9 @@ public class CheckCanBuild {
             Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
             Cell newCell = game.getMap()[pawn.getX()-1][pawn.getY()+1];
             Boolean newCellIsOnBorder = false;
-            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) newCellIsOnBorder = true;
+            if (pawn.getX()-1 == 0 || pawn.getX()-1 == 4 || pawn.getY()+1 == 0 || pawn.getY()+1 == 4) {
+                newCellIsOnBorder = true;
+            }
             if (edgeCellsAllowed){
                 if (!newCell.equals(restriction) && newCell.getIsFull() == null && newCell.getHasDome().equals(false)){
                     return true;
@@ -161,8 +177,12 @@ public class CheckCanBuild {
 
     public static Boolean checkCanBuildBelow(Game game, Pawn pawn, Cell restriction){
         Cell currentCell = game.getMap()[pawn.getX()][pawn.getY()];
-        if (currentCell.getFloor()==3) return false;
-        else if (pawn.getPlayer().getGod().getName().equals("Zeus")) return true;
+        if (currentCell.getFloor()==3) {
+            return false;
+        }
+        else if (pawn.getPlayer().getGod().getName().equals("Zeus")) {
+            return true;
+        }
         return false;
 
     }
@@ -174,12 +194,16 @@ public class CheckCanBuild {
      * @return Boolean (true if you can use the power, false otherwise)
      */
     public static Boolean checkAresPower(Game game, Pawn pawn){
-        if (pawn.getId()==1) pawn= pawn.getPlayer().getPawns()[1];
+        if (pawn.getId()==1) {
+            pawn= pawn.getPlayer().getPawns()[1];
+        }
         else pawn= pawn.getPlayer().getPawns()[0];
         for (int i=pawn.getY()-1; i<pawn.getY()+2; i++){
             if (i>=0 && i<=4) {
                 for (int j=pawn.getX()-1; j<pawn.getX()+2; j++){
-                    if( j>=0 && j<=4 && game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null) return true;
+                    if( j>=0 && j<=4 && game.getMap()[j][i].getFloor()>0 && !game.getMap()[j][i].getHasDome() && game.getMap()[j][i].getIsFull()==null){
+                        return true;
+                    }
                 }
             }
         }
