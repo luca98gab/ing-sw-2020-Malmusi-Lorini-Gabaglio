@@ -65,6 +65,7 @@ public class Toast extends JLabel {
 
     setVisible(true);
     currentPanel.add(this);
+    currentPanel.setComponentZOrder(this, 0);
     currentPanel.revalidate();
     currentPanel.repaint();
   }
