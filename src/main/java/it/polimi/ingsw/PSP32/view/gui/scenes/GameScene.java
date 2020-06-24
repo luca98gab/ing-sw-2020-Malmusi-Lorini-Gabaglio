@@ -716,7 +716,7 @@ public class GameScene extends Gui{
       Boolean valid=false;
       if(direction!=null) {
         try {
-          valid = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild"+direction, game, activePawn, null);
+          valid = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild"+direction, game, activePawn, null, true);
         } catch (IOException ex) {
           ex.printStackTrace();
         }
