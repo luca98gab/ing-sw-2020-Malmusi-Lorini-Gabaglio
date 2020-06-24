@@ -542,6 +542,8 @@ public class GameScene extends Gui{
             pawnPositioning(clickedCell);
             break;
           }
+        case "Stall":
+          break;
         case "Move Phase":
           movePhaseClick(clickedCell);
           break;
@@ -603,9 +605,9 @@ public class GameScene extends Gui{
     else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) {
       cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);
       activePawn = null;
-
     }
     else if(activePawn!=null){
+      phase = "Stall";
       String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
       Boolean valid=false;
       if(direction!=null) {
@@ -624,12 +626,14 @@ public class GameScene extends Gui{
         } else {
           new Toast("Invalid Move", gamePanel, 2000);
         }
+        phase = "Move Phase";
       }
     }
   }
   private static void movePhase2Click(JButton clickedCell){
 
     if(clickedCell.getIcon()==null){
+      phase = "Stall";
       String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
       Boolean valid=false;
       if(direction!=null) {
@@ -648,6 +652,7 @@ public class GameScene extends Gui{
         } else {
           new Toast("Invalid Move", gamePanel, 2000);
         }
+        phase = "Move Phase 2";
       }
     }
   }
@@ -750,7 +755,7 @@ public class GameScene extends Gui{
     }
 
   }
-  private static void  removeBuildPhaseClick(JButton clickedCell){
+  private static void removeBuildPhaseClick(JButton clickedCell){
 
     if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && !(getX(clickedCell)==activePawn.getX() && getY(clickedCell)==activePawn.getY()) && (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null &&  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()>0 && !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){
           deleteCoords[0]=getX(clickedCell);
