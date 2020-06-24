@@ -34,7 +34,7 @@ public class Server implements Runnable {
   public static AtomicInteger flagForSync = new AtomicInteger();
   public static volatile Boolean exit;
   public static AtomicInteger flagForTimeout = new AtomicInteger();
-  private int timeout=2000000;
+  private int timeout=20000;
 
   private final Utility utility = new Utility();
   private final Phases phases = new Phases(utility);
