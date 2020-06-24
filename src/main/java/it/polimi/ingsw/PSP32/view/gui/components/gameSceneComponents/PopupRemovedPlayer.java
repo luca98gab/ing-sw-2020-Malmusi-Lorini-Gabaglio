@@ -47,7 +47,7 @@ public class PopupRemovedPlayer{
 
     winnerLabel.setFont(lillyBelle);
     winnerLabel.setForeground(new Color(247, 206, 135));
-    if (player == myPlayer){
+    if (player.getName().equals(myPlayer.getName())){
       winnerLabel.setText("YOU LOST");
       b.addActionListener(escListenerCloseAll);
     } else {

@@ -605,6 +605,7 @@ public class GameScene extends Gui{
     else if (clickedCell.getIcon()!=null && clickedCell.getIcon().equals(myPawnIcon[1])) {
       cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);
       activePawn = null;
+
     }
     else if(activePawn!=null){
       phase = "Stall";
@@ -784,7 +785,7 @@ public class GameScene extends Gui{
     }
     else
       new Toast("Invalid Location", gamePanel, 2000);
-      phase = "aresPower";
+
   }
 
 
