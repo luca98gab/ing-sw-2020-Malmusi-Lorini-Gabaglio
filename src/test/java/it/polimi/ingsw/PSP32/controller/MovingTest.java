@@ -186,7 +186,7 @@ public class MovingTest {
         Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game1, pawn0, true, false);
         Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game1, pawn0, null, false);
         Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("wantsToUsePower"), any(Player.class));
-        Mockito.doReturn(cellCoordinates2).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"),any(Game.class), any(Pawn.class), eq(null));
+        Mockito.doReturn(cellCoordinates2).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"),any(Game.class), any(Pawn.class), eq(null), eq(true));
         Mockito.doReturn(true).when(checkHasLost).checkHasLostForMoves(game0, pawn0);
         Mockito.doReturn(false).when(checkHasLost).checkHasLostForMoves(game1, pawn0);
 
@@ -219,6 +219,7 @@ public class MovingTest {
         cell = game0.getMap()[a][b];
         Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game0, pawn0, false, true);
         Mockito.doReturn(cellCoordinates1).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game0, pawn0, cell, false);
+
         //test 2 players
         assertEquals(moving.movePhase(game0, player0), pawn0);
         assertEquals(pawn0.getX(), 2);
@@ -236,6 +237,7 @@ public class MovingTest {
         cell = game1.getMap()[a][b];
         Mockito.doReturn(true).when(clientHandler).toClientGetObject("waitForMoveCommand", game1, pawn0, false, true);
         Mockito.doReturn(cellCoordinates1).when(clientHandler).toClientGetObject("getValidMoveViaArrows", game1, pawn0, cell, false);
+
         //test 3 players
         assertEquals(moving.movePhase(game1, player0), pawn0);
         assertEquals(pawn0.getX(), 2);
