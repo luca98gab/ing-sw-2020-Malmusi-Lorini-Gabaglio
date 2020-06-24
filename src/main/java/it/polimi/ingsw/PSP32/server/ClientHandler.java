@@ -104,11 +104,11 @@ public class ClientHandler implements Runnable
    */
   public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3, Object par4, Object par5) throws IOException {
     ArrayList<Object> parameters = new ArrayList<>();
-    parameters.add(par1);
-    parameters.add(par2);
-    parameters.add(par3);
-    parameters.add(par4);
-    parameters.add(par5);
+    parameters.add(0, par1);
+    parameters.add(1, par2);
+    parameters.add(2, par3);
+    parameters.add(3, par4);
+    parameters.add(4, par5);
     Message outboundMessage = new Message(methodName, parameters, "Request", null);
       output.reset();
     output.writeObject(outboundMessage);
@@ -195,7 +195,7 @@ public class ClientHandler implements Runnable
     return toClientGetObject(methodName, par1, par2, par3, par4, null);
   }
   public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3) throws IOException {
-    return toClientGetObject(methodName, par1, par2, par3, null, null);
+    return toClientGetObject(methodName, par1, par2, par3, null);
   }
   public Object toClientGetObject(String methodName, Object par1, Object par2) throws IOException {
     return toClientGetObject(methodName, par1, par2, null);
