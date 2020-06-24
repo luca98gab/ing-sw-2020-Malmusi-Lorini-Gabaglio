@@ -292,9 +292,9 @@ public class ClientHandler implements Runnable
     }
 
 
-    while (true){
+    //while (true){
       //answer to client
-    }
+    //}
 
   }
 
