@@ -625,8 +625,9 @@ public class GameScene extends Gui{
           }
         } else {
           new Toast("Invalid Move", gamePanel, 2000);
+          phase = "Move Phase";
         }
-        phase = "Move Phase";
+
       }
     }
   }
@@ -651,8 +652,9 @@ public class GameScene extends Gui{
           }
         } else {
           new Toast("Invalid Move", gamePanel, 2000);
+          phase = "Move Phase 2";
         }
-        phase = "Move Phase 2";
+
       }
     }
   }
@@ -660,6 +662,7 @@ public class GameScene extends Gui{
     String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
     Boolean valid1=false;
     if(direction!=null) {
+      phase = "stall";
       try {
         valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, null, true);
       } catch (IOException ex) {
@@ -678,12 +681,14 @@ public class GameScene extends Gui{
       }
     } else {
       new Toast("Invalid Build Location", gamePanel, 2000);
+      phase = "Build Phase";
     }
   }
   private static void buildPhase2Click(JButton clickedCell){
     String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
     Boolean valid1=false;
     if(direction!=null) {
+      phase = "stall";
       try {
         valid1 = (Boolean) ServerAdapterGui.toServerGetObject("checkCanBuild" + direction, game, activePawn, restrictedCell, bordersAllowed);
       } catch (IOException ex) {
@@ -702,6 +707,7 @@ public class GameScene extends Gui{
       }
     } else {
       new Toast("Invalid Build Location", gamePanel, 2000);
+      phase = "Build Phase 2";
     }
   }
   private static void buildFirstPhaseClick(JButton clickedCell){
@@ -717,6 +723,7 @@ public class GameScene extends Gui{
 
     }
     else if(activePawn!=null){
+      phase = "stall";
       String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);
       Boolean valid=false;
       if(direction!=null) {
@@ -735,6 +742,7 @@ public class GameScene extends Gui{
           }
         } else {
           new Toast("Invalid Move", gamePanel, 2000);
+          phase = "BuildFirst";
         }
       }
     }
@@ -757,21 +765,26 @@ public class GameScene extends Gui{
   }
   private static void removeBuildPhaseClick(JButton clickedCell){
 
-    if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && !(getX(clickedCell)==activePawn.getX() && getY(clickedCell)==activePawn.getY()) && (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null &&  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()>0 && !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){
-          deleteCoords[0]=getX(clickedCell);
-          deleteCoords[1]=getY(clickedCell);
-          cells.get(activePawn.getX() + (activePawn.getY()*5)).setIcon(myPawnIcon[0]);
-          activePawn=null;
+    if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) && !(getX(clickedCell)==activePawn.getX()
+            && getY(clickedCell)==activePawn.getY()) && (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null
+            &&  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()>0 &&
+            !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){
 
-          synchronized(lockAresPower) {
-            flagForAresPower.set(1);
-            lockAresPower.notifyAll();
-          }
+      phase = "stall";
+      deleteCoords[0]=getX(clickedCell);
+      deleteCoords[1]=getY(clickedCell);
+      cells.get(activePawn.getX() + (activePawn.getY()*5)).setIcon(myPawnIcon[0]);
+      activePawn=null;
+
+      synchronized(lockAresPower) {
+        flagForAresPower.set(1);
+        lockAresPower.notifyAll();
+      }
 
     }
     else
       new Toast("Invalid Location", gamePanel, 2000);
-
+      phase = "aresPower";
   }
 
 

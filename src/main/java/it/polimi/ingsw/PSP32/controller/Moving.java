@@ -60,7 +60,7 @@ public class Moving {
             //Only if Prometheus
             if (god.equals("Prometheus") && ((Boolean) player.getRelatedClient().toClientGetObject("wantsToUsePower", player))){
 
-                int[] cellCoordinates = ((int[]) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null));
+                int[] cellCoordinates = ((int[]) player.getRelatedClient().toClientGetObject("getBuildLocationViaArrows",game, activePawn, null, true));
                 Cell cell = game.getMap()[cellCoordinates[0]][cellCoordinates[1]];
                 cell.setFloor(cell.getFloor()+1);
                 if (cell.getFloor() == 4) {
