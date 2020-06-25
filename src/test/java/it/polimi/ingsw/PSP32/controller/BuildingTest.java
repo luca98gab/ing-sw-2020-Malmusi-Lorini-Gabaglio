@@ -214,6 +214,99 @@ public class BuildingTest {
         game1.getMap()[1][1].setFloor(0);
         player0.setGod(god);
         verify(utility, times(8)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+    }
+
+    @Test
+    public void buildPhase_Hephaestus_correctI_correctO() throws IOException {
+        //value returned when asked where to build
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), eq(null), eq(true));
+        //values returned for wantsDome
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(true), eq(false));
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(false));
+        //value returned for Hephaestus when asked if he wants to build twice
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("askBuildTwice") , any(Player.class));
+        //values returned for Demeter second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), any(Cell.class));
+        Mockito.doReturn(cellCoordinatesDemeter).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(true));
+        //values returned for Hestia second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), eq(false));
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(false));
+        //mocking utility's toAllClientsVoid
+        Mockito.doNothing().when(utility).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        //setting checkHasLost to return false when Demeter and Hestia check
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(true), any(Cell.class));
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(false),  eq(null), eq(false));
+
+        //test with Hephaestus (2 and 3 players)
+        player0.setGod(hephaestus);
+        building.buildPhase(game0, pawn0);
+        building.buildPhase(game1, pawn0);
+        assertEquals(game0.getMap()[1][1].getFloor(), 2);
+        assertEquals(game1.getMap()[1][1].getFloor(), 2);
+        verify(utility, times(4)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+    }
+
+    @Test
+    public void buildPhase_Hestia_correctI_correctO() throws IOException {
+        //value returned when asked where to build
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), eq(null), eq(true));
+        //values returned for wantsDome
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(true), eq(false));
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(false));
+        //value returned for Hephaestus when asked if he wants to build twice
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("askBuildTwice") , any(Player.class));
+        //values returned for Demeter second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), any(Cell.class));
+        Mockito.doReturn(cellCoordinatesDemeter).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(true));
+        //values returned for Hestia second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), eq(false));
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(false));
+        //mocking utility's toAllClientsVoid
+        Mockito.doNothing().when(utility).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        //setting checkHasLost to return false when Demeter and Hestia check
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(true), any(Cell.class));
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(false),  eq(null), eq(false));
+
+        //Test with Hestia (2 and 3 players)
+        player0.setGod(hestia);
+        building.buildPhase(game0, pawn0);
+        building.buildPhase(game1, pawn0);
+        assertEquals(game0.getMap()[1][1].getFloor(), 2);
+        assertEquals(game1.getMap()[1][1].getFloor(), 2);
+        verify(utility, times(4)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        game0.getMap()[1][1].setFloor(0);
+        game1.getMap()[1][1].setFloor(0);
+        //test when Hestia doesn't want to build twice
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), eq(false));
+        building.buildPhase(game0, pawn0);
+        building.buildPhase(game1, pawn0);
+        assertEquals(game0.getMap()[1][1].getFloor(), 1);
+        assertEquals(game1.getMap()[1][1].getFloor(), 1);
+        verify(utility, times(6)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        game0.getMap()[1][1].setFloor(0);
+        game1.getMap()[1][1].setFloor(0);
+    }
+
+    @Test
+    public void buildPhase_Demeter_correctI_correctO() throws IOException {
+        //value returned when asked where to build
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), eq(null), eq(true));
+        //values returned for wantsDome
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(true), eq(false));
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(false));
+        //value returned for Hephaestus when asked if he wants to build twice
+        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("askBuildTwice") , any(Player.class));
+        //values returned for Demeter second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), any(Cell.class));
+        Mockito.doReturn(cellCoordinatesDemeter).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(true));
+        //values returned for Hestia second build command
+        Mockito.doReturn(false).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), eq(false));
+        Mockito.doReturn(cellCoordinates).when(clientHandler).toClientGetObject(eq("getBuildLocationViaArrows"), any(Game.class), any(Pawn.class), any(Cell.class), eq(false));
+        //mocking utility's toAllClientsVoid
+        Mockito.doNothing().when(utility).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        //setting checkHasLost to return false when Demeter and Hestia check
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(true), any(Cell.class));
+        Mockito.doReturn(false).when(checkHasLost).checkHasLostForBuild(any(Game.class), any(Pawn.class), eq(false),  eq(null), eq(false));
 
         //test with Demeter (2 and 3 players)
         player0.setGod(demeter);
@@ -221,7 +314,7 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][0].getFloor(), 1);
         assertEquals(game1.getMap()[1][0].getFloor(), 1);
-        verify(utility, times(12)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        verify(utility, times(4)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][0].setFloor(0);
         game1.getMap()[1][0].setFloor(0);
         game0.getMap()[1][1].setFloor(0);
@@ -232,36 +325,9 @@ public class BuildingTest {
         building.buildPhase(game1, pawn0);
         assertEquals(game0.getMap()[1][0].getFloor(), 0);
         assertEquals(game1.getMap()[1][0].getFloor(), 0);
-        verify(utility, times(14)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
+        verify(utility, times(6)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
         game0.getMap()[1][1].setFloor(0);
         game1.getMap()[1][1].setFloor(0);
-
-        //Test with Hestia (2 and 3 players)
-        player0.setGod(hestia);
-        building.buildPhase(game0, pawn0);
-        building.buildPhase(game1, pawn0);
-        assertEquals(game0.getMap()[1][1].getFloor(), 2);
-        assertEquals(game1.getMap()[1][1].getFloor(), 2);
-        verify(utility, times(18)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
-        game0.getMap()[1][1].setFloor(0);
-        game1.getMap()[1][1].setFloor(0);
-        //test when Hestia doesn't want to build twice
-        Mockito.doReturn(true).when(clientHandler).toClientGetObject(eq("waitForBuildCommand"), any(Game.class), any(Pawn.class), eq(false), eq(true), eq(false));
-        building.buildPhase(game0, pawn0);
-        building.buildPhase(game1, pawn0);
-        assertEquals(game0.getMap()[1][1].getFloor(), 1);
-        assertEquals(game1.getMap()[1][1].getFloor(), 1);
-        verify(utility, times(20)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
-        game0.getMap()[1][1].setFloor(0);
-        game1.getMap()[1][1].setFloor(0);
-
-        //test with Hephaestus (2 and 3 players)
-        player0.setGod(hephaestus);
-        building.buildPhase(game0, pawn0);
-        building.buildPhase(game1, pawn0);
-        assertEquals(game0.getMap()[1][1].getFloor(), 2);
-        assertEquals(game1.getMap()[1][1].getFloor(), 2);
-        verify(utility, times(24)).toAllClientsVoid(any(Game.class), anyString(), any(Game.class));
     }
 
     @Test

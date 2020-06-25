@@ -111,7 +111,7 @@ public class CheckHasLost {
             return false;
         }
         else {
-            if(demeterPower) {
+            if(!demeterPower) {
                 if (game.getPlayerList().size() == 3) {
                     toAllClientsVoid(game, player, "removedPlayerGraphics");
                     game.getPlayerList().remove(player);
