@@ -1,0 +1,909 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: VirtualCli</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.cli</a> ]
+</div>
+
+<h1>Coverage Summary for Class: VirtualCli (it.polimi.ingsw.PSP32.view.cli)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VirtualCli</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 33)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 349)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/**
+<i>2</i>&nbsp; *  CLI for Santorini.
+<i>3</i>&nbsp; *
+<i>4</i>&nbsp; *  Every output is formatted using numbers starting from 1 (not from 0) if not prompted otherwise.
+<i>5</i>&nbsp; *  If a user has to select the first element in a list he will do so by writing 1. The same rule applies to the board cells.
+<i>6</i>&nbsp; */
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;package it.polimi.ingsw.PSP32.view.cli;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import it.polimi.ingsw.PSP32.client.ServerAdapter;
+<i>11</i>&nbsp;import it.polimi.ingsw.PSP32.model.*;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.io.IOException;
+<i>14</i>&nbsp;import java.util.ArrayList;
+<i>15</i>&nbsp;import java.util.Scanner;
+<i>16</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;public class VirtualCli implements Runnable {</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public static final String RESET = &quot;\u001B[0m&quot;;
+<i>22</i>&nbsp;    public static final String BLACK = &quot;\u001B[30m&quot;;
+<i>23</i>&nbsp;    public static final String RED = &quot;\u001B[31m&quot;;
+<i>24</i>&nbsp;    public static final String GREEN = &quot;\u001B[32m&quot;;
+<i>25</i>&nbsp;    public static final String YELLOW = &quot;\u001B[33m&quot;;
+<i>26</i>&nbsp;    public static final String BLUE = &quot;\u001B[34m&quot;;
+<i>27</i>&nbsp;    public static final String PURPLE = &quot;\u001B[35m&quot;;
+<i>28</i>&nbsp;    public static final String CYAN = &quot;\u001B[36m&quot;;
+<i>29</i>&nbsp;    public static final String WHITE = &quot;\u001B[37m&quot;;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public static void main( String[] args ) {
+<b class="nc"><i>32</i>&nbsp;        VirtualCli localCli = new VirtualCli();</b>
+<b class="nc"><i>33</i>&nbsp;        localCli.run();</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    private static void out(String string){
+<b class="nc"><i>37</i>&nbsp;        System.out.print(string);</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;    private static void out(int i){
+<b class="nc"><i>40</i>&nbsp;        out(Integer.toString(i));</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;    private static void outln(String string){
+<b class="nc"><i>43</i>&nbsp;        out(string + &quot;\n&quot;);</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;    private static void outln(){
+<b class="nc"><i>46</i>&nbsp;        outln(&quot;&quot;);</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;    private static void outln(int i){
+<b class="nc"><i>49</i>&nbsp;        outln(Integer.toString(i));</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    //methods to get input
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /** Method to ask the number of players for the game
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @return int # of players
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public static int getNumOfPlayers(){
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;        out(&quot;\n\nSANTORINI by Gio-Poco-Davim&quot; + &quot;\n\n&quot; + &quot;New game.&quot; + &quot;\n\n&quot; + &quot;Insert number of players: &quot;);</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;        return checkForValidIntInput(2, 3, null);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /** Method that creates the Player object asking the parameters to the user.
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @param num: number of maxplayer of the game
+<i>69</i>&nbsp;     * @param playerList : list of players
+<i>70</i>&nbsp;     * @return Player type: object of the newly created player
+<i>71</i>&nbsp;     */
+<i>72</i>&nbsp;    public static Player createPlayer(CopyOnWriteArrayList&lt;Player&gt; playerList, int num ) throws IOException {
+<i>73</i>&nbsp;        String str;
+<i>74</i>&nbsp;        Boolean boolName;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;        do {
+<b class="nc"><i>78</i>&nbsp;            out(&quot;Insert name: &quot;);</b>
+<b class="nc"><i>79</i>&nbsp;            str = checkForValidStringInput(false, true, 1, 20, null);</b>
+<b class="nc"><i>80</i>&nbsp;            boolName = checkExistingName(playerList, str);</b>
+<b class="nc"><i>81</i>&nbsp;            if (!boolName) out(&quot;The name is already taken \n\n&quot;);</b>
+<b class="nc"><i>82</i>&nbsp;        }while(!boolName);</b>
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;        Boolean boolColor;
+<i>85</i>&nbsp;        String color;
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;        do {
+<b class="nc"><i>88</i>&nbsp;            out(&quot;Choose a color  &quot; + BLUE + &quot;B (Blue)&quot; + RED + &quot;  R (Red)&quot; + GREEN + &quot;  G (Green)&quot; + RESET + &quot;: &quot;);</b>
+<b class="nc"><i>89</i>&nbsp;            color = checkForValidStringInput(false, false, 1, 10, null);</b>
+<b class="nc"><i>90</i>&nbsp;            if (color.matches(&quot;\\b(?i)(?:red|rosso|r)\\b&quot;)) {</b>
+<b class="nc"><i>91</i>&nbsp;                color = RED;</b>
+<b class="nc"><i>92</i>&nbsp;            } else if (color.matches(&quot;\\b(?i)(?:green|verde|g)\\b&quot;)) {</b>
+<b class="nc"><i>93</i>&nbsp;                color = GREEN;</b>
+<b class="nc"><i>94</i>&nbsp;            } else if (color.matches(&quot;\\b(?i)(?:blue|blu|b)\\b&quot;)) {</b>
+<b class="nc"><i>95</i>&nbsp;                color = BLUE;</b>
+<i>96</i>&nbsp;            } else {
+<b class="nc"><i>97</i>&nbsp;                out(&quot;Color not recognized \n\n&quot;);</b>
+<b class="nc"><i>98</i>&nbsp;                color = &quot;NO&quot;;</b>
+<i>99</i>&nbsp;            }
+<b class="nc"><i>100</i>&nbsp;            if (color.equals(&quot;NO&quot;))</b>
+<b class="nc"><i>101</i>&nbsp;                boolColor = false;</b>
+<i>102</i>&nbsp;            else {
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;                boolColor = checkExistingColor(playerList, color);</b>
+<b class="nc"><i>105</i>&nbsp;                if (!boolColor) out(&quot;The color is already taken \n\n&quot;);</b>
+<i>106</i>&nbsp;            }
+<b class="nc"><i>107</i>&nbsp;        }while(!boolColor);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;        if (playerList.size()&lt;num-1)</b>
+<b class="nc"><i>110</i>&nbsp;            out(&quot;\nWaiting for other players to join... \n&quot;);</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;
+<b class="nc"><i>115</i>&nbsp;        Player player = new Player(str, color, null);</b>
+<b class="nc"><i>116</i>&nbsp;        outln();</b>
+<i>117</i>&nbsp;
+<b class="nc"><i>118</i>&nbsp;        return player;</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    /** Method used to select the 2/3 gods the players are going to play with, &#39;player 1&#39; picks the gods from allGodsList
+<i>122</i>&nbsp;     *
+<i>123</i>&nbsp;     * @param playersList: ArrayList used to get the &#39;player 1&#39; and the number of players
+<i>124</i>&nbsp;     * @param allGodsList: God[] list of gods
+<i>125</i>&nbsp;     * @return God[]
+<i>126</i>&nbsp;     */
+<i>127</i>&nbsp;    public static God[] gameGodsPicking(ArrayList&lt;Player&gt; playersList, God[] allGodsList) {
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;        out(RESET + playersList.get(0).getColor() + &quot;PLAYER 1: &quot;);</b>
+<b class="nc"><i>130</i>&nbsp;        outln(playersList.get(0).getName().toUpperCase());</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;        outln(&quot;\nSelect &quot; + playersList.size() + &quot; cards from the following ones:\n&quot;);</b>
+<b class="nc"><i>133</i>&nbsp;        for (int i = 0; i &lt; allGodsList.length; i++) {</b>
+<b class="nc"><i>134</i>&nbsp;            outln(i+1 + &quot; &quot; + allGodsList[i].getName() + &quot; --&gt; &quot; + allGodsList[i].getAbility());</b>
+<i>135</i>&nbsp;        }
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;        God [] gameGods = new God[playersList.size()];</b>
+<b class="nc"><i>138</i>&nbsp;        outln();</b>
+<i>139</i>&nbsp;
+<b class="nc"><i>140</i>&nbsp;        for (int i = 0; i &lt; playersList.size(); i++){</b>
+<b class="nc"><i>141</i>&nbsp;            out(&quot;Select God &quot; + (i+1) + &quot;: &quot;);</b>
+<b class="nc"><i>142</i>&nbsp;            Boolean valid=true;</b>
+<i>143</i>&nbsp;            do {
+<b class="nc"><i>144</i>&nbsp;                gameGods[i] = allGodsList[checkForValidIntInput(1, allGodsList.length, null)-1];</b>
+<b class="nc"><i>145</i>&nbsp;                for (int j = 0; j &lt; i; j++){</b>
+<b class="nc"><i>146</i>&nbsp;                    if (gameGods[j].equals(gameGods[i])){</b>
+<b class="nc"><i>147</i>&nbsp;                        valid = false;</b>
+<b class="nc"><i>148</i>&nbsp;                        out(&quot;God already in use. Select God &quot; + (i+1) + &quot;: &quot;);</b>
+<b class="nc"><i>149</i>&nbsp;                    } else valid = true;</b>
+<i>150</i>&nbsp;                }
+<b class="nc"><i>151</i>&nbsp;            } while (!valid);</b>
+<i>152</i>&nbsp;        }
+<i>153</i>&nbsp;
+<b class="nc"><i>154</i>&nbsp;        return gameGods;</b>
+<i>155</i>&nbsp;    }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    /** Method for the god selection of each player
+<i>158</i>&nbsp;     *
+<i>159</i>&nbsp;     * @param player: player that&#39;s selecting the god
+<i>160</i>&nbsp;     * @param gameGods: ArrayList list of gods selected for this game
+<i>161</i>&nbsp;     * @return God: selected god
+<i>162</i>&nbsp;     */
+<i>163</i>&nbsp;    public static God ownGodSelection(Player player, ArrayList&lt;God&gt; gameGods){
+<b class="nc"><i>164</i>&nbsp;        out(RESET + player.getColor() + &quot;\n\nPLAYER: &quot;);</b>
+<b class="nc"><i>165</i>&nbsp;        outln(player.getName().toUpperCase());</b>
+<b class="nc"><i>166</i>&nbsp;        outln(&quot;\nAvailable Gods:\n&quot;);</b>
+<b class="nc"><i>167</i>&nbsp;        for (int i = 0; i &lt; gameGods.size(); i++){</b>
+<b class="nc"><i>168</i>&nbsp;            outln((i+1) + &quot;: &quot; + gameGods.get(i).getName() + &quot; --&gt; &quot; + gameGods.get(i).getAbility());</b>
+<i>169</i>&nbsp;        }
+<b class="nc"><i>170</i>&nbsp;        out(&quot;\nSelect your god: &quot;);</b>
+<b class="nc"><i>171</i>&nbsp;        int choiceIndex = checkForValidIntInput(1, gameGods.size(), null)-1;</b>
+<i>172</i>&nbsp;
+<b class="nc"><i>173</i>&nbsp;        God choice = gameGods.get(choiceIndex);</b>
+<i>174</i>&nbsp;
+<b class="nc"><i>175</i>&nbsp;        return choice;</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    /** Method for the initial pawn positioning
+<i>179</i>&nbsp;     *
+<i>180</i>&nbsp;     * @param game: Game
+<i>181</i>&nbsp;     * @return int[] coordinates of the pawn
+<i>182</i>&nbsp;     */
+<i>183</i>&nbsp;    public static int[] getPawnInitialPosition(Game game){
+<b class="nc"><i>184</i>&nbsp;        out(&quot;Select a cell for your pawn.\nX = &quot;);</b>
+<b class="nc"><i>185</i>&nbsp;        int x = checkForValidIntInput(1, 5, null)-1;</b>
+<b class="nc"><i>186</i>&nbsp;        out(&quot;Y = &quot;);</b>
+<b class="nc"><i>187</i>&nbsp;        int y = checkForValidIntInput(1, 5, null)-1;</b>
+<b class="nc"><i>188</i>&nbsp;        while (game.getMap()[x][y].getIsFull()!=null){</b>
+<b class="nc"><i>189</i>&nbsp;            out(&quot;\nSelected cell is already occupied: &quot; + game.getMap()[x][y].getIsFull().getPlayer().getName() +</b>
+<b class="nc"><i>190</i>&nbsp;                    &quot; &quot; + game.getMap()[x][y].getIsFull().getId() + &quot;. Select another cell for your pawn.\nX = &quot;);</b>
+<b class="nc"><i>191</i>&nbsp;            x = checkForValidIntInput(1, 5, null)-1;</b>
+<b class="nc"><i>192</i>&nbsp;            out(&quot;Y = &quot;);</b>
+<b class="nc"><i>193</i>&nbsp;            y = checkForValidIntInput(1, 5, null)-1;</b>
+<i>194</i>&nbsp;        }
+<b class="nc"><i>195</i>&nbsp;        int[] position = new int[2];</b>
+<b class="nc"><i>196</i>&nbsp;        position[0] = x;</b>
+<b class="nc"><i>197</i>&nbsp;        position[1] = y;</b>
+<i>198</i>&nbsp;
+<b class="nc"><i>199</i>&nbsp;        return position;</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /** Method to ask to the player which pawn he wants to use
+<i>203</i>&nbsp;     *
+<i>204</i>&nbsp;     * @param game: Game
+<i>205</i>&nbsp;     * @param player: player current player
+<i>206</i>&nbsp;     * @return Pawn selected pawn
+<i>207</i>&nbsp;     */
+<i>208</i>&nbsp;    public static Pawn getActivePawn(Game game, Player player){
+<b class="nc"><i>209</i>&nbsp;        for (int j = 0; j &lt; player.getPawns().length; j++){</b>
+<b class="nc"><i>210</i>&nbsp;            outln(&quot;Pawn &quot; + (j+1) + &quot;: [&quot; + (player.getPawns()[j].getX()+1)</b>
+<b class="nc"><i>211</i>&nbsp;                    + &quot;,&quot; + (player.getPawns()[j].getY()+1) + &quot;]&quot;);</b>
+<i>212</i>&nbsp;        }
+<i>213</i>&nbsp;
+<b class="nc"><i>214</i>&nbsp;        out(&quot;\nChoose pawn: &quot;);</b>
+<b class="nc"><i>215</i>&nbsp;        return player.getPawns()[checkForValidIntInput(1, 2, null)-1];</b>
+<i>216</i>&nbsp;    }
+<i>217</i>&nbsp;
+<i>218</i>&nbsp;    /** Method to ask to the the player where he wants to move, than calls a check method to validate the request
+<i>219</i>&nbsp;     *
+<i>220</i>&nbsp;     * @param game: Game
+<i>221</i>&nbsp;     * @param pawn: Pawn selected pawn
+<i>222</i>&nbsp;     * @param restriction: Cell possible restricted cells
+<i>223</i>&nbsp;     * @param canChangePawn: Boolean possibility to change the pawn (depends on the current phase)
+<i>224</i>&nbsp;     * @return int [] resultant coordinates of the pawn after the move
+<i>225</i>&nbsp;     */
+<i>226</i>&nbsp;    public static int[] getValidMoveViaArrows(Game game, Pawn pawn, Cell restriction, Boolean canChangePawn) throws IOException {
+<i>227</i>&nbsp;
+<b class="nc"><i>228</i>&nbsp;        int x=0, y=0;</b>
+<b class="nc"><i>229</i>&nbsp;        Boolean valid = false;</b>
+<b class="nc"><i>230</i>&nbsp;        Boolean esc = false;</b>
+<i>231</i>&nbsp;        do {
+<b class="nc"><i>232</i>&nbsp;            out(pawn.getPlayer().getColor() + &quot;\nWhere to move?\nUse Number Keypad or QWEASDZXC keys: &quot;);</b>
+<b class="nc"><i>233</i>&nbsp;            switch (checkForValidStringInput(true, false , 1, 1, &quot;INVALID MOVE&quot;)){</b>
+<i>234</i>&nbsp;                case &quot;1&quot;:
+<i>235</i>&nbsp;                case &quot;z&quot;:
+<b class="nc"><i>236</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>237</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>238</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveSW&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>239</i>&nbsp;                    break;</b>
+<i>240</i>&nbsp;                case &quot;2&quot;:
+<i>241</i>&nbsp;                case &quot;x&quot;:
+<b class="nc"><i>242</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>243</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>244</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveS&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>245</i>&nbsp;                    break;</b>
+<i>246</i>&nbsp;                case &quot;3&quot;:
+<i>247</i>&nbsp;                case &quot;c&quot;:
+<b class="nc"><i>248</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>249</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>250</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveSE&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>251</i>&nbsp;                    break;</b>
+<i>252</i>&nbsp;                case &quot;4&quot;:
+<i>253</i>&nbsp;                case &quot;a&quot;:
+<b class="nc"><i>254</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>255</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>256</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveW&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>257</i>&nbsp;                    break;</b>
+<i>258</i>&nbsp;                case &quot;6&quot;:
+<i>259</i>&nbsp;                case &quot;d&quot;:
+<b class="nc"><i>260</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>261</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>262</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveE&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>263</i>&nbsp;                    break;</b>
+<i>264</i>&nbsp;                case &quot;7&quot;:
+<i>265</i>&nbsp;                case &quot;q&quot;:
+<b class="nc"><i>266</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>267</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>268</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveNW&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>269</i>&nbsp;                    break;</b>
+<i>270</i>&nbsp;                case &quot;8&quot;:
+<i>271</i>&nbsp;                case &quot;w&quot;:
+<b class="nc"><i>272</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>273</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>274</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveN&quot;, game, pawn, restriction);</b>
+<b class="nc"><i>275</i>&nbsp;                    break;</b>
+<i>276</i>&nbsp;                case &quot;9&quot;:
+<i>277</i>&nbsp;                case &quot;e&quot;:
+<b class="nc"><i>278</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>279</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>280</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanMoveNE&quot;, game, pawn, restriction);</b>
+<i>281</i>&nbsp;                    break;
+<i>282</i>&nbsp;            }
+<b class="nc"><i>283</i>&nbsp;            if (!valid) outln(&quot;INVALID MOVE&quot;);</b>
+<b class="nc"><i>284</i>&nbsp;            if (!valid &amp;&amp; canChangePawn){</b>
+<b class="nc"><i>285</i>&nbsp;                out(&quot;\nDo you still want to move this pawn? [Y/N] : &quot;);</b>
+<b class="nc"><i>286</i>&nbsp;                esc = !checkForValidYNInput(null);</b>
+<i>287</i>&nbsp;            }
+<b class="nc"><i>288</i>&nbsp;        } while (!valid &amp;&amp; !esc);</b>
+<i>289</i>&nbsp;
+<b class="nc"><i>290</i>&nbsp;        int[] move = new int[2];</b>
+<b class="nc"><i>291</i>&nbsp;        move[0]=x;</b>
+<b class="nc"><i>292</i>&nbsp;        move[1]=y;</b>
+<i>293</i>&nbsp;
+<b class="nc"><i>294</i>&nbsp;        if (esc) return null;</b>
+<b class="nc"><i>295</i>&nbsp;        else return move;</b>
+<i>296</i>&nbsp;    }
+<i>297</i>&nbsp;
+<i>298</i>&nbsp;    /** Method to ask to the the player where he wants to build, than calls a check method to validate the request
+<i>299</i>&nbsp;     *
+<i>300</i>&nbsp;     * @param game: Game
+<i>301</i>&nbsp;     * @param pawn: Pawn selected pawn
+<i>302</i>&nbsp;     * @param restriction: Cell possible restricted cells
+<i>303</i>&nbsp;     * @param edgeCellsAllowed: Boolean
+<i>304</i>&nbsp;     *
+<i>305</i>&nbsp;     * @return Cell selected cell to build on
+<i>306</i>&nbsp;     * @throws IOException
+<i>307</i>&nbsp;     */
+<i>308</i>&nbsp;    public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed) throws IOException {
+<b class="nc"><i>309</i>&nbsp;        int x=0, y=0;</b>
+<b class="nc"><i>310</i>&nbsp;        Boolean valid = false;</b>
+<i>311</i>&nbsp;        do {
+<b class="nc"><i>312</i>&nbsp;            out(pawn.getPlayer().getColor() + &quot;\nWhere to build?\nUse Number Keypad or QWEASDZXC keys: &quot;);</b>
+<b class="nc"><i>313</i>&nbsp;            switch (checkForValidStringInput(true, false , 1, 1, &quot;INVALID LOCATION&quot;)){</b>
+<i>314</i>&nbsp;                case &quot;1&quot;:
+<i>315</i>&nbsp;                case &quot;z&quot;:
+<b class="nc"><i>316</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>317</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>318</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildSW&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>319</i>&nbsp;                    break;</b>
+<i>320</i>&nbsp;                case &quot;2&quot;:
+<i>321</i>&nbsp;                case &quot;x&quot;:
+<b class="nc"><i>322</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>323</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>324</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildS&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>325</i>&nbsp;                    break;</b>
+<i>326</i>&nbsp;                case &quot;3&quot;:
+<i>327</i>&nbsp;                case &quot;c&quot;:
+<b class="nc"><i>328</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>329</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>330</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildSE&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>331</i>&nbsp;                    break;</b>
+<i>332</i>&nbsp;                case &quot;4&quot;:
+<i>333</i>&nbsp;                case &quot;a&quot;:
+<b class="nc"><i>334</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>335</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>336</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildW&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>337</i>&nbsp;                    break;</b>
+<i>338</i>&nbsp;                case &quot;6&quot;:
+<i>339</i>&nbsp;                case &quot;d&quot;:
+<b class="nc"><i>340</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>341</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>342</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildE&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>343</i>&nbsp;                    break;</b>
+<i>344</i>&nbsp;                case &quot;7&quot;:
+<i>345</i>&nbsp;                case &quot;q&quot;:
+<b class="nc"><i>346</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>347</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>348</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildNW&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>349</i>&nbsp;                    break;</b>
+<i>350</i>&nbsp;                case &quot;8&quot;:
+<i>351</i>&nbsp;                case &quot;w&quot;:
+<b class="nc"><i>352</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>353</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>354</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildN&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>355</i>&nbsp;                    break;</b>
+<i>356</i>&nbsp;                case &quot;9&quot;:
+<i>357</i>&nbsp;                case &quot;e&quot;:
+<b class="nc"><i>358</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>359</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>360</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildNE&quot;, game, pawn, restriction, edgeCellsAllowed);</b>
+<b class="nc"><i>361</i>&nbsp;                    break;</b>
+<i>362</i>&nbsp;                case &quot;5&quot;:
+<i>363</i>&nbsp;                case &quot;s&quot;:
+<b class="nc"><i>364</i>&nbsp;                    x=pawn.getX();</b>
+<b class="nc"><i>365</i>&nbsp;                    y=pawn.getY();</b>
+<b class="nc"><i>366</i>&nbsp;                    valid = (Boolean) ServerAdapter.toServerGetObject(&quot;checkCanBuildBelow&quot;, game, pawn, restriction);</b>
+<i>367</i>&nbsp;                    break;
+<i>368</i>&nbsp;            }
+<b class="nc"><i>369</i>&nbsp;            if (!valid) outln(&quot;INVALID LOCATION&quot;);</b>
+<b class="nc"><i>370</i>&nbsp;        } while (!valid);</b>
+<i>371</i>&nbsp;
+<b class="nc"><i>372</i>&nbsp;        return new int[]{x, y};</b>
+<i>373</i>&nbsp;    }
+<i>374</i>&nbsp;
+<i>375</i>&nbsp;    /** Method to ask if the player wants to build again (Hephaestus&#39;s power)
+<i>376</i>&nbsp;     *
+<i>377</i>&nbsp;     * @param player: Player current player that selected Hephaestus as his god
+<i>378</i>&nbsp;     * @return Boolean (true= the player wants to build again , false= the player doesn&#39;t want to build again)
+<i>379</i>&nbsp;     */
+<i>380</i>&nbsp;    public static Boolean askBuildTwice(Player player){
+<b class="nc"><i>381</i>&nbsp;        out(player.getColor() + &quot;\nDo you want to build again on the same cell? [Y/N]: &quot;);</b>
+<b class="nc"><i>382</i>&nbsp;        return checkForValidYNInput(null);</b>
+<i>383</i>&nbsp;    }
+<i>384</i>&nbsp;
+<i>385</i>&nbsp;    /** Method used to ask to the player if he wants to use his god&#39;s power
+<i>386</i>&nbsp;     *
+<i>387</i>&nbsp;     * @param player: Player current player
+<i>388</i>&nbsp;     * @return Boolean (true= the player wants to use his power , false= the player doesn&#39;t want to use his power)
+<i>389</i>&nbsp;     */
+<i>390</i>&nbsp;    public static Boolean wantsToUsePower(Player player){
+<b class="nc"><i>391</i>&nbsp;        out(player.getColor() + &quot;\nDo you want to use your power? [Y/N]: &quot;);</b>
+<b class="nc"><i>392</i>&nbsp;        return checkForValidYNInput(null);</b>
+<i>393</i>&nbsp;    }
+<i>394</i>&nbsp;
+<i>395</i>&nbsp;    /**Method that implements the Ares power, it returns the coords of the block to remove
+<i>396</i>&nbsp;     *
+<i>397</i>&nbsp;     * @param game: Game
+<i>398</i>&nbsp;     * @param pawn: Pawn, active pawn
+<i>399</i>&nbsp;     * @return int[], the coords of the block the player wants to remove
+<i>400</i>&nbsp;     */
+<i>401</i>&nbsp;    public static int[] aresPower(Game game, Pawn pawn){
+<b class="nc"><i>402</i>&nbsp;        int x=0;</b>
+<b class="nc"><i>403</i>&nbsp;        int y=0;</b>
+<b class="nc"><i>404</i>&nbsp;        Boolean valid=false;</b>
+<i>405</i>&nbsp;        do {
+<b class="nc"><i>406</i>&nbsp;            out(pawn.getPlayer().getColor() + &quot;\nWhere do you want to remove the floor?\nUse Number Keypad or QWEASDZXC keys: &quot;);</b>
+<b class="nc"><i>407</i>&nbsp;            switch (checkForValidStringInput(true, false , 1, 1, &quot;INVALID LOCATION&quot;)){</b>
+<i>408</i>&nbsp;                case &quot;1&quot;:
+<i>409</i>&nbsp;                case &quot;z&quot;:
+<b class="nc"><i>410</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>411</i>&nbsp;                    y = pawn.getY()+1;</b>
+<i>412</i>&nbsp;
+<b class="nc"><i>413</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>414</i>&nbsp;                    break;
+<i>415</i>&nbsp;                case &quot;2&quot;:
+<i>416</i>&nbsp;                case &quot;x&quot;:
+<b class="nc"><i>417</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>418</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>419</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>420</i>&nbsp;                    break;
+<i>421</i>&nbsp;                case &quot;3&quot;:
+<i>422</i>&nbsp;                case &quot;c&quot;:
+<b class="nc"><i>423</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>424</i>&nbsp;                    y = pawn.getY()+1;</b>
+<b class="nc"><i>425</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>426</i>&nbsp;                    break;
+<i>427</i>&nbsp;                case &quot;4&quot;:
+<i>428</i>&nbsp;                case &quot;a&quot;:
+<b class="nc"><i>429</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>430</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>431</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>432</i>&nbsp;                    break;
+<i>433</i>&nbsp;                case &quot;6&quot;:
+<i>434</i>&nbsp;                case &quot;d&quot;:
+<b class="nc"><i>435</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>436</i>&nbsp;                    y = pawn.getY();</b>
+<b class="nc"><i>437</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>438</i>&nbsp;                    break;
+<i>439</i>&nbsp;                case &quot;7&quot;:
+<i>440</i>&nbsp;                case &quot;q&quot;:
+<b class="nc"><i>441</i>&nbsp;                    x = pawn.getX()-1;</b>
+<b class="nc"><i>442</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>443</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>444</i>&nbsp;                    break;
+<i>445</i>&nbsp;                case &quot;8&quot;:
+<i>446</i>&nbsp;                case &quot;w&quot;:
+<b class="nc"><i>447</i>&nbsp;                    x = pawn.getX();</b>
+<b class="nc"><i>448</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>449</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>450</i>&nbsp;                    break;
+<i>451</i>&nbsp;                case &quot;9&quot;:
+<i>452</i>&nbsp;                case &quot;e&quot;:
+<b class="nc"><i>453</i>&nbsp;                    x = pawn.getX()+1;</b>
+<b class="nc"><i>454</i>&nbsp;                    y = pawn.getY()-1;</b>
+<b class="nc"><i>455</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>456</i>&nbsp;                    break;
+<i>457</i>&nbsp;                case &quot;5&quot;:
+<i>458</i>&nbsp;                case &quot;s&quot;:
+<b class="nc"><i>459</i>&nbsp;                    x=pawn.getX();</b>
+<b class="nc"><i>460</i>&nbsp;                    y=pawn.getY();</b>
+<b class="nc"><i>461</i>&nbsp;                    if (0&lt;x &amp;&amp; x&lt;4 &amp;&amp; 0&lt;y &amp;&amp; y&lt;4 &amp;&amp; game.getMap()[x][y].getFloor()&gt;0 &amp;&amp; !game.getMap()[x][y].getHasDome() &amp;&amp; game.getMap()[x][y].getIsFull()==null) valid=true;</b>
+<i>462</i>&nbsp;                    break;
+<i>463</i>&nbsp;            }
+<b class="nc"><i>464</i>&nbsp;            if (!valid) outln(&quot;INVALID LOCATION&quot;);</b>
+<b class="nc"><i>465</i>&nbsp;        } while (!valid);</b>
+<i>466</i>&nbsp;
+<i>467</i>&nbsp;
+<b class="nc"><i>468</i>&nbsp;        return (new int[]{x, y});</b>
+<i>469</i>&nbsp;    }
+<i>470</i>&nbsp;
+<i>471</i>&nbsp;
+<i>472</i>&nbsp;
+<i>473</i>&nbsp;    //methods to check input
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;    /** Method to get from the user a valid input:
+<i>476</i>&nbsp;     * Integer value expected, between min and max.
+<i>477</i>&nbsp;     *
+<i>478</i>&nbsp;     * @param min : min acceptable int value in input
+<i>479</i>&nbsp;     * @param max : max acceptable int value in input
+<i>480</i>&nbsp;     * @return int : the valid value
+<i>481</i>&nbsp;     */
+<i>482</i>&nbsp;    private static int checkForValidIntInput(int min, int max, String customErrorMessage){
+<b class="nc"><i>483</i>&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<i>484</i>&nbsp;        String str;
+<b class="nc"><i>485</i>&nbsp;        if (customErrorMessage == null) customErrorMessage = &quot;\nInsert a new one: &quot;;</b>
+<i>486</i>&nbsp;
+<b class="nc"><i>487</i>&nbsp;        str = scanner.nextLine();</b>
+<i>488</i>&nbsp;
+<b class="nc"><i>489</i>&nbsp;        while (!str.matches(&quot;^[0-9]+$&quot;) || Integer.parseInt(str) &lt; min || Integer.parseInt(str) &gt; max){</b>
+<b class="nc"><i>490</i>&nbsp;            out(&quot;Input not valid (Integer number requested - min &quot; + min + &quot; - max &quot; + max + &quot;).&quot; +</b>
+<i>491</i>&nbsp;                    customErrorMessage);
+<b class="nc"><i>492</i>&nbsp;            str = scanner.nextLine();</b>
+<i>493</i>&nbsp;        }
+<i>494</i>&nbsp;
+<b class="nc"><i>495</i>&nbsp;        return Integer.parseInt(str);</b>
+<i>496</i>&nbsp;    }
+<i>497</i>&nbsp;
+<i>498</i>&nbsp;    /** Method to get from the user a valid input:
+<i>499</i>&nbsp;     *  String value that is coherent with the parameters.
+<i>500</i>&nbsp;     *
+<i>501</i>&nbsp;     * @param canContainNumbers boolean for digits
+<i>502</i>&nbsp;     * @param canContainSymbols boolean for symbols
+<i>503</i>&nbsp;     * @param minLength min length of the word
+<i>504</i>&nbsp;     * @param maxLength max length of the word
+<i>505</i>&nbsp;     * @param customErrorMessage : possible output message
+<i>506</i>&nbsp;     * @return  String : valid value from input
+<i>507</i>&nbsp;     */
+<i>508</i>&nbsp;    protected static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength, String customErrorMessage){
+<i>509</i>&nbsp;        String str;
+<b class="nc"><i>510</i>&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc"><i>511</i>&nbsp;        str = scanner.nextLine();</b>
+<b class="nc"><i>512</i>&nbsp;        if (customErrorMessage == null) customErrorMessage = &quot;\nInsert a new one: &quot;;</b>
+<i>513</i>&nbsp;
+<b class="nc"><i>514</i>&nbsp;        if (canContainNumbers.equals(false) &amp;&amp; canContainSymbols.equals(false)){</b>
+<b class="nc"><i>515</i>&nbsp;            while ((str == null) || !str.matches(&quot;[a-zA-Z]+&quot;) || str.equals(&quot; &quot;) || (str.length() &lt; minLength) || (str.length() &gt; maxLength)){</b>
+<b class="nc"><i>516</i>&nbsp;                out(&quot;Input not valid (No Numbers - No Symbols - min &quot; + minLength + &quot; characters - max &quot; + maxLength + &quot; characters).&quot; +</b>
+<i>517</i>&nbsp;                        customErrorMessage);
+<b class="nc"><i>518</i>&nbsp;                str = scanner.nextLine();</b>
+<i>519</i>&nbsp;            }
+<b class="nc"><i>520</i>&nbsp;        } else if (canContainNumbers.equals(true) &amp;&amp; canContainSymbols.equals(false)){</b>
+<b class="nc"><i>521</i>&nbsp;            while (str == null || str.matches(&quot;[!@#$%&amp;*()_+=|&lt;&gt;?{}\\[\\]~-]&quot;) || str.equals(&quot; &quot;) || str.length() &lt; minLength || str.length() &gt; maxLength){</b>
+<b class="nc"><i>522</i>&nbsp;                out(&quot;Input not valid (No Symbols - min &quot; + minLength + &quot; characters - max &quot; + maxLength + &quot; characters).&quot; +</b>
+<i>523</i>&nbsp;                        customErrorMessage);
+<b class="nc"><i>524</i>&nbsp;                str = scanner.nextLine();</b>
+<i>525</i>&nbsp;            }
+<b class="nc"><i>526</i>&nbsp;        } else if (canContainNumbers.equals(true) &amp;&amp; canContainSymbols.equals(true)){</b>
+<b class="nc"><i>527</i>&nbsp;            while (str == null || str.equals(&quot; &quot;) || str.length() &lt; minLength || str.length() &gt; maxLength){</b>
+<b class="nc"><i>528</i>&nbsp;                out(&quot;Input not valid (min &quot; + minLength + &quot; characters - max &quot; + maxLength + &quot; characters).&quot; +</b>
+<i>529</i>&nbsp;                        &quot;\nInsert a new one: &quot;);
+<b class="nc"><i>530</i>&nbsp;                str = scanner.nextLine();</b>
+<i>531</i>&nbsp;            }
+<b class="nc"><i>532</i>&nbsp;        } else if (canContainNumbers.equals(false) &amp;&amp; canContainSymbols.equals(true)){</b>
+<b class="nc"><i>533</i>&nbsp;            while (str == null || str.matches(&quot;.*\\d.*&quot;) || str.equals(&quot; &quot;) || str.length() &lt; minLength || str.length() &gt; maxLength){</b>
+<b class="nc"><i>534</i>&nbsp;                out(&quot;Input not valid (No Numbers - min &quot; + minLength + &quot; characters - max &quot; + maxLength + &quot; characters).&quot; +</b>
+<i>535</i>&nbsp;                        customErrorMessage);
+<b class="nc"><i>536</i>&nbsp;                str = scanner.nextLine();</b>
+<i>537</i>&nbsp;            }
+<i>538</i>&nbsp;        }
+<i>539</i>&nbsp;
+<b class="nc"><i>540</i>&nbsp;        return str;</b>
+<i>541</i>&nbsp;    }
+<i>542</i>&nbsp;
+<i>543</i>&nbsp;    /** Method to get from the user a valid input:
+<i>544</i>&nbsp;     *  Yes or No [Y/N]
+<i>545</i>&nbsp;     *
+<i>546</i>&nbsp;     * @param customErrorMessage: String
+<i>547</i>&nbsp;     * @return Boolean (true = Yes, false= No)
+<i>548</i>&nbsp;     */
+<i>549</i>&nbsp;    private static Boolean checkForValidYNInput(String customErrorMessage){
+<i>550</i>&nbsp;        String str;
+<b class="nc"><i>551</i>&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc"><i>552</i>&nbsp;        str = scanner.nextLine();</b>
+<b class="nc"><i>553</i>&nbsp;        if (customErrorMessage == null) customErrorMessage = &quot;\nInsert a new one: &quot;;</b>
+<i>554</i>&nbsp;
+<b class="nc"><i>555</i>&nbsp;        while ((str == null) || (!str.matches(&quot;\\b(?i)(?:yes|si|y)\\b&quot;) &amp;&amp; !str.matches(&quot;\\b(?i)(?:no|n)\\b&quot;))){</b>
+<b class="nc"><i>556</i>&nbsp;            out(&quot;Input not valid&quot; + customErrorMessage);</b>
+<b class="nc"><i>557</i>&nbsp;            str = scanner.nextLine();</b>
+<i>558</i>&nbsp;        }
+<b class="nc"><i>559</i>&nbsp;        if (str.matches(&quot;\\b(?i)(?:yes|si|y)\\b&quot;)) return true;</b>
+<b class="nc"><i>560</i>&nbsp;        else return false;</b>
+<i>561</i>&nbsp;    }
+<i>562</i>&nbsp;
+<i>563</i>&nbsp;    /** Method to check if the name selected by the client is already taken
+<i>564</i>&nbsp;     *
+<i>565</i>&nbsp;     * @param playerList : CopyOnWriteArrayList
+<i>566</i>&nbsp;     * @param name : String the name that the client wants
+<i>567</i>&nbsp;     * @return Boolean (False: the name is already taken, True: the name is ok)
+<i>568</i>&nbsp;     */
+<i>569</i>&nbsp;    public static Boolean checkExistingName(CopyOnWriteArrayList&lt;Player&gt; playerList, String name) {
+<b class="nc"><i>570</i>&nbsp;        name = name.toUpperCase();</b>
+<b class="nc"><i>571</i>&nbsp;        for (int i = 0; i &lt; playerList.size(); i++) {</b>
+<b class="nc"><i>572</i>&nbsp;            if (name.equals(playerList.get(i).getName().toUpperCase()))</b>
+<b class="nc"><i>573</i>&nbsp;                return false;</b>
+<i>574</i>&nbsp;        }
+<b class="nc"><i>575</i>&nbsp;        return true;</b>
+<i>576</i>&nbsp;    }
+<i>577</i>&nbsp;
+<i>578</i>&nbsp;    /** Method to check if the color selected by the client is already taken
+<i>579</i>&nbsp;     *
+<i>580</i>&nbsp;     * @param playerList : CopyOnWriteArrayList
+<i>581</i>&nbsp;     * @param color : String the color that the client wants
+<i>582</i>&nbsp;     * @return Boolean (False: the name is already taken, True: the name is ok)
+<i>583</i>&nbsp;     */
+<i>584</i>&nbsp;    public static Boolean checkExistingColor(CopyOnWriteArrayList&lt;Player&gt; playerList, String color) {
+<b class="nc"><i>585</i>&nbsp;        for (int i = 0; i &lt; playerList.size(); i++) {</b>
+<b class="nc"><i>586</i>&nbsp;            if (color.equals(playerList.get(i).getColor()))</b>
+<b class="nc"><i>587</i>&nbsp;                return false;</b>
+<i>588</i>&nbsp;        }
+<b class="nc"><i>589</i>&nbsp;        return true;</b>
+<i>590</i>&nbsp;    }
+<i>591</i>&nbsp;
+<i>592</i>&nbsp;
+<i>593</i>&nbsp;
+<i>594</i>&nbsp;
+<i>595</i>&nbsp;
+<i>596</i>&nbsp;
+<i>597</i>&nbsp;
+<i>598</i>&nbsp;    // output methods
+<i>599</i>&nbsp;
+<i>600</i>&nbsp;    /** Method to print the god that&#39;s been assigned to player1 after the others chose
+<i>601</i>&nbsp;     *
+<i>602</i>&nbsp;     * @param player: Player player1
+<i>603</i>&nbsp;     * @param god: God the remaining god
+<i>604</i>&nbsp;     */
+<i>605</i>&nbsp;    public static void player1GodAssignment(Player player, God god){
+<b class="nc"><i>606</i>&nbsp;        out(RESET + player.getColor() + &quot;\n\nPLAYER 1: &quot;);</b>
+<b class="nc"><i>607</i>&nbsp;        outln(player.getName().toUpperCase());</b>
+<b class="nc"><i>608</i>&nbsp;        outln(&quot;\nYour God is:&quot;);</b>
+<b class="nc"><i>609</i>&nbsp;        outln(god.getName() + &quot; --&gt; &quot; + god.getAbility());</b>
+<i>610</i>&nbsp;    }
+<i>611</i>&nbsp;
+<i>612</i>&nbsp;    /** Method to print the name of the current player
+<i>613</i>&nbsp;     *
+<i>614</i>&nbsp;     * @param player: Player current player
+<i>615</i>&nbsp;     */
+<i>616</i>&nbsp;    public static void printTurnInfo(Player player){
+<b class="nc"><i>617</i>&nbsp;        out(RESET + player.getColor() + &quot;\n\nPLAYER: &quot;);</b>
+<b class="nc"><i>618</i>&nbsp;        outln(player.getName().toUpperCase());</b>
+<i>619</i>&nbsp;    }
+<i>620</i>&nbsp;
+<i>621</i>&nbsp;    /** Prints info related to the specified cell
+<i>622</i>&nbsp;     *
+<i>623</i>&nbsp;     * @param game current game
+<i>624</i>&nbsp;     * @param x cell x
+<i>625</i>&nbsp;     * @param y cell y
+<i>626</i>&nbsp;     */
+<i>627</i>&nbsp;    private static void printCellInfo(Game game, int x, int y){
+<b class="nc"><i>628</i>&nbsp;        outln(&quot;\n\nCell [&quot; + (x+1) + &quot;,&quot; + (y+1) + &quot;]:&quot;);</b>
+<b class="nc"><i>629</i>&nbsp;        if (game.getMap()[x][y].getIsFull()!=null){</b>
+<b class="nc"><i>630</i>&nbsp;            outln(&quot;-Occupied by &quot; + game.getMap()[x][y].getIsFull().getPlayer().getName() +</b>
+<b class="nc"><i>631</i>&nbsp;                    &quot; &quot; + game.getMap()[x][y].getIsFull().getId());</b>
+<b class="nc"><i>632</i>&nbsp;        } else outln(&quot;-Empty&quot;);</b>
+<b class="nc"><i>633</i>&nbsp;        outln(&quot;Floor: &quot; + game.getMap()[x][y].getFloor());</b>
+<b class="nc"><i>634</i>&nbsp;        outln(&quot;Dome: &quot; + game.getMap()[x][y].getHasDome());</b>
+<i>635</i>&nbsp;    }
+<i>636</i>&nbsp;
+<i>637</i>&nbsp;    /** Method to print the board. Floors and players
+<i>638</i>&nbsp;     *
+<i>639</i>&nbsp;     * @param game Game : current game
+<i>640</i>&nbsp;     */
+<i>641</i>&nbsp;    public static void printBoardColored(Game game){
+<b class="nc"><i>642</i>&nbsp;        outln(RESET + &quot;\n+   -  -  -  -  -   +\n&quot;);</b>
+<b class="nc"><i>643</i>&nbsp;        for (int i = 0; i &lt; 5; i++){</b>
+<b class="nc"><i>644</i>&nbsp;            out(RESET + &quot;|   &quot;);</b>
+<b class="nc"><i>645</i>&nbsp;            for (int j = 0; j &lt; 5; j++){</b>
+<b class="nc"><i>646</i>&nbsp;                if (game.getMap()[j][i].getHasDome().equals(false)){</b>
+<b class="nc"><i>647</i>&nbsp;                    if (game.getMap()[j][i].getIsFull()==null){</b>
+<b class="nc"><i>648</i>&nbsp;                        out(RESET + game.getMap()[j][i].getFloor() + &quot;  &quot;);</b>
+<i>649</i>&nbsp;                    } else {
+<b class="nc"><i>650</i>&nbsp;                        out(game.getMap()[j][i].getIsFull().getPlayer().getColor() + game.getMap()[j][i].getFloor());</b>
+<b class="nc"><i>651</i>&nbsp;                        if (game.getMap()[j][i].getIsFull().getId() == 1){</b>
+<b class="nc"><i>652</i>&nbsp;                            out(&quot;&#39; &quot;);</b>
+<b class="nc"><i>653</i>&nbsp;                        } else out(&quot;\&quot; &quot;);</b>
+<i>654</i>&nbsp;                    }
+<i>655</i>&nbsp;
+<b class="nc"><i>656</i>&nbsp;                } else out(RESET + &quot;@  &quot;);</b>
+<i>657</i>&nbsp;            }
+<b class="nc"><i>658</i>&nbsp;            outln(RESET + &quot; |\n&quot;);</b>
+<i>659</i>&nbsp;        }
+<b class="nc"><i>660</i>&nbsp;        outln(RESET + &quot;+   -  -  -  -  -   +&quot;);</b>
+<i>661</i>&nbsp;    }
+<i>662</i>&nbsp;
+<i>663</i>&nbsp;    /** Method to print the end game graphics
+<i>664</i>&nbsp;     *
+<i>665</i>&nbsp;     * @param player: Player winner
+<i>666</i>&nbsp;     */
+<i>667</i>&nbsp;    public static void endGameGraphics(Player player){
+<b class="nc"><i>668</i>&nbsp;        String[] colors = {BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE,</b>
+<i>669</i>&nbsp;                YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK,
+<i>670</i>&nbsp;                RED, GREEN, BLUE, YELLOW, PURPLE, CYAN, WHITE, BLACK, RED, GREEN, BLUE};
+<b class="nc"><i>671</i>&nbsp;        int num = player.getName().length();</b>
+<b class="nc"><i>672</i>&nbsp;        outln(player.getColor());</b>
+<b class="nc"><i>673</i>&nbsp;        for (int i = 0; i &lt; num+11; i++){</b>
+<b class="nc"><i>674</i>&nbsp;            out(colors[i] + &quot;#&quot;);</b>
+<i>675</i>&nbsp;        }
+<b class="nc"><i>676</i>&nbsp;        outln();</b>
+<b class="nc"><i>677</i>&nbsp;        for (int i = 0; i &lt; num+11; i++){</b>
+<b class="nc"><i>678</i>&nbsp;            out(colors[i+4] + &quot;#&quot;);</b>
+<i>679</i>&nbsp;        }
+<b class="nc"><i>680</i>&nbsp;        outln();</b>
+<b class="nc"><i>681</i>&nbsp;        outln(&quot;## &quot; + player.getColor() + player.getName().toUpperCase() + &quot; WINS&quot; + RESET + &quot; ##&quot;);</b>
+<b class="nc"><i>682</i>&nbsp;        for (int i = 0; i &lt; num+11; i++){</b>
+<b class="nc"><i>683</i>&nbsp;            out(colors[i+2] + &quot;#&quot;);</b>
+<i>684</i>&nbsp;        }
+<b class="nc"><i>685</i>&nbsp;        outln();</b>
+<b class="nc"><i>686</i>&nbsp;        for (int i = 0; i &lt; num+11; i++){</b>
+<b class="nc"><i>687</i>&nbsp;            out(colors[i+6] + &quot;#&quot;);</b>
+<i>688</i>&nbsp;        }
+<i>689</i>&nbsp;
+<b class="nc"><i>690</i>&nbsp;        System.out.println(&quot;\nThe game is over, your client is closing\n&quot;);</b>
+<i>691</i>&nbsp;    }
+<i>692</i>&nbsp;
+<i>693</i>&nbsp;    /** Method to show to a player that he has been removed after he lost
+<i>694</i>&nbsp;     *
+<i>695</i>&nbsp;     * @param player : Player the player that lost
+<i>696</i>&nbsp;     */
+<i>697</i>&nbsp;    public static void removedPlayerGraphics(Player player){
+<b class="nc"><i>698</i>&nbsp;        System.out.println(player.getName().toUpperCase() + &quot; LOST - Player removed from the game&quot;);</b>
+<i>699</i>&nbsp;    }
+<i>700</i>&nbsp;
+<i>701</i>&nbsp;    /** Method that prints the info related to the players in the game (Name, Color, God Name, God Power, Pawns)
+<i>702</i>&nbsp;     *
+<i>703</i>&nbsp;     * @param players : type Player[] array containing the players in the game
+<i>704</i>&nbsp;     * @param printPawns : type Boolean - true if you want to print the positions of the pawns
+<i>705</i>&nbsp;     */
+<i>706</i>&nbsp;    public static void printPlayerInfo(ArrayList&lt;Player&gt; players, Boolean printPawns){
+<b class="nc"><i>707</i>&nbsp;        for (int i = 0; i &lt; players.size(); i++){</b>
+<b class="nc"><i>708</i>&nbsp;            outln(RESET + players.get(i).getColor() + &quot;\n\nPLAYER &quot; + (i+1) + &quot; INFO:\n&quot; +</b>
+<b class="nc"><i>709</i>&nbsp;                    &quot;\nName: &quot; + players.get(i).getName());</b>
+<b class="nc"><i>710</i>&nbsp;            if (players.get(i).getGod()!=null){</b>
+<b class="nc"><i>711</i>&nbsp;                outln(&quot;God: &quot; + players.get(i).getGod().getName() + &quot;: &quot; + players.get(i).getGod().getAbility());</b>
+<i>712</i>&nbsp;            }
+<b class="nc"><i>713</i>&nbsp;            if (printPawns.equals(true)){</b>
+<b class="nc"><i>714</i>&nbsp;                for (int j = 0; j &lt; players.get(i).getPawns().length; j++){</b>
+<b class="nc"><i>715</i>&nbsp;                    Pawn pawn = players.get(i).getPawns()[j];</b>
+<b class="nc"><i>716</i>&nbsp;                    outln(&quot;Pawn &quot; + (j+1) + &quot;: &quot; +  (pawn.getX()+1) + &quot;,&quot; +  (pawn.getY()+1));</b>
+<i>717</i>&nbsp;                }
+<i>718</i>&nbsp;            }
+<i>719</i>&nbsp;        }
+<i>720</i>&nbsp;    }
+<i>721</i>&nbsp;
+<i>722</i>&nbsp;
+<i>723</i>&nbsp;
+<i>724</i>&nbsp;    /** Method that waits the player&#39;s input in the build phase
+<i>725</i>&nbsp;     *
+<i>726</i>&nbsp;     * @param game: Game
+<i>727</i>&nbsp;     * @param pawn: Pawn active pawn
+<i>728</i>&nbsp;     * @param canBuildDome: Boolean true= if the player can build a special dome
+<i>729</i>&nbsp;     * @param allowEsc: Boolean true= if this wait is a non mandatory build
+<i>730</i>&nbsp;     * @return Boolean
+<i>731</i>&nbsp;     */
+<i>732</i>&nbsp;    public static Boolean waitForBuildCommand(Game game, Pawn pawn, Boolean canBuildDome, Boolean allowEsc){
+<b class="nc"><i>733</i>&nbsp;        String text1 = &quot;&quot;;</b>
+<b class="nc"><i>734</i>&nbsp;        String text2 = &quot;&quot;;</b>
+<b class="nc"><i>735</i>&nbsp;        if (canBuildDome) text1 = &quot;- Build Dome (d) &quot;;</b>
+<b class="nc"><i>736</i>&nbsp;        if (allowEsc) text2 = &quot;- Esc (e) &quot;;</b>
+<i>737</i>&nbsp;        String cmd;
+<i>738</i>&nbsp;        do {
+<b class="nc"><i>739</i>&nbsp;            outln(pawn.getPlayer().getColor() + &quot;\nAvailable commands: Build (b) &quot; + text1 + text2 + &quot;- MyPlayerInfo (i) - PrintBoard (p)&quot;);</b>
+<b class="nc"><i>740</i>&nbsp;            out(&quot;Command: &quot;);</b>
+<b class="nc"><i>741</i>&nbsp;            cmd = checkForValidStringInput(false, false, 1, 3, null);</b>
+<b class="nc"><i>742</i>&nbsp;            switch (cmd) {</b>
+<i>743</i>&nbsp;                case &quot;b&quot;:
+<b class="nc"><i>744</i>&nbsp;                    return false;</b>
+<i>745</i>&nbsp;                case &quot;i&quot;:
+<b class="nc"><i>746</i>&nbsp;                    ArrayList&lt;Player&gt; myPlayer = new ArrayList&lt;Player&gt;();</b>
+<b class="nc"><i>747</i>&nbsp;                    myPlayer.add( pawn.getPlayer());</b>
+<b class="nc"><i>748</i>&nbsp;                    printPlayerInfo(myPlayer, true);</b>
+<b class="nc"><i>749</i>&nbsp;                    break;</b>
+<i>750</i>&nbsp;                case &quot;e&quot;:
+<i>751</i>&nbsp;                case &quot;d&quot;:
+<b class="nc"><i>752</i>&nbsp;                    if (canBuildDome || allowEsc) return true;</b>
+<b class="nc"><i>753</i>&nbsp;                    else outln(&quot;NOT VALID&quot;);</b>
+<b class="nc"><i>754</i>&nbsp;                    break;</b>
+<i>755</i>&nbsp;                case &quot;p&quot;:
+<b class="nc"><i>756</i>&nbsp;                    printBoardColored(game);</b>
+<b class="nc"><i>757</i>&nbsp;                    break;</b>
+<i>758</i>&nbsp;                default:
+<b class="nc"><i>759</i>&nbsp;                    outln(&quot;NOT VALID&quot;);</b>
+<i>760</i>&nbsp;                    break;
+<i>761</i>&nbsp;            }
+<b class="nc"><i>762</i>&nbsp;        } while (true);</b>
+<i>763</i>&nbsp;    }
+<i>764</i>&nbsp;
+<i>765</i>&nbsp;    /** Method that waits the player&#39;s input in the move phase
+<i>766</i>&nbsp;     *
+<i>767</i>&nbsp;     * @param game: Game
+<i>768</i>&nbsp;     * @param pawn: Pawn active pawn
+<i>769</i>&nbsp;     * @param allowSwitch: Boolean true= if the player can switch his pawn with another pawn (Apollo&#39;s power)
+<i>770</i>&nbsp;     * @param allowEsc: Boolean true= if this wait is a non mandatory move
+<i>771</i>&nbsp;     * @return Boolean
+<i>772</i>&nbsp;     */
+<i>773</i>&nbsp;    public static Boolean waitForMoveCommand(Game game, Pawn pawn, Boolean allowSwitch, Boolean allowEsc){
+<b class="nc"><i>774</i>&nbsp;        String text1 = &quot;&quot;;</b>
+<b class="nc"><i>775</i>&nbsp;        String text2 = &quot;&quot;;</b>
+<b class="nc"><i>776</i>&nbsp;        if (allowSwitch) text1 = &quot;- Change Pawn (c) &quot;;</b>
+<b class="nc"><i>777</i>&nbsp;        if (allowEsc) text2 = &quot;- Esc (e) &quot;;</b>
+<i>778</i>&nbsp;        String cmd;
+<i>779</i>&nbsp;        do {
+<b class="nc"><i>780</i>&nbsp;            outln(pawn.getPlayer().getColor() + &quot;\nAvailable commands: Move (m) &quot; + text1 + text2 + &quot;- PlayerInfo (i) - PrintBoard (p)&quot;);</b>
+<b class="nc"><i>781</i>&nbsp;            out(&quot;Command: &quot;);</b>
+<b class="nc"><i>782</i>&nbsp;            cmd = checkForValidStringInput(false, false, 1, 3, null);</b>
+<b class="nc"><i>783</i>&nbsp;            switch (cmd) {</b>
+<i>784</i>&nbsp;                case &quot;m&quot;:
+<b class="nc"><i>785</i>&nbsp;                    return true;</b>
+<i>786</i>&nbsp;                case &quot;i&quot;:
+<b class="nc"><i>787</i>&nbsp;                    ArrayList&lt;Player&gt; myPlayer = new ArrayList&lt;Player&gt;();</b>
+<b class="nc"><i>788</i>&nbsp;                    myPlayer.add(pawn.getPlayer());</b>
+<b class="nc"><i>789</i>&nbsp;                    printPlayerInfo(myPlayer, true);</b>
+<b class="nc"><i>790</i>&nbsp;                    break;</b>
+<i>791</i>&nbsp;
+<i>792</i>&nbsp;                case &quot;p&quot;:
+<b class="nc"><i>793</i>&nbsp;                    printBoardColored(game);</b>
+<b class="nc"><i>794</i>&nbsp;                    break;</b>
+<i>795</i>&nbsp;                case &quot;c&quot;:
+<i>796</i>&nbsp;                case &quot;e&quot;:
+<b class="nc"><i>797</i>&nbsp;                    if (allowSwitch || allowEsc){</b>
+<b class="nc"><i>798</i>&nbsp;                        return false;</b>
+<i>799</i>&nbsp;                    } else {
+<b class="nc"><i>800</i>&nbsp;                        outln(&quot;NOT VALID&quot;);</b>
+<b class="nc"><i>801</i>&nbsp;                        break;</b>
+<i>802</i>&nbsp;                    }
+<i>803</i>&nbsp;                default:
+<b class="nc"><i>804</i>&nbsp;                    outln(&quot;NOT VALID&quot;);</b>
+<i>805</i>&nbsp;                    break;
+<i>806</i>&nbsp;            }
+<b class="nc"><i>807</i>&nbsp;        } while (true);</b>
+<i>808</i>&nbsp;
+<i>809</i>&nbsp;    }
+<i>810</i>&nbsp;
+<i>811</i>&nbsp;
+<i>812</i>&nbsp;
+<i>813</i>&nbsp;
+<i>814</i>&nbsp;
+<i>815</i>&nbsp;
+<i>816</i>&nbsp;    @Override
+<i>817</i>&nbsp;    public void run() {
+<i>818</i>&nbsp;
+<b class="nc"><i>819</i>&nbsp;        Game game = new Game(2);</b>
+<b class="nc"><i>820</i>&nbsp;        game.getMap()[0][0].setHasDome(true);</b>
+<b class="nc"><i>821</i>&nbsp;        printBoardColored(game);</b>
+<i>822</i>&nbsp;
+<i>823</i>&nbsp;    }
+<i>824</i>&nbsp;
+<i>825</i>&nbsp;}
+<i>826</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

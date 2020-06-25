@@ -1,0 +1,373 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodPickingScene</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.gui.scenes</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodPickingScene (it.polimi.ingsw.PSP32.view.gui.scenes)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodPickingScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 148)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GodPickingScene$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 151)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.view.gui.scenes;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP32.model.God;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.Gui;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.Hourglass;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.swing.*;
+<i>9</i>&nbsp;import java.awt.*;
+<i>10</i>&nbsp;import java.awt.event.ActionListener;
+<i>11</i>&nbsp;import java.util.ArrayList;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockGods;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class GodPickingScene  extends Gui {
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;  static JLabel godPickingPanel = new JLabel();</b>
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;  static JButton startButton = new JButton();</b>
+<b class="nc"><i>20</i>&nbsp;  static ArrayList&lt;JButton&gt; cardButtons = new ArrayList&lt;&gt;();</b>
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;  static ArrayList&lt;ImageIcon&gt; frontIcons = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>23</i>&nbsp;  static ArrayList&lt;ImageIcon&gt; backIcons = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>24</i>&nbsp;  static int cardWidth = (int) (170*scale*0.9);</b>
+<b class="nc"><i>25</i>&nbsp;  static int cardHeight = (int) (240*scale*0.9);</b>
+<i>26</i>&nbsp;  static ImageIcon emptySpaceIcon;
+<b class="nc"><i>27</i>&nbsp;  static ArrayList&lt;JButton&gt; selectedCards = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>28</i>&nbsp;  static JButton playButton = new JButton();</b>
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;  static JLabel waitLabel = new JLabel(&quot;Other players are choosing their card...&quot;);</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  static int playerNum ;
+<i>35</i>&nbsp;
+<b class="nc"><i>36</i>&nbsp;  static ArrayList&lt;God&gt; gods = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>37</i>&nbsp;  static God[] allGods = new God[9];</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;  static int selectedNum = 0;</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  public void show(){
+<b class="nc"><i>45</i>&nbsp;    window.setContentPane(godPickingPanel);</b>
+<b class="nc"><i>46</i>&nbsp;    window.pack();</b>
+<b class="nc"><i>47</i>&nbsp;    window.setVisible(true);</b>
+<i>48</i>&nbsp;  }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;
+<b class="nc"><i>51</i>&nbsp;  public GodPickingScene(int playerNum, God[] allGods){</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;
+<b class="nc"><i>54</i>&nbsp;    this.playerNum = playerNum;</b>
+<b class="nc"><i>55</i>&nbsp;    this.allGods = allGods;</b>
+<i>56</i>&nbsp;
+<b class="nc"><i>57</i>&nbsp;    imagesImport();</b>
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;    setup();</b>
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  private void setup(){
+<b class="nc"><i>65</i>&nbsp;    ImageIcon background = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataSelezioneGod/Sfondo.png&quot;));</b>
+<b class="nc"><i>66</i>&nbsp;    Image img = background.getImage();</b>
+<b class="nc"><i>67</i>&nbsp;    Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>68</i>&nbsp;    ImageIcon backgroundResized = new ImageIcon( newImg );</b>
+<i>69</i>&nbsp;
+<b class="nc"><i>70</i>&nbsp;    godPickingPanel.setIcon(backgroundResized);</b>
+<b class="nc"><i>71</i>&nbsp;    godPickingPanel.setLayout(null);</b>
+<i>72</i>&nbsp;
+<b class="nc"><i>73</i>&nbsp;    for (int i = 0; i &lt; frontIcons.size(); i++){</b>
+<b class="nc"><i>74</i>&nbsp;      cardButtons.add(new JButton());</b>
+<b class="nc"><i>75</i>&nbsp;      JButton card = cardButtons.get(i);</b>
+<b class="nc"><i>76</i>&nbsp;      card.setIcon(frontIcons.get(i));</b>
+<b class="nc"><i>77</i>&nbsp;      if (i&lt;7){</b>
+<b class="nc"><i>78</i>&nbsp;        card.setBounds((int) ((50+160*i)*scale), (int) (120*scale), cardWidth, cardHeight);</b>
+<i>79</i>&nbsp;      } else {
+<b class="nc"><i>80</i>&nbsp;        card.setBounds((int) ((50+160*(i-7))*scale), (int) (340*scale), cardWidth, cardHeight);</b>
+<i>81</i>&nbsp;      }
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;      card.setOpaque(false);</b>
+<b class="nc"><i>84</i>&nbsp;      card.setContentAreaFilled(false);</b>
+<b class="nc"><i>85</i>&nbsp;      card.setBorderPainted(false);</b>
+<b class="nc"><i>86</i>&nbsp;      godPickingPanel.add(card);</b>
+<b class="nc"><i>87</i>&nbsp;      card.addActionListener(cardButtonListener);</b>
+<b class="nc"><i>88</i>&nbsp;      ImageIcon frontIcon = frontIcons.get(i);</b>
+<b class="nc"><i>89</i>&nbsp;      ImageIcon backIcon = backIcons.get(i);</b>
+<b class="nc"><i>90</i>&nbsp;      card.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;        public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>93</i>&nbsp;          card.setIcon(backIcon);</b>
+<i>94</i>&nbsp;        }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;        public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>97</i>&nbsp;          card.setIcon(frontIcon);</b>
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;      });
+<i>100</i>&nbsp;    }
+<i>101</i>&nbsp;
+<b class="nc"><i>102</i>&nbsp;    ImageIcon image = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataSelezioneGod/CartaNonSelez.png&quot;));</b>
+<b class="nc"><i>103</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>104</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>105</i>&nbsp;    emptySpaceIcon = (new ImageIcon(newImg1));</b>
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;    for (int i = 0; i &lt; playerNum; i++){</b>
+<b class="nc"><i>108</i>&nbsp;      selectedCards.add(new JButton());</b>
+<b class="nc"><i>109</i>&nbsp;      JButton slot = selectedCards.get(i);</b>
+<b class="nc"><i>110</i>&nbsp;      slot.setIcon(emptySpaceIcon);</b>
+<b class="nc"><i>111</i>&nbsp;      if (playerNum==2) {</b>
+<b class="nc"><i>112</i>&nbsp;        slot.setBounds((int) ((400 + 200 * i) * scale), (int) (620 * scale), cardWidth, cardHeight);</b>
+<b class="nc"><i>113</i>&nbsp;      } else slot.setBounds((int) ((300 + 200 * i) * scale), (int) (620 * scale), cardWidth, cardHeight);</b>
+<b class="nc"><i>114</i>&nbsp;      slot.setOpaque(false);</b>
+<b class="nc"><i>115</i>&nbsp;      slot.setContentAreaFilled(false);</b>
+<b class="nc"><i>116</i>&nbsp;      slot.setBorderPainted(false);</b>
+<b class="nc"><i>117</i>&nbsp;      slot.setEnabled(true);</b>
+<b class="nc"><i>118</i>&nbsp;      godPickingPanel.add(slot);</b>
+<b class="nc"><i>119</i>&nbsp;      slot.addActionListener(slotButtonListener);</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;
+<b class="nc"><i>122</i>&nbsp;    ImageIcon playImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataConnessioneServer/PlayButton.png&quot;));</b>
+<b class="nc"><i>123</i>&nbsp;    Image img2 = playImage.getImage();</b>
+<b class="nc"><i>124</i>&nbsp;    Image newImg2 = img2.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>125</i>&nbsp;    ImageIcon playImageResized = new ImageIcon(newImg2);</b>
+<b class="nc"><i>126</i>&nbsp;    playButton.setIcon(playImageResized);</b>
+<b class="nc"><i>127</i>&nbsp;    playButton.setBounds((int) (865*scale), (int) (620*scale), (int) (300*scale), (int) (900/4*scale));</b>
+<b class="nc"><i>128</i>&nbsp;    playButton.setOpaque(false);</b>
+<b class="nc"><i>129</i>&nbsp;    playButton.setContentAreaFilled(false);</b>
+<b class="nc"><i>130</i>&nbsp;    playButton.setBorderPainted(false);</b>
+<b class="nc"><i>131</i>&nbsp;    playButton.setEnabled(false);</b>
+<b class="nc"><i>132</i>&nbsp;    godPickingPanel.add(playButton);</b>
+<b class="nc"><i>133</i>&nbsp;    playButton.addActionListener(playButtonLister);</b>
+<i>134</i>&nbsp;  }
+<i>135</i>&nbsp;
+<b class="nc"><i>136</i>&nbsp;  static ActionListener cardButtonListener = e -&gt; {</b>
+<b class="nc"><i>137</i>&nbsp;    JButton clickedCard = (JButton) e.getSource();</b>
+<i>138</i>&nbsp;
+<b class="nc"><i>139</i>&nbsp;    int i = cardButtons.indexOf(clickedCard);</b>
+<i>140</i>&nbsp;
+<b class="nc"><i>141</i>&nbsp;    if (i!=-1) {</b>
+<b class="nc"><i>142</i>&nbsp;      ImageIcon frontIcon = frontIcons.get(i);</b>
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;      Boolean alreadySelected = false;</b>
+<b class="nc"><i>145</i>&nbsp;      int firstFreePos=0;</b>
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;      for (int j = playerNum-1; j &gt;= 0; j--){</b>
+<b class="nc"><i>148</i>&nbsp;        if (selectedCards.get(j).getIcon().equals(frontIcon)) alreadySelected=true;</b>
+<b class="nc"><i>149</i>&nbsp;        if (selectedCards.get(j).getIcon().equals(emptySpaceIcon)) firstFreePos = j;</b>
+<i>150</i>&nbsp;      }
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;      if (selectedNum &lt; playerNum &amp;&amp; !alreadySelected) {</b>
+<i>153</i>&nbsp;
+<b class="nc"><i>154</i>&nbsp;        selectedCards.get(firstFreePos).setIcon(frontIcon);</b>
+<b class="nc"><i>155</i>&nbsp;        selectedNum++;</b>
+<b class="nc"><i>156</i>&nbsp;        if (selectedNum==playerNum) playButton.setEnabled(true);</b>
+<i>157</i>&nbsp;      }
+<i>158</i>&nbsp;    }
+<i>159</i>&nbsp;  };
+<i>160</i>&nbsp;
+<b class="nc"><i>161</i>&nbsp;  static ActionListener slotButtonListener = e -&gt; {</b>
+<b class="nc"><i>162</i>&nbsp;    JButton clickedCard = (JButton) e.getSource();</b>
+<i>163</i>&nbsp;
+<b class="nc"><i>164</i>&nbsp;    int i = selectedCards.indexOf(clickedCard);</b>
+<i>165</i>&nbsp;
+<b class="nc"><i>166</i>&nbsp;    if (i!=-1) {</b>
+<b class="nc"><i>167</i>&nbsp;      selectedCards.get(i).setIcon(emptySpaceIcon);</b>
+<b class="nc"><i>168</i>&nbsp;      selectedNum--;</b>
+<b class="nc"><i>169</i>&nbsp;      playButton.setEnabled(false);</b>
+<i>170</i>&nbsp;    }
+<i>171</i>&nbsp;  };
+<i>172</i>&nbsp;
+<b class="nc"><i>173</i>&nbsp;  static ActionListener playButtonLister = e -&gt;{</b>
+<i>174</i>&nbsp;
+<b class="nc"><i>175</i>&nbsp;    waitLabel.setBounds((int) (400*scale), (int) (855*scale), (int) (400*scale), (int) (20*scale));</b>
+<b class="nc"><i>176</i>&nbsp;    waitLabel.setFont(minionProXSmall);</b>
+<b class="nc"><i>177</i>&nbsp;    waitLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>178</i>&nbsp;    waitLabel.setForeground(lightBrown);</b>
+<b class="nc"><i>179</i>&nbsp;    godPickingPanel.add(waitLabel);</b>
+<b class="nc"><i>180</i>&nbsp;    playButton.setEnabled(false);</b>
+<b class="nc"><i>181</i>&nbsp;    waitLabel.setVisible(true);</b>
+<b class="nc"><i>182</i>&nbsp;    Hourglass hGlass = new Hourglass();</b>
+<b class="nc"><i>183</i>&nbsp;    hGlass.setBounds((int)(50*scale), (int)(750*scale), (int) (96 * scale), (int) (130 * scale));</b>
+<b class="nc"><i>184</i>&nbsp;    hGlass.setVisible(true);</b>
+<b class="nc"><i>185</i>&nbsp;    godPickingPanel.add(hGlass);</b>
+<b class="nc"><i>186</i>&nbsp;    godPickingPanel.revalidate();</b>
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;
+<b class="nc"><i>189</i>&nbsp;      for (int i=0; i&lt;playerNum; i++){</b>
+<b class="nc"><i>190</i>&nbsp;            if (selectedCards.get(i).getIcon().equals(cardButtons.get(0).getIcon())) gods.add(allGods[0]);</b>
+<b class="nc"><i>191</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(1).getIcon())) gods.add(allGods[1]);</b>
+<b class="nc"><i>192</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(2).getIcon())) gods.add(allGods[2]);</b>
+<b class="nc"><i>193</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(3).getIcon())) gods.add(allGods[3]);</b>
+<b class="nc"><i>194</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(4).getIcon())) gods.add(allGods[4]);</b>
+<b class="nc"><i>195</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(5).getIcon())) gods.add(allGods[5]);</b>
+<b class="nc"><i>196</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(6).getIcon())) gods.add(allGods[6]);</b>
+<b class="nc"><i>197</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(7).getIcon())) gods.add(allGods[7]);</b>
+<b class="nc"><i>198</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(8).getIcon())) gods.add(allGods[8]);</b>
+<b class="nc"><i>199</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(9).getIcon())) gods.add(allGods[9]);</b>
+<b class="nc"><i>200</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(10).getIcon())) gods.add(allGods[10]);</b>
+<b class="nc"><i>201</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(11).getIcon())) gods.add(allGods[11]);</b>
+<b class="nc"><i>202</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(12).getIcon())) gods.add(allGods[12]);</b>
+<b class="nc"><i>203</i>&nbsp;            else if (selectedCards.get(i).getIcon().equals(cardButtons.get(13).getIcon())) gods.add(allGods[13]);</b>
+<i>204</i>&nbsp;          }
+<b class="nc"><i>205</i>&nbsp;    synchronized (lockGods) {</b>
+<b class="nc"><i>206</i>&nbsp;      ServerAdapterGui.flagForGods.set(1);</b>
+<b class="nc"><i>207</i>&nbsp;      lockGods.notifyAll();</b>
+<b class="nc"><i>208</i>&nbsp;    }</b>
+<i>209</i>&nbsp;
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;
+<i>212</i>&nbsp;  };
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;  public static God[] getSelectedGods(){
+<b class="nc"><i>215</i>&nbsp;    return gods.toArray(new God[0]); }</b>
+<i>216</i>&nbsp;
+<i>217</i>&nbsp;  private void imagesImport(){
+<i>218</i>&nbsp;
+<b class="nc"><i>219</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Apollo.png&quot;);</b>
+<i>220</i>&nbsp;
+<b class="nc"><i>221</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Artemis.png&quot;);</b>
+<i>222</i>&nbsp;
+<b class="nc"><i>223</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Athena.png&quot;);</b>
+<i>224</i>&nbsp;
+<b class="nc"><i>225</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Atlas.png&quot;);</b>
+<i>226</i>&nbsp;
+<b class="nc"><i>227</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Demeter.png&quot;);</b>
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Hephaestus.png&quot;);</b>
+<i>230</i>&nbsp;
+<b class="nc"><i>231</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Minotaur.png&quot;);</b>
+<i>232</i>&nbsp;
+<b class="nc"><i>233</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Pan.png&quot;);</b>
+<i>234</i>&nbsp;
+<b class="nc"><i>235</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Prometheus.png&quot;);</b>
+<i>236</i>&nbsp;
+<b class="nc"><i>237</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Hera.png&quot;);</b>
+<i>238</i>&nbsp;
+<b class="nc"><i>239</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Chronus.png&quot;);</b>
+<i>240</i>&nbsp;
+<b class="nc"><i>241</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Hestia.png&quot;);</b>
+<i>242</i>&nbsp;
+<b class="nc"><i>243</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Zeus.png&quot;);</b>
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;    imageSetup(&quot;/Santorini Images/SchermataSelezioneGod/Ares.png&quot;);</b>
+<i>246</i>&nbsp;  }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;  private void imageSetup(String path){
+<b class="nc"><i>249</i>&nbsp;    ImageIcon image = new ImageIcon(getClass().getResource(path));</b>
+<b class="nc"><i>250</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>251</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>252</i>&nbsp;    frontIcons.add(new ImageIcon(newImg1));</b>
+<i>253</i>&nbsp;
+<b class="nc"><i>254</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Turned.png&quot;);</b>
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;    image = new ImageIcon(getClass().getResource(path));</b>
+<b class="nc"><i>257</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>258</i>&nbsp;    newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>259</i>&nbsp;    backIcons.add(new ImageIcon(newImg1));</b>
+<i>260</i>&nbsp;  }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;
+<i>263</i>&nbsp;
+<i>264</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

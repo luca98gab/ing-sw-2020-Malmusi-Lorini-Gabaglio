@@ -1,0 +1,245 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlayersPopup</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlayersPopup (it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlayersPopup</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 64)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlayersPopup$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 67)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.model.God;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP32.model.Player;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.Gui;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.Toast;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.swing.*;
+<i>9</i>&nbsp;import java.awt.*;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import static it.polimi.ingsw.PSP32.view.gui.scenes.GameScene.*;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public class PlayersPopup{
+<i>15</i>&nbsp;
+<b class="nc"><i>16</i>&nbsp;  int colorIconW = (int)(80*scale);</b>
+<b class="nc"><i>17</i>&nbsp;  int colorIconH = (int)(80*scale);</b>
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;  static JDialog popup = new JDialog(window, &quot;Players&quot;, false);</b>
+<i>20</i>&nbsp;
+<b class="nc"><i>21</i>&nbsp;  public PlayersPopup () {</b>
+<b class="nc"><i>22</i>&nbsp;    if (game!=null) {</b>
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;      JLabel backgroundLabel = new JLabel();</b>
+<b class="nc"><i>25</i>&nbsp;      backgroundLabel.setSize((int) (game.getPlayerList().size() * 200 * scale), (int) (390 * scale));</b>
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;      ArrayList&lt;JPanel&gt; playerPanels = new ArrayList&lt;&gt;();</b>
+<i>28</i>&nbsp;
+<b class="nc"><i>29</i>&nbsp;      for (int i = 0; i &lt; game.getPlayerList().size(); i++) {</b>
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;        JPanel playerPanel = new JPanel();</b>
+<b class="nc"><i>32</i>&nbsp;        playerPanels.add(playerPanel);</b>
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;        Player player = game.getPlayerList().get(i);</b>
+<b class="nc"><i>35</i>&nbsp;        JLabel nameLabel = new JLabel(player.getName());</b>
+<b class="nc"><i>36</i>&nbsp;        nameLabel.setFont(minionProXSmall);</b>
+<b class="nc"><i>37</i>&nbsp;        JLabel colorLabel = new JLabel();</b>
+<b class="nc"><i>38</i>&nbsp;        JLabel cardLabel = new JLabel();</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;        ImageIcon thisPawnIcon = null;</b>
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;        switch (player.getColor()) {</b>
+<i>44</i>&nbsp;          case &quot;\u001B[31m&quot;:
+<b class="nc"><i>45</i>&nbsp;            thisPawnIcon = redPawnIcon[0];</b>
+<b class="nc"><i>46</i>&nbsp;            break;</b>
+<i>47</i>&nbsp;          case &quot;\u001B[32m&quot;:
+<b class="nc"><i>48</i>&nbsp;            thisPawnIcon = greenPawnIcon[0];</b>
+<b class="nc"><i>49</i>&nbsp;            break;</b>
+<i>50</i>&nbsp;          case &quot;\u001B[34m&quot;:
+<b class="nc"><i>51</i>&nbsp;            thisPawnIcon = bluePawnIcon[0];</b>
+<i>52</i>&nbsp;            break;
+<i>53</i>&nbsp;        }
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;        Image img = thisPawnIcon.getImage().getScaledInstance(colorIconW, colorIconH, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i>56</i>&nbsp;        ImageIcon myColorIcon = new ImageIcon(img);</b>
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;        colorLabel.setIcon(myColorIcon);</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;        ImageIcon[] cardIcons = imagesImport(player.getGod());</b>
+<b class="nc"><i>62</i>&nbsp;        cardLabel.setIcon(cardIcons[0]);</b>
+<b class="nc"><i>63</i>&nbsp;        cardLabel.setOpaque(false);</b>
+<b class="nc"><i>64</i>&nbsp;        cardLabel.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;          public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>67</i>&nbsp;            cardLabel.setIcon(cardIcons[1]);</b>
+<i>68</i>&nbsp;          }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;          public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>71</i>&nbsp;            cardLabel.setIcon(cardIcons[0]);</b>
+<i>72</i>&nbsp;          }
+<i>73</i>&nbsp;        });
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;        playerPanel.add(nameLabel);</b>
+<b class="nc"><i>76</i>&nbsp;        playerPanel.add(colorLabel);</b>
+<b class="nc"><i>77</i>&nbsp;        playerPanel.add(cardLabel);</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        playerPanel.setVisible(true);</b>
+<b class="nc"><i>80</i>&nbsp;        playerPanel.setOpaque(false);</b>
+<i>81</i>&nbsp;      }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;      for (int i = 0; i &lt; playerPanels.size(); i++) {</b>
+<b class="nc"><i>85</i>&nbsp;        backgroundLabel.add(playerPanels.get(i));</b>
+<b class="nc"><i>86</i>&nbsp;        playerPanels.get(i).setBounds((int) (200 * i * scale), 0, (int) (200 * scale), (int) (390 * scale));</b>
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;      }
+<i>89</i>&nbsp;
+<b class="nc"><i>90</i>&nbsp;      ImageIcon image = new ImageIcon(getClass().getResource(&quot;/Santorini Images/Sfondo.png&quot;));</b>
+<b class="nc"><i>91</i>&nbsp;      Image img1 = image.getImage();</b>
+<b class="nc"><i>92</i>&nbsp;      Image newImg1 = img1.getScaledInstance(backgroundLabel.getWidth(), backgroundLabel.getHeight(), java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i>93</i>&nbsp;      backgroundLabel.setIcon(new ImageIcon(newImg1));</b>
+<b class="nc"><i>94</i>&nbsp;      backgroundLabel.setOpaque(true);</b>
+<i>95</i>&nbsp;
+<b class="nc"><i>96</i>&nbsp;      popup.add(backgroundLabel);</b>
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;      popup.setSize(backgroundLabel.getSize());</b>
+<b class="nc"><i>99</i>&nbsp;      popup.setLocationRelativeTo(window);</b>
+<b class="nc"><i>100</i>&nbsp;      popup.setVisible(true);</b>
+<b class="nc"><i>101</i>&nbsp;      popup.setResizable(false);</b>
+<b class="nc"><i>102</i>&nbsp;      popup.setIconImage((new ImageIcon(Gui.class.getResource(&quot;/Santorini Images/GameIcon.png&quot;)).getImage()));</b>
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;    } else new Toast(&quot;Not Possible Yet&quot;, (JLabel) (window.getContentPane()), 2000);</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;  }
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;  private ImageIcon[] imageSetup(String path){
+<b class="nc"><i>110</i>&nbsp;    ImageIcon[] cardIcons = new ImageIcon[2];</b>
+<i>111</i>&nbsp;
+<b class="nc"><i>112</i>&nbsp;    ImageIcon image = new ImageIcon(getClass().getResource(path));</b>
+<b class="nc"><i>113</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>114</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>115</i>&nbsp;    cardIcons[0] = new ImageIcon(newImg1);</b>
+<i>116</i>&nbsp;
+<b class="nc"><i>117</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Turned.png&quot;);</b>
+<i>118</i>&nbsp;
+<b class="nc"><i>119</i>&nbsp;    image = new ImageIcon(getClass().getResource(path));</b>
+<b class="nc"><i>120</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>121</i>&nbsp;    newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>122</i>&nbsp;    cardIcons[1] = new ImageIcon(newImg1);</b>
+<i>123</i>&nbsp;
+<b class="nc"><i>124</i>&nbsp;    return cardIcons;</b>
+<i>125</i>&nbsp;  }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;  private ImageIcon[] imagesImport(God god){
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;    String prefix = &quot;/Santorini Images/SchermataSelezioneGod/&quot;;</b>
+<b class="nc"><i>130</i>&nbsp;    String suffix = &quot;.png&quot;;</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;    return imageSetup(prefix + god.getName() + suffix);</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;  }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

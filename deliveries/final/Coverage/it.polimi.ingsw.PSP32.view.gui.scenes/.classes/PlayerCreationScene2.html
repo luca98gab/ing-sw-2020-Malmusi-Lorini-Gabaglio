@@ -1,0 +1,341 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlayerCreationScene2</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.gui.scenes</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlayerCreationScene2 (it.polimi.ingsw.PSP32.view.gui.scenes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlayerCreationScene2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 169)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.view.gui.scenes;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP32.model.Player;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.Gui;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.Hourglass;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.swing.*;
+<i>9</i>&nbsp;import javax.swing.border.BevelBorder;
+<i>10</i>&nbsp;import java.awt.*;
+<i>11</i>&nbsp;import java.awt.event.ActionListener;
+<i>12</i>&nbsp;import java.util.concurrent.CopyOnWriteArrayList;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.lockPlayer;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class PlayerCreationScene2  extends Gui {
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;  static JLabel playerCreationPanel = new JLabel();</b>
+<b class="nc"><i>19</i>&nbsp;  static JLabel nameLabel = new JLabel(&quot;Nickname:&quot;);</b>
+<b class="nc"><i>20</i>&nbsp;  static JTextField textField = new JTextField();</b>
+<b class="nc"><i>21</i>&nbsp;  static JButton startButton = new JButton();</b>
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;  static JLabel nameInfo = new JLabel();</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;  static ButtonGroup colorGroup = new ButtonGroup();</b>
+<b class="nc"><i>28</i>&nbsp;  static JRadioButton bluePawn = new JRadioButton();</b>
+<b class="nc"><i>29</i>&nbsp;  static JRadioButton redPawn = new JRadioButton();</b>
+<b class="nc"><i>30</i>&nbsp;  static JRadioButton greenPawn = new JRadioButton();</b>
+<b class="nc"><i>31</i>&nbsp;  static ImageIcon bluePawnIcon = null;</b>
+<b class="nc"><i>32</i>&nbsp;  static ImageIcon redPawnIcon = null;</b>
+<b class="nc"><i>33</i>&nbsp;  static ImageIcon greenPawnIcon = null;</b>
+<b class="nc"><i>34</i>&nbsp;  static ImageIcon bluePawnSelIcon = null;</b>
+<b class="nc"><i>35</i>&nbsp;  static ImageIcon redPawnSelIcon = null;</b>
+<b class="nc"><i>36</i>&nbsp;  static ImageIcon greenPawnSelIcon = null;</b>
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;  private static CopyOnWriteArrayList&lt;Player&gt; players = new CopyOnWriteArrayList&lt;&gt;();</b>
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;  static Player player;
+<i>41</i>&nbsp;
+<b class="nc"><i>42</i>&nbsp;  static Boolean validName = false;</b>
+<i>43</i>&nbsp;
+<b class="nc"><i>44</i>&nbsp;  public static Player getPlayer() {return player;}</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;  public void show(){
+<b class="nc"><i>48</i>&nbsp;    window.setContentPane(playerCreationPanel);</b>
+<b class="nc"><i>49</i>&nbsp;    window.setVisible(true);</b>
+<i>50</i>&nbsp;  }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;  public PlayerCreationScene2 (CopyOnWriteArrayList&lt;Player&gt; players){</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;    PlayerCreationScene2.players = players;</b>
+<i>56</i>&nbsp;
+<b class="nc"><i>57</i>&nbsp;    ImageIcon background = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/Sfondo.png&quot;));</b>
+<b class="nc"><i>58</i>&nbsp;    Image img = background.getImage();</b>
+<b class="nc"><i>59</i>&nbsp;    Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>60</i>&nbsp;    ImageIcon backgroundResized = new ImageIcon( newImg );</b>
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;    playerCreationPanel.setIcon(backgroundResized);</b>
+<b class="nc"><i>63</i>&nbsp;    playerCreationPanel.setLayout(null);</b>
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;    nameLabel.setFont(minionPro);</b>
+<b class="nc"><i>66</i>&nbsp;    nameLabel.setForeground(darkBrown);</b>
+<b class="nc"><i>67</i>&nbsp;    nameLabel.setVerticalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>68</i>&nbsp;    nameLabel.setBounds((int)(390*scale), (int)(180*scale), (int)(120*scale), (int)(30*scale));</b>
+<b class="nc"><i>69</i>&nbsp;    playerCreationPanel.add(nameLabel);</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;    textField.setFont(minionProSmall);</b>
+<b class="nc"><i>72</i>&nbsp;    textField.setBounds((int)(520*scale), (int)(180*scale), (int)(200*scale), (int)(30*scale));</b>
+<b class="nc"><i>73</i>&nbsp;    textField.setBackground(lightBrown);</b>
+<b class="nc"><i>74</i>&nbsp;    textField.setForeground(darkBrown);</b>
+<b class="nc"><i>75</i>&nbsp;    textField.setBorder(new BevelBorder(BevelBorder.LOWERED));</b>
+<b class="nc"><i>76</i>&nbsp;    playerCreationPanel.add(textField);</b>
+<b class="nc"><i>77</i>&nbsp;    textField.addActionListener(textFieldListener);</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;    colorGroup.add(redPawn);</b>
+<b class="nc"><i>80</i>&nbsp;    colorGroup.add(bluePawn);</b>
+<b class="nc"><i>81</i>&nbsp;    colorGroup.add(greenPawn);</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;    ImageIcon bluePawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaBlu.png&quot;));</b>
+<b class="nc"><i>85</i>&nbsp;    Image imgb = bluePawnImage.getImage();</b>
+<b class="nc"><i>86</i>&nbsp;    Image newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;</b>
+<b class="nc"><i>87</i>&nbsp;    bluePawnIcon = new ImageIcon(newImgb);</b>
+<i>88</i>&nbsp;
+<b class="nc"><i>89</i>&nbsp;    bluePawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaBluSelezionato.png&quot;));</b>
+<b class="nc"><i>90</i>&nbsp;    imgb = bluePawnImage.getImage();</b>
+<b class="nc"><i>91</i>&nbsp;    newImgb = imgb.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;</b>
+<b class="nc"><i>92</i>&nbsp;    bluePawnSelIcon = new ImageIcon(newImgb);</b>
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;    bluePawn.setIcon(bluePawnIcon);</b>
+<b class="nc"><i>95</i>&nbsp;    bluePawn.setBounds((int) (340*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));</b>
+<b class="nc"><i>96</i>&nbsp;    bluePawn.setContentAreaFilled(false);</b>
+<b class="nc"><i>97</i>&nbsp;    bluePawn.setBorderPainted(false);</b>
+<b class="nc"><i>98</i>&nbsp;    playerCreationPanel.add(bluePawn);</b>
+<b class="nc"><i>99</i>&nbsp;    bluePawn.addActionListener(bluePawnListener);</b>
+<b class="nc"><i>100</i>&nbsp;    bluePawn.addActionListener(textFieldListener);</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;    ImageIcon redPawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaRossa.png&quot;));</b>
+<b class="nc"><i>105</i>&nbsp;    Image imgr = redPawnImage.getImage();</b>
+<b class="nc"><i>106</i>&nbsp;    Image newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>107</i>&nbsp;    redPawnIcon = new ImageIcon(newImgr);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;    redPawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaRossaSelezionato.png&quot;));</b>
+<b class="nc"><i>110</i>&nbsp;    imgr = redPawnImage.getImage();</b>
+<b class="nc"><i>111</i>&nbsp;    newImgr = imgr.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>112</i>&nbsp;    redPawnSelIcon = new ImageIcon(newImgr);</b>
+<i>113</i>&nbsp;
+<b class="nc"><i>114</i>&nbsp;    redPawn.setIcon(redPawnIcon);</b>
+<b class="nc"><i>115</i>&nbsp;    redPawn.setBounds((int) (530*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));</b>
+<b class="nc"><i>116</i>&nbsp;    redPawn.setContentAreaFilled(false);</b>
+<b class="nc"><i>117</i>&nbsp;    redPawn.setBorderPainted(false);</b>
+<b class="nc"><i>118</i>&nbsp;    playerCreationPanel.add(redPawn);</b>
+<b class="nc"><i>119</i>&nbsp;    redPawn.addActionListener(redPawnListener);</b>
+<b class="nc"><i>120</i>&nbsp;    redPawn.addActionListener(textFieldListener);</b>
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;
+<b class="nc"><i>124</i>&nbsp;    ImageIcon greenPawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaVerde.png&quot;));</b>
+<b class="nc"><i>125</i>&nbsp;    Image imgg = greenPawnImage.getImage();</b>
+<b class="nc"><i>126</i>&nbsp;    Image newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;</b>
+<b class="nc"><i>127</i>&nbsp;    greenPawnIcon = new ImageIcon(newImgg);</b>
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;    greenPawnImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/PedinaVerdeSelezionato.png&quot;));</b>
+<b class="nc"><i>130</i>&nbsp;    imgg = greenPawnImage.getImage();</b>
+<b class="nc"><i>131</i>&nbsp;    newImgg = imgg.getScaledInstance( (int) (140*scale), (int) (210*scale),  java.awt.Image.SCALE_SMOOTH  ) ;</b>
+<b class="nc"><i>132</i>&nbsp;    greenPawnSelIcon = new ImageIcon(newImgg);</b>
+<i>133</i>&nbsp;
+<b class="nc"><i>134</i>&nbsp;    greenPawn.setIcon(greenPawnIcon);</b>
+<b class="nc"><i>135</i>&nbsp;    greenPawn.setBounds((int) (720*scale), (int) (270*scale), (int) (140*scale), (int) (210*scale));</b>
+<b class="nc"><i>136</i>&nbsp;    greenPawn.setContentAreaFilled(false);</b>
+<b class="nc"><i>137</i>&nbsp;    greenPawn.setBorderPainted(false);</b>
+<b class="nc"><i>138</i>&nbsp;    playerCreationPanel.add(greenPawn);</b>
+<b class="nc"><i>139</i>&nbsp;    greenPawn.addActionListener(greenPawnListener);</b>
+<b class="nc"><i>140</i>&nbsp;    greenPawn.addActionListener(textFieldListener);</b>
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;    ImageIcon playImage = new ImageIcon(getClass().getResource(&quot;/Santorini Images/SchermataCreazioneGiocatore/StartButton.png&quot;));</b>
+<b class="nc"><i>145</i>&nbsp;    Image img1 = playImage.getImage();</b>
+<b class="nc"><i>146</i>&nbsp;    Image newImg1 = img1.getScaledInstance( (int) (300*scale), (int) (900/4*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>147</i>&nbsp;    ImageIcon playImageResized = new ImageIcon(newImg1);</b>
+<b class="nc"><i>148</i>&nbsp;    startButton.setIcon(playImageResized);</b>
+<b class="nc"><i>149</i>&nbsp;    startButton.setBounds((int) (450*scale), (int) (580*scale), (int) (300*scale), (int) (900/4*scale));</b>
+<b class="nc"><i>150</i>&nbsp;    startButton.setOpaque(false);</b>
+<b class="nc"><i>151</i>&nbsp;    startButton.setContentAreaFilled(false);</b>
+<b class="nc"><i>152</i>&nbsp;    startButton.setBorderPainted(false);</b>
+<b class="nc"><i>153</i>&nbsp;    startButton.setEnabled(false);</b>
+<b class="nc"><i>154</i>&nbsp;    playerCreationPanel.add(startButton);</b>
+<b class="nc"><i>155</i>&nbsp;    startButton.addActionListener(startButtonListener);</b>
+<i>156</i>&nbsp;
+<b class="nc"><i>157</i>&nbsp;    nameInfo.setFont(minionProSmall);</b>
+<b class="nc"><i>158</i>&nbsp;    nameInfo.setBounds((int) (705*scale), (int) (180*scale), (int) (200*scale), (int) (30*scale));</b>
+<b class="nc"><i>159</i>&nbsp;    nameInfo.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>160</i>&nbsp;    nameInfo.setForeground(darkBrown);</b>
+<b class="nc"><i>161</i>&nbsp;    nameInfo.setFont(minionProSmall);</b>
+<b class="nc"><i>162</i>&nbsp;    nameInfo.setVisible(false);</b>
+<b class="nc"><i>163</i>&nbsp;    playerCreationPanel.add(nameInfo);</b>
+<i>164</i>&nbsp;
+<b class="nc"><i>165</i>&nbsp;    for(int i=0; i&lt;players.size(); i++)</b>
+<i>166</i>&nbsp;    {
+<b class="nc"><i>167</i>&nbsp;      if (players.get(i).getColor().equals(&quot;\u001B[31m&quot;))</b>
+<b class="nc"><i>168</i>&nbsp;        redPawn.setEnabled(false);</b>
+<b class="nc"><i>169</i>&nbsp;      if (players.get(i).getColor().equals(&quot;\u001B[34m&quot;))</b>
+<b class="nc"><i>170</i>&nbsp;        bluePawn.setEnabled(false);</b>
+<b class="nc"><i>171</i>&nbsp;      if (players.get(i).getColor().equals(&quot;\u001B[32m&quot;))</b>
+<b class="nc"><i>172</i>&nbsp;        greenPawn.setEnabled(false);</b>
+<i>173</i>&nbsp;    }
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;  }
+<i>176</i>&nbsp;
+<i>177</i>&nbsp;
+<b class="nc"><i>178</i>&nbsp;  static ActionListener textFieldListener = e -&gt; {</b>
+<b class="nc"><i>179</i>&nbsp;    String str = textField.getText();</b>
+<b class="nc"><i>180</i>&nbsp;    Boolean existing = false;</b>
+<b class="nc"><i>181</i>&nbsp;    if (str.matches(&quot;[a-zA-Z]+&quot;) || str.equals(&quot; &quot;)){</b>
+<b class="nc"><i>182</i>&nbsp;      for(int i=0; i&lt;players.size(); i++){</b>
+<b class="nc"><i>183</i>&nbsp;        if (textField.getText().toUpperCase().equals(players.get(i).getName().toUpperCase())) existing=true;</b>
+<i>184</i>&nbsp;      }
+<b class="nc"><i>185</i>&nbsp;      if (!existing){</b>
+<b class="nc"><i>186</i>&nbsp;          validName=true;</b>
+<b class="nc"><i>187</i>&nbsp;          nameInfo.setVisible(false);</b>
+<b class="nc"><i>188</i>&nbsp;          checkCanPlay();</b>
+<b class="nc"><i>189</i>&nbsp;      } else existingName();</b>
+<i>190</i>&nbsp;    } else {
+<b class="nc"><i>191</i>&nbsp;      textField.setText(&quot;name not valid&quot;);</b>
+<b class="nc"><i>192</i>&nbsp;      textField.selectAll();</b>
+<b class="nc"><i>193</i>&nbsp;      validName=false;</b>
+<i>194</i>&nbsp;    }
+<i>195</i>&nbsp;  };
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;  static ActionListener redPawnListener = e -&gt; {</b>
+<b class="nc"><i>198</i>&nbsp;    redPawn.setIcon(redPawnSelIcon);</b>
+<b class="nc"><i>199</i>&nbsp;    bluePawn.setIcon(bluePawnIcon);</b>
+<b class="nc"><i>200</i>&nbsp;    greenPawn.setIcon(greenPawnIcon);</b>
+<b class="nc"><i>201</i>&nbsp;    checkCanPlay();</b>
+<i>202</i>&nbsp;  };
+<i>203</i>&nbsp;
+<b class="nc"><i>204</i>&nbsp;  static ActionListener bluePawnListener = e -&gt; {</b>
+<b class="nc"><i>205</i>&nbsp;    redPawn.setIcon(redPawnIcon);</b>
+<b class="nc"><i>206</i>&nbsp;    bluePawn.setIcon(bluePawnSelIcon);</b>
+<b class="nc"><i>207</i>&nbsp;    greenPawn.setIcon(greenPawnIcon);</b>
+<b class="nc"><i>208</i>&nbsp;    checkCanPlay();</b>
+<i>209</i>&nbsp;  };
+<i>210</i>&nbsp;
+<b class="nc"><i>211</i>&nbsp;  static ActionListener greenPawnListener = e -&gt; {</b>
+<b class="nc"><i>212</i>&nbsp;    redPawn.setIcon(redPawnIcon);</b>
+<b class="nc"><i>213</i>&nbsp;    bluePawn.setIcon(bluePawnIcon);</b>
+<b class="nc"><i>214</i>&nbsp;    greenPawn.setIcon(greenPawnSelIcon);</b>
+<b class="nc"><i>215</i>&nbsp;    checkCanPlay();</b>
+<i>216</i>&nbsp;  };
+<i>217</i>&nbsp;
+<b class="nc"><i>218</i>&nbsp;  static ActionListener startButtonListener = e -&gt; {</b>
+<b class="nc"><i>219</i>&nbsp;     if (greenPawn.isSelected()) player = new Player(textField.getText(), &quot;\u001B[32m&quot;, null);</b>
+<b class="nc"><i>220</i>&nbsp;     else if (redPawn.isSelected()) player = new Player(textField.getText(), &quot;\u001B[31m&quot;, null);</b>
+<b class="nc"><i>221</i>&nbsp;     else if (bluePawn.isSelected()) player = new Player(textField.getText(), &quot;\u001B[34m&quot;, null);</b>
+<b class="nc"><i>222</i>&nbsp;     synchronized (lockPlayer) {</b>
+<b class="nc"><i>223</i>&nbsp;       ServerAdapterGui.flagForPlayer.set(1);</b>
+<b class="nc"><i>224</i>&nbsp;       lockPlayer.notifyAll();</b>
+<b class="nc"><i>225</i>&nbsp;     }</b>
+<i>226</i>&nbsp;
+<b class="nc"><i>227</i>&nbsp;    JLabel waitLabel = new JLabel(&quot;Waiting for Players...&quot;);</b>
+<b class="nc"><i>228</i>&nbsp;    waitLabel.setFont(minionProSmall);</b>
+<b class="nc"><i>229</i>&nbsp;    waitLabel.setForeground(darkBrown);</b>
+<b class="nc"><i>230</i>&nbsp;    waitLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>231</i>&nbsp;    waitLabel.setBounds((int)(500*scale), (int)(755*scale), (int)(200*scale), (int)(30*scale));</b>
+<b class="nc"><i>232</i>&nbsp;    playerCreationPanel.add(waitLabel);</b>
+<b class="nc"><i>233</i>&nbsp;    disableAll();</b>
+<i>234</i>&nbsp;
+<i>235</i>&nbsp;  };
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;  private static void disableAll(){
+<b class="nc"><i>238</i>&nbsp;    startButton.setEnabled(false);</b>
+<b class="nc"><i>239</i>&nbsp;    Hourglass hGlass = new Hourglass();</b>
+<b class="nc"><i>240</i>&nbsp;    hGlass.setBounds((int)(1050*scale), (int)(750*scale), (int) (96 * scale), (int) (130 * scale));</b>
+<b class="nc"><i>241</i>&nbsp;    hGlass.setVisible(true);</b>
+<b class="nc"><i>242</i>&nbsp;    playerCreationPanel.add(hGlass);</b>
+<i>243</i>&nbsp;
+<i>244</i>&nbsp;  }
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;  private static void checkCanPlay(){
+<b class="nc"><i>247</i>&nbsp;    if (colorGroup.getSelection()!=null &amp;&amp;  validName){</b>
+<b class="nc"><i>248</i>&nbsp;      startButton.setEnabled(true);</b>
+<i>249</i>&nbsp;    }
+<i>250</i>&nbsp;  }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;  public static void existingName(){
+<b class="nc"><i>253</i>&nbsp;    nameInfo.setText(&quot;Invalid name&quot;);</b>
+<b class="nc"><i>254</i>&nbsp;    nameInfo.setVisible(true);</b>
+<b class="nc"><i>255</i>&nbsp;    textField.selectAll();</b>
+<b class="nc"><i>256</i>&nbsp;    startButton.setEnabled(false);</b>
+<i>257</i>&nbsp;  }
+<i>258</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

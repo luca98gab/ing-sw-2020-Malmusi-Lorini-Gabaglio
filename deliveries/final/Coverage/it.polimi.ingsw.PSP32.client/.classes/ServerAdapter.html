@@ -1,0 +1,380 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServerAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServerAdapter (it.polimi.ingsw.PSP32.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServerAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 158)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.BufferedReader;
+<i>4</i>&nbsp;import java.io.IOException;
+<i>5</i>&nbsp;import java.io.ObjectInputStream;
+<i>6</i>&nbsp;import java.io.ObjectOutputStream;
+<i>7</i>&nbsp;import java.net.Socket;
+<i>8</i>&nbsp;import java.util.ArrayList;
+<i>9</i>&nbsp;import java.util.Scanner;
+<i>10</i>&nbsp;import java.util.concurrent.*;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
+<i>13</i>&nbsp;import it.polimi.ingsw.PSP32.model.*;
+<i>14</i>&nbsp;import it.polimi.ingsw.PSP32.view.cli.VirtualCli;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@SuppressWarnings({&quot;unchecked&quot;, &quot;unused&quot;})
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;public class ServerAdapter
+<i>19</i>&nbsp;{
+<i>20</i>&nbsp;  private Socket server;
+<i>21</i>&nbsp;  private static ObjectOutputStream outputStm;
+<i>22</i>&nbsp;  private static ObjectInputStream inputStm;
+<b class="nc"><i>23</i>&nbsp;  private ExecutorService executionQueue = Executors.newSingleThreadExecutor();</b>
+<b class="nc"><i>24</i>&nbsp;  private static Thread refuseInputThread = null;</b>
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;  public ServerAdapter(Socket server) throws IOException {</b>
+<b class="nc"><i>27</i>&nbsp;    this.server = server;</b>
+<b class="nc"><i>28</i>&nbsp;    outputStm = new ObjectOutputStream(server.getOutputStream());</b>
+<b class="nc"><i>29</i>&nbsp;    inputStm = new ObjectInputStream(server.getInputStream());</b>
+<b class="nc"><i>30</i>&nbsp;    refuseInput();</b>
+<i>31</i>&nbsp;  }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  public void stop() {
+<b class="nc"><i>34</i>&nbsp;    executionQueue.execute(() -&gt; {</b>
+<i>35</i>&nbsp;      try {
+<b class="nc"><i>36</i>&nbsp;        server.close();</b>
+<b class="nc"><i>37</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>38</i>&nbsp;        e.printStackTrace();</b>
+<b class="nc"><i>39</i>&nbsp;      }</b>
+<i>40</i>&nbsp;    });
+<b class="nc"><i>41</i>&nbsp;    executionQueue.shutdown();</b>
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;  public Future&lt;String&gt; requestConversion(String input) {
+<b class="nc"><i>45</i>&nbsp;    return executionQueue.submit(() -&gt; {</b>
+<b class="nc"><i>46</i>&nbsp;      outputStm.writeObject(input);</b>
+<b class="nc"><i>47</i>&nbsp;      return (String)inputStm.readObject();</b>
+<i>48</i>&nbsp;    });
+<i>49</i>&nbsp;  }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public void requestSend(String input) {
+<b class="nc"><i>52</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>53</i>&nbsp;      try {
+<b class="nc"><i>54</i>&nbsp;        outputStm.writeObject(input);</b>
+<b class="nc"><i>55</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>56</i>&nbsp;        e.printStackTrace();</b>
+<b class="nc"><i>57</i>&nbsp;      }</b>
+<i>58</i>&nbsp;    });
+<i>59</i>&nbsp;  }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  public Future&lt;String&gt; requestRead(){
+<b class="nc"><i>62</i>&nbsp;    return executionQueue.submit(() -&gt; (String)inputStm.readObject());</b>
+<i>63</i>&nbsp;  }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  /** Method to answer to the server
+<i>66</i>&nbsp;   *
+<i>67</i>&nbsp;   * @return Boolean (False= keep answering to the server, True= close the client )
+<i>68</i>&nbsp;   * @throws ExecutionException
+<i>69</i>&nbsp;   * @throws InterruptedException
+<i>70</i>&nbsp;   * @throws IOException
+<i>71</i>&nbsp;   * @throws LobbyIsFullException
+<i>72</i>&nbsp;   */
+<i>73</i>&nbsp;  public Boolean answerToServer() throws ExecutionException, InterruptedException, IOException, LobbyIsFullException {
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;    Object incomingObject = executionQueue.submit(() -&gt; inputStm.readObject()).get();</b>
+<b class="nc"><i>76</i>&nbsp;    Message message = (Message)incomingObject;</b>
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;    if (message.getTypeOfMessage()!=null &amp;&amp; message.getTypeOfMessage().equals(&quot;StringInfoToPrint&quot;)) System.out.println(message.getResult());</b>
+<b class="nc"><i>79</i>&nbsp;    if (message.getTypeOfMessage()!=null &amp;&amp; message.getTypeOfMessage().equals(&quot;StringInfoToPrint&quot;) &amp;&amp; message.getResult().equals(&quot;Lobby is full\n&quot;)) throw new LobbyIsFullException(this);</b>
+<i>80</i>&nbsp;
+<b class="nc"><i>81</i>&nbsp;    switch (message.getMethodName()){</b>
+<i>82</i>&nbsp;      case &quot;getNumOfPlayers&quot;:
+<b class="nc"><i>83</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>84</i>&nbsp;        int n = VirtualCli.getNumOfPlayers();</b>
+<b class="nc"><i>85</i>&nbsp;        sendResultMessage(n);</b>
+<b class="nc"><i>86</i>&nbsp;        break;</b>
+<i>87</i>&nbsp;      case &quot;createPlayer&quot;:
+<b class="nc"><i>88</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>89</i>&nbsp;        Player p = VirtualCli.createPlayer((CopyOnWriteArrayList&lt;Player&gt;) message.getParameters().get(0), (int)message.getParameters().get(1));</b>
+<b class="nc"><i>90</i>&nbsp;        sendResultMessage(p);</b>
+<b class="nc"><i>91</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>92</i>&nbsp;        break;</b>
+<i>93</i>&nbsp;      case &quot;gameGodsPicking&quot;:
+<b class="nc"><i>94</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>95</i>&nbsp;        God[] g = VirtualCli.gameGodsPicking(((ArrayList&lt;Player&gt;) message.getParameters().get(0)), ((God[]) message.getParameters().get(1)));</b>
+<b class="nc"><i>96</i>&nbsp;        sendResultMessage(g);</b>
+<b class="nc"><i>97</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>98</i>&nbsp;        break;</b>
+<i>99</i>&nbsp;      case &quot;ownGodSelection&quot;:
+<b class="nc"><i>100</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>101</i>&nbsp;        God[] god = {VirtualCli.ownGodSelection(((Player) message.getParameters().get(0)), ((ArrayList&lt;God&gt;) message.getParameters().get(1)))};</b>
+<b class="nc"><i>102</i>&nbsp;        sendResultMessage(god);</b>
+<b class="nc"><i>103</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>104</i>&nbsp;        break;</b>
+<i>105</i>&nbsp;      case &quot;player1GodAssignment&quot;:
+<b class="nc"><i>106</i>&nbsp;        VirtualCli.player1GodAssignment(((Player) message.getParameters().get(0)), ((God) message.getParameters().get(1)));</b>
+<b class="nc"><i>107</i>&nbsp;        break;</b>
+<i>108</i>&nbsp;      case &quot;printPlayerInfo&quot;:
+<b class="nc"><i>109</i>&nbsp;        VirtualCli.printPlayerInfo(((ArrayList&lt;Player&gt;) message.getParameters().get(0)), ((Boolean) message.getParameters().get(1)));</b>
+<b class="nc"><i>110</i>&nbsp;        break;</b>
+<i>111</i>&nbsp;      case &quot;printTurnInfo&quot;:
+<b class="nc"><i>112</i>&nbsp;        VirtualCli.printTurnInfo((Player) message.getParameters().get(0));</b>
+<b class="nc"><i>113</i>&nbsp;        break;</b>
+<i>114</i>&nbsp;      case &quot;getPawnInitialPosition&quot;:
+<b class="nc"><i>115</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>116</i>&nbsp;        int[] position = VirtualCli.getPawnInitialPosition((Game) message.getParameters().get(0));</b>
+<b class="nc"><i>117</i>&nbsp;        sendResultMessage(position);</b>
+<b class="nc"><i>118</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>119</i>&nbsp;        break;</b>
+<i>120</i>&nbsp;      case &quot;printBoardColored&quot;:
+<b class="nc"><i>121</i>&nbsp;        VirtualCli.printBoardColored((Game) message.getParameters().get(0));</b>
+<b class="nc"><i>122</i>&nbsp;        break;</b>
+<i>123</i>&nbsp;      case &quot;getActivePawn&quot;:
+<b class="nc"><i>124</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>125</i>&nbsp;        Pawn pawn=VirtualCli.getActivePawn((Game) message.getParameters().get(0), (Player) message.getParameters().get(1) );</b>
+<b class="nc"><i>126</i>&nbsp;        sendResultMessage(pawn);</b>
+<b class="nc"><i>127</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>128</i>&nbsp;        break;</b>
+<i>129</i>&nbsp;      case &quot;wantsToUsePower&quot;:
+<b class="nc"><i>130</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>131</i>&nbsp;        Boolean bool1=VirtualCli.wantsToUsePower((Player) message.getParameters().get(0));</b>
+<b class="nc"><i>132</i>&nbsp;        sendResultMessage(bool1);</b>
+<b class="nc"><i>133</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>134</i>&nbsp;        break;</b>
+<i>135</i>&nbsp;      case &quot;waitForBuildCommand&quot;:
+<b class="nc"><i>136</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>137</i>&nbsp;        Boolean bool2=VirtualCli.waitForBuildCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );</b>
+<b class="nc"><i>138</i>&nbsp;        sendResultMessage(bool2);</b>
+<b class="nc"><i>139</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>140</i>&nbsp;        break;</b>
+<i>141</i>&nbsp;      case &quot;getBuildLocationViaArrows&quot;:
+<b class="nc"><i>142</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>143</i>&nbsp;        int[] cell=VirtualCli.getBuildLocationViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3) );</b>
+<b class="nc"><i>144</i>&nbsp;        sendResultMessage(cell);</b>
+<b class="nc"><i>145</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>146</i>&nbsp;        break;</b>
+<i>147</i>&nbsp;      case &quot;waitForMoveCommand&quot;:
+<b class="nc"><i>148</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>149</i>&nbsp;        Boolean bool3=VirtualCli.waitForMoveCommand((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1),(Boolean) message.getParameters().get(2),(Boolean) message.getParameters().get(3) );</b>
+<b class="nc"><i>150</i>&nbsp;        sendResultMessage(bool3);</b>
+<b class="nc"><i>151</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>152</i>&nbsp;        break;</b>
+<i>153</i>&nbsp;      case &quot;getValidMoveViaArrows&quot;:
+<b class="nc"><i>154</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>155</i>&nbsp;        int[] move=VirtualCli.getValidMoveViaArrows((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1), (Cell) message.getParameters().get(2), (Boolean) message.getParameters().get(3));</b>
+<b class="nc"><i>156</i>&nbsp;        sendResultMessage(move);</b>
+<b class="nc"><i>157</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>158</i>&nbsp;        break;</b>
+<i>159</i>&nbsp;      case &quot;askBuildTwice&quot;:
+<b class="nc"><i>160</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>161</i>&nbsp;        Boolean bool4=VirtualCli.askBuildTwice((Player) message.getParameters().get(0));</b>
+<b class="nc"><i>162</i>&nbsp;        sendResultMessage(bool4);</b>
+<b class="nc"><i>163</i>&nbsp;        refuseInput();</b>
+<b class="nc"><i>164</i>&nbsp;        break;</b>
+<i>165</i>&nbsp;      case &quot;endGameGraphics&quot;:
+<b class="nc"><i>166</i>&nbsp;        VirtualCli.endGameGraphics((Player) message.getParameters().get(0));</b>
+<b class="nc"><i>167</i>&nbsp;        return true;</b>
+<i>168</i>&nbsp;      case &quot;removedPlayerGraphics&quot;:
+<b class="nc"><i>169</i>&nbsp;        VirtualCli.removedPlayerGraphics((Player) message.getParameters().get(0));</b>
+<b class="nc"><i>170</i>&nbsp;        break;</b>
+<i>171</i>&nbsp;      case &quot;waitTurnMessage&quot;:
+<b class="nc"><i>172</i>&nbsp;        System.out.println(&quot;\n&quot;+ message.getParameters().get(1) +message.getParameters().get(0)+ &quot;\u001b[0m &quot;+ &quot;is playing his turn...&quot;);</b>
+<b class="nc"><i>173</i>&nbsp;        break;</b>
+<i>174</i>&nbsp;      case &quot;waitGodsPicking&quot;:
+<b class="nc"><i>175</i>&nbsp;        System.out.println(&quot;&quot;+ message.getParameters().get(1) + message.getParameters().get(0)+ &quot;\u001b[0m &quot;+ &quot;is selecting the gods...&quot;);</b>
+<b class="nc"><i>176</i>&nbsp;        break;</b>
+<i>177</i>&nbsp;      case &quot;waitOwnGodSelection&quot;:
+<b class="nc"><i>178</i>&nbsp;        System.out.println(&quot;\n&quot;+ message.getParameters().get(1) + message.getParameters().get(0)+ &quot;\u001b[0m &quot;+ &quot;is selecting his own god...&quot;);</b>
+<b class="nc"><i>179</i>&nbsp;        break;</b>
+<i>180</i>&nbsp;      case &quot;Disconnection&quot;:
+<b class="nc"><i>181</i>&nbsp;        System.out.println(&quot;\n&quot;+   &quot;\u001b[31m&quot; +&quot;   ## WARNING ## \n&quot;+  &quot;\u001b[0m&quot; );</b>
+<b class="nc"><i>182</i>&nbsp;        System.out.println(&quot;Someone left the match, the game is being shutted down&quot;);</b>
+<b class="nc"><i>183</i>&nbsp;        return true;</b>
+<i>184</i>&nbsp;      case &quot;aresPower&quot;:
+<b class="nc"><i>185</i>&nbsp;        allowInput();</b>
+<b class="nc"><i>186</i>&nbsp;        int [] coords =VirtualCli.aresPower((Game) message.getParameters().get(0), (Pawn) message.getParameters().get(1));</b>
+<b class="nc"><i>187</i>&nbsp;        sendResultMessage(coords);</b>
+<b class="nc"><i>188</i>&nbsp;        refuseInput();</b>
+<i>189</i>&nbsp;        break;
+<i>190</i>&nbsp;    }
+<b class="nc"><i>191</i>&nbsp;    return false;</b>
+<i>192</i>&nbsp;  }
+<i>193</i>&nbsp;  public void requestSendObject(Object object) {
+<b class="nc"><i>194</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>195</i>&nbsp;      try {
+<b class="nc"><i>196</i>&nbsp;        outputStm.reset();</b>
+<b class="nc"><i>197</i>&nbsp;        outputStm.writeObject(object);</b>
+<b class="nc"><i>198</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>199</i>&nbsp;        System.out.println(&quot;Server shutdown&quot;);</b>
+<b class="nc"><i>200</i>&nbsp;      }</b>
+<i>201</i>&nbsp;    });
+<i>202</i>&nbsp;  }
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;  /** Method to send to the server the answer to a request
+<i>205</i>&nbsp;   *
+<i>206</i>&nbsp;   * @param object : Object the result
+<i>207</i>&nbsp;   */
+<i>208</i>&nbsp;  public void sendResultMessage(Object object) {
+<b class="nc"><i>209</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>210</i>&nbsp;      try {
+<b class="nc"><i>211</i>&nbsp;        outputStm.reset();</b>
+<b class="nc"><i>212</i>&nbsp;        Message message = new Message(null, null, &quot;Result&quot;, object);</b>
+<b class="nc"><i>213</i>&nbsp;        outputStm.writeObject(message);</b>
+<b class="nc"><i>214</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>215</i>&nbsp;        System.out.println(&quot;Connection dropped&quot;);</b>
+<b class="nc"><i>216</i>&nbsp;      }</b>
+<i>217</i>&nbsp;    });
+<i>218</i>&nbsp;  }
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;  /** Method to ask to the server something (Overload)
+<i>221</i>&nbsp;   *
+<i>222</i>&nbsp;   * @param methodName : String the name of the method to call
+<i>223</i>&nbsp;   * @param par1 : Object possible parameter for the method to call
+<i>224</i>&nbsp;   * @param par2: Object possible parameter for the method to call
+<i>225</i>&nbsp;   * @param par3: Object possible parameter for the method to call
+<i>226</i>&nbsp;   * @param par4: Object possible parameter for the method to call
+<i>227</i>&nbsp;   * @return :
+<i>228</i>&nbsp;   * @throws IOException
+<i>229</i>&nbsp;   */
+<i>230</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
+<b class="nc"><i>231</i>&nbsp;    ArrayList&lt;Object&gt; parameters = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>232</i>&nbsp;    parameters.add(par1);</b>
+<b class="nc"><i>233</i>&nbsp;    parameters.add(par2);</b>
+<b class="nc"><i>234</i>&nbsp;    parameters.add(par3);</b>
+<b class="nc"><i>235</i>&nbsp;    parameters.add(par4);</b>
+<b class="nc"><i>236</i>&nbsp;    Message outboundMessage = new Message(methodName, parameters, &quot;Request&quot;, null);</b>
+<b class="nc"><i>237</i>&nbsp;    outputStm.reset();</b>
+<b class="nc"><i>238</i>&nbsp;    outputStm.writeObject(outboundMessage);</b>
+<b class="nc"><i>239</i>&nbsp;    Object object = null;</b>
+<i>240</i>&nbsp;    try {
+<b class="nc"><i>241</i>&nbsp;      Message inboundMessage = (Message) inputStm.readObject();</b>
+<b class="nc"><i>242</i>&nbsp;      if (inboundMessage.getTypeOfMessage().equals(&quot;Result&quot;)){</b>
+<b class="nc"><i>243</i>&nbsp;        object = inboundMessage.getResult();</b>
+<i>244</i>&nbsp;      }
+<b class="nc"><i>245</i>&nbsp;    } catch (ClassNotFoundException | ClassCastException e) {</b>
+<b class="nc"><i>246</i>&nbsp;      System.out.println(&quot;invalid stream from server&quot;);</b>
+<b class="nc"><i>247</i>&nbsp;    }</b>
+<b class="nc"><i>248</i>&nbsp;    return object;</b>
+<i>249</i>&nbsp;  }
+<i>250</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3) throws IOException {
+<b class="nc"><i>251</i>&nbsp;    return toServerGetObject(methodName, par1, par2, par3, null);</b>
+<i>252</i>&nbsp;  }
+<i>253</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2) throws IOException {
+<b class="nc"><i>254</i>&nbsp;    return toServerGetObject(methodName, par1, par2, null, null);</b>
+<i>255</i>&nbsp;  }
+<i>256</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par) throws IOException {
+<b class="nc"><i>257</i>&nbsp;    return toServerGetObject(methodName, par, null, null, null);</b>
+<i>258</i>&nbsp;  }
+<i>259</i>&nbsp;
+<i>260</i>&nbsp;
+<i>261</i>&nbsp;  /**Method that starts a thread to handle user&#39;s input not in his turn.
+<i>262</i>&nbsp;   * It&#39;s called right after the user finishes his turn or ,more in general, when
+<i>263</i>&nbsp;   * he finishes to write the expected inputs
+<i>264</i>&nbsp;   *
+<i>265</i>&nbsp;   */
+<i>266</i>&nbsp;  private static void refuseInput(){
+<b class="nc"><i>267</i>&nbsp;    Thread thread = new Thread(() -&gt; {</b>
+<b class="nc"><i>268</i>&nbsp;      while (!Thread.interrupted()){</b>
+<i>269</i>&nbsp;        try {
+<b class="nc"><i>270</i>&nbsp;          if ((System.in).available()!=0){</b>
+<b class="nc"><i>271</i>&nbsp;            Scanner scanner = new Scanner(System.in);</b>
+<b class="nc"><i>272</i>&nbsp;            scanner.nextLine();</b>
+<b class="nc"><i>273</i>&nbsp;            System.out.println(&quot;Wait for your turn&quot;);</b>
+<i>274</i>&nbsp;          }
+<b class="nc"><i>275</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>276</i>&nbsp;          e.printStackTrace();</b>
+<b class="nc"><i>277</i>&nbsp;        }</b>
+<i>278</i>&nbsp;      }
+<i>279</i>&nbsp;    });
+<b class="nc"><i>280</i>&nbsp;    thread.start();</b>
+<b class="nc"><i>281</i>&nbsp;    refuseInputThread = thread;</b>
+<i>282</i>&nbsp;  }
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;  /**Method that stops the &quot;refuseInputThread&quot; allowing the user to write.
+<i>285</i>&nbsp;   * It&#39;s called right before is asked anything to the client.
+<i>286</i>&nbsp;   *
+<i>287</i>&nbsp;   */
+<i>288</i>&nbsp;  private static void allowInput(){
+<b class="nc"><i>289</i>&nbsp;    if (refuseInputThread != null){</b>
+<b class="nc"><i>290</i>&nbsp;      refuseInputThread.interrupt();</b>
+<b class="nc"><i>291</i>&nbsp;      refuseInputThread = null;</b>
+<i>292</i>&nbsp;    }
+<i>293</i>&nbsp;  }
+<i>294</i>&nbsp;}
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

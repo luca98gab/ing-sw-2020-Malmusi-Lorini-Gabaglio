@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PopupWin</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PopupWin (it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PopupWin</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.model.Player;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import javax.swing.*;
+<i>6</i>&nbsp;import java.awt.*;
+<i>7</i>&nbsp;import java.awt.event.ActionListener;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import static it.polimi.ingsw.PSP32.view.gui.Gui.*;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class PopupWin{
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;
+<b class="nc"><i>15</i>&nbsp;  public PopupWin (JFrame window, Player winner) {</b>
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;    JDialog popup = new JDialog(window, &quot;dialog Box&quot;, true);</b>
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;    JLabel backgroundLabel = new JLabel();</b>
+<b class="nc"><i>20</i>&nbsp;    JButton b = new JButton();</b>
+<b class="nc"><i>21</i>&nbsp;    JLabel winnerLabel = new JLabel();</b>
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;    ImageIcon background = new ImageIcon(getClass().getResource(&quot;/Santorini Images/PopupBackground.png&quot;));</b>
+<b class="nc"><i>24</i>&nbsp;    Image img = background.getImage();</b>
+<b class="nc"><i>25</i>&nbsp;    Image newImg = img.getScaledInstance( (int)(750*scale), (int)(285*scale),  java.awt.Image.SCALE_SMOOTH );</b>
+<b class="nc"><i>26</i>&nbsp;    ImageIcon backgroundIcon = new ImageIcon( newImg );</b>
+<i>27</i>&nbsp;
+<b class="nc"><i>28</i>&nbsp;    background = new ImageIcon(getClass().getResource(&quot;/Santorini Images/escButton.png&quot;));</b>
+<b class="nc"><i>29</i>&nbsp;    img = background.getImage();</b>
+<b class="nc"><i>30</i>&nbsp;    newImg = img.getScaledInstance( (int)(40*scale), (int)(40*scale),  java.awt.Image.SCALE_SMOOTH );</b>
+<b class="nc"><i>31</i>&nbsp;    ImageIcon escIcon = new ImageIcon( newImg );</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;    backgroundLabel.setIcon(backgroundIcon);</b>
+<b class="nc"><i>35</i>&nbsp;    backgroundLabel.setVisible(true);</b>
+<b class="nc"><i>36</i>&nbsp;    backgroundLabel.setOpaque(false);</b>
+<b class="nc"><i>37</i>&nbsp;    backgroundLabel.add(b);</b>
+<b class="nc"><i>38</i>&nbsp;    backgroundLabel.setBounds(0,0, popup.getWidth(), popup.getHeight());</b>
+<b class="nc"><i>39</i>&nbsp;    popup.add(backgroundLabel);</b>
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;    b.setVisible(true);</b>
+<b class="nc"><i>42</i>&nbsp;    b.setIcon(escIcon);</b>
+<b class="nc"><i>43</i>&nbsp;    b.setBounds((int)(660*scale), (int)(0*scale), escIcon.getIconWidth(), escIcon.getIconHeight());</b>
+<b class="nc"><i>44</i>&nbsp;    b.addActionListener(escListener);</b>
+<b class="nc"><i>45</i>&nbsp;    b.setOpaque(false);</b>
+<b class="nc"><i>46</i>&nbsp;    b.setContentAreaFilled(false);</b>
+<b class="nc"><i>47</i>&nbsp;    b.setBorderPainted(false);</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;    winnerLabel.setFont(lillyBelle);</b>
+<b class="nc"><i>50</i>&nbsp;    winnerLabel.setForeground(new Color(247, 206, 135));</b>
+<b class="nc"><i>51</i>&nbsp;    winnerLabel.setText(winner.getName().toUpperCase() + &quot; is the winner&quot;);</b>
+<b class="nc"><i>52</i>&nbsp;    winnerLabel.setBounds((int)(182*scale), (int)(206*scale), (int)(250*scale), (int)(30*scale));</b>
+<b class="nc"><i>53</i>&nbsp;    winnerLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;    winnerLabel.setVisible(true);</b>
+<b class="nc"><i>56</i>&nbsp;    backgroundLabel.add(winnerLabel);</b>
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;    popup.setUndecorated(true); //this has to be before .setBackground !!!!!!!</b>
+<b class="nc"><i>59</i>&nbsp;    popup.setBackground(new Color(0, 0, 0, 0));</b>
+<b class="nc"><i>60</i>&nbsp;    popup.setSize(backgroundIcon.getIconWidth(), backgroundIcon.getIconHeight());</b>
+<b class="nc"><i>61</i>&nbsp;    popup.setLocationRelativeTo(window);</b>
+<b class="nc"><i>62</i>&nbsp;    popup.setVisible(true);</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  }
+<i>65</i>&nbsp;
+<b class="nc"><i>66</i>&nbsp;  static ActionListener escListener = e -&gt; {</b>
+<b class="nc"><i>67</i>&nbsp;    window.setVisible(false);</b>
+<b class="nc"><i>68</i>&nbsp;    window.dispose();</b>
+<b class="nc"><i>69</i>&nbsp;    System.exit(0);</b>
+<i>70</i>&nbsp;  };
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

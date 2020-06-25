@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientHeartbeat</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientHeartbeat (it.polimi.ingsw.PSP32.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientHeartbeat</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.model.Message;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public class ClientHeartbeat implements Runnable {
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;    final private ServerAdapter serverAdapter;
+<i>8</i>&nbsp;    final private ServerAdapterGui serverAdapterGui;
+<i>9</i>&nbsp;
+<b class="nc"><i>10</i>&nbsp;    public ClientHeartbeat(ServerAdapter serverAdapter) {</b>
+<b class="nc"><i>11</i>&nbsp;        this.serverAdapter=serverAdapter;</b>
+<b class="nc"><i>12</i>&nbsp;        this.serverAdapterGui=null;</b>
+<i>13</i>&nbsp;    }
+<b class="nc"><i>14</i>&nbsp;    public ClientHeartbeat(ServerAdapterGui serverAdapterGui) {</b>
+<b class="nc"><i>15</i>&nbsp;        this.serverAdapterGui=serverAdapterGui;</b>
+<b class="nc"><i>16</i>&nbsp;        this.serverAdapter=null;</b>
+<i>17</i>&nbsp;    }
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    @Override
+<i>20</i>&nbsp;    public void run() {
+<b class="nc"><i>21</i>&nbsp;        Message heartbeatMessage = new Message(null, null,&quot;Heartbeat&quot;, null);</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;        while(true) {
+<i>24</i>&nbsp;            try{
+<b class="nc"><i>25</i>&nbsp;                if(serverAdapterGui==null) { serverAdapter.requestSendObject(heartbeatMessage); }</b>
+<b class="nc"><i>26</i>&nbsp;                else {serverAdapterGui.requestSendObject(heartbeatMessage); }</b>
+<b class="nc"><i>27</i>&nbsp;                Thread.sleep(10000);</b>
+<b class="nc"><i>28</i>&nbsp;            } catch(InterruptedException e){</b>
+<b class="nc"><i>29</i>&nbsp;                e.printStackTrace();}</b>
+<i>30</i>&nbsp;        }
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;}
+<i>33</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

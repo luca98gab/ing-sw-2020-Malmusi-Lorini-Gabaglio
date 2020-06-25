@@ -1,0 +1,1335 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameScene</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.view.gui.scenes</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameScene (it.polimi.ingsw.PSP32.view.gui.scenes)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameScene</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 591)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GameScene$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$6</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">GameScene$7</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 59)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 619)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.view.gui.scenes;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.client.ServerAdapterGui;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP32.model.*;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.*;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.AboutPage;
+<i>7</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PlayersPopup;
+<i>8</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PopupRemovedPlayer;
+<i>9</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents.PopupWin;
+<i>10</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.DisconnectedPopup;
+<i>11</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.LobbyIsFullPopup;
+<i>12</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.components.generic.Toast;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import javax.swing.*;
+<i>15</i>&nbsp;import java.awt.*;
+<i>16</i>&nbsp;import java.awt.event.ActionEvent;
+<i>17</i>&nbsp;import java.awt.event.ActionListener;
+<i>18</i>&nbsp;import java.io.File;
+<i>19</i>&nbsp;import java.io.IOException;
+<i>20</i>&nbsp;import java.io.InputStream;
+<i>21</i>&nbsp;import java.net.URISyntaxException;
+<i>22</i>&nbsp;import java.util.ArrayList;
+<i>23</i>&nbsp;import java.util.concurrent.atomic.AtomicInteger;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
+<i>26</i>&nbsp;import static javax.swing.SwingConstants.*;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;public class GameScene extends Gui{
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;  static JLabel gamePanel = new JLabel();</b>
+<i>31</i>&nbsp;
+<b class="nc"><i>32</i>&nbsp;  static JPanel menuBar = new JPanel();</b>
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;  static JButton myCard = new JButton();</b>
+<i>35</i>&nbsp;  static ImageIcon myCardIconFront;
+<i>36</i>&nbsp;  static ImageIcon myCardIconBack;
+<b class="nc"><i>37</i>&nbsp;  static JLabel phaseLabel = new JLabel();</b>
+<b class="nc"><i>38</i>&nbsp;  static JLabel phaseInfo = new JLabel();</b>
+<b class="nc"><i>39</i>&nbsp;  static JButton phaseButton = new JButton();</b>
+<b class="nc"><i>40</i>&nbsp;  static JLabel athenaFlagImageContainer = new JLabel();</b>
+<b class="nc"><i>41</i>&nbsp;  static JLabel divider = new JLabel(&quot;- - - - - - - - - -&quot;);</b>
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;  static Cell restrictedCell = null;</b>
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;  static Boolean wantsToUsePower=false;</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;
+<b class="nc"><i>48</i>&nbsp;  static JLabel meLabel = new JLabel();</b>
+<b class="nc"><i>49</i>&nbsp;  static JLabel myColor = new JLabel();</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;  static int [] position1= {-1,-1};</b>
+<b class="nc"><i>53</i>&nbsp;  static int [] position2= {-1,-1};</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;  static int [] deleteCoords = {-1, -1};</b>
+<i>56</i>&nbsp;
+<b class="nc"><i>57</i>&nbsp;  static int [] buildLocation ={-1,-1};</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;  public static Pawn activePawn;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;  public static Game game;
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;  static ArrayList&lt;JButton&gt; cells = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>64</i>&nbsp;  static ArrayList&lt;JLabel&gt; buildIconsLayer = new ArrayList&lt;&gt;();</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;
+<b class="nc"><i>67</i>&nbsp;  public static int cardWidth = (int) (170*scale);</b>
+<b class="nc"><i>68</i>&nbsp;  public static int cardHeight = (int) (240*scale);</b>
+<i>69</i>&nbsp;
+<b class="nc"><i>70</i>&nbsp;  public static int cellWidth = (int)(110*scale);</b>
+<b class="nc"><i>71</i>&nbsp;  public static int cellHeight = (int)(110*scale);</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  static String phase;
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;  public static Player myPlayer;
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;  static ArrayList&lt;Integer&gt; selectedCells = new ArrayList&lt;&gt;();</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;  public static ImageIcon[] redPawnIcon = new ImageIcon[2];</b>
+<b class="nc"><i>80</i>&nbsp;  public static ImageIcon[] bluePawnIcon = new ImageIcon[2];</b>
+<b class="nc"><i>81</i>&nbsp;  public static ImageIcon[] greenPawnIcon = new ImageIcon[2];</b>
+<b class="nc"><i>82</i>&nbsp;  public static ImageIcon[] myPawnIcon = new ImageIcon[2];</b>
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;  static ImageIcon[] buildingIcons = new ImageIcon[4];</b>
+<b class="nc"><i>85</i>&nbsp;  static ImageIcon[] buildingDomeIcons = new ImageIcon[5];</b>
+<i>86</i>&nbsp;
+<b class="nc"><i>87</i>&nbsp;  static Boolean bordersAllowed = true;</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;  //setup
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;  public void show(){
+<b class="nc"><i>93</i>&nbsp;    gamePanel.setBounds(0, 0, window.getWidth(), window.getHeight());</b>
+<b class="nc"><i>94</i>&nbsp;    window.setContentPane(gamePanel);</b>
+<b class="nc"><i>95</i>&nbsp;    window.setVisible(true);</b>
+<i>96</i>&nbsp;  }
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;  public GameScene(Player player){</b>
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;    myPlayer = player;</b>
+<i>101</i>&nbsp;
+<b class="nc"><i>102</i>&nbsp;    sceneSetup();</b>
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;    waitGraphics();</b>
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;  }
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;  private static void menuSetup(){
+<i>109</i>&nbsp;
+<b class="nc"><i>110</i>&nbsp;    JButton rules = new JButton(&quot;Rules&quot;);</b>
+<b class="nc"><i>111</i>&nbsp;    rules.setVerticalAlignment(TOP);</b>
+<b class="nc"><i>112</i>&nbsp;    rules.setForeground(new Color(225, 224, 222));</b>
+<b class="nc"><i>113</i>&nbsp;    rules.setFont(minionProXSmall);</b>
+<b class="nc"><i>114</i>&nbsp;    rules.setContentAreaFilled(false);</b>
+<b class="nc"><i>115</i>&nbsp;    rules.setBorderPainted(false);</b>
+<i>116</i>&nbsp;
+<b class="nc"><i>117</i>&nbsp;    rules.addActionListener(new ActionListener() {</b>
+<i>118</i>&nbsp;      @Override
+<i>119</i>&nbsp;      public void actionPerformed(ActionEvent e) {
+<b class="nc"><i>120</i>&nbsp;        if (Desktop.isDesktopSupported()) {</b>
+<i>121</i>&nbsp;          try {
+<b class="nc"><i>122</i>&nbsp;            File myFile = new File(getClass().getResource(&quot;/Santorini Images/Santorini Rulebook.pdf&quot;).toURI());</b>
+<b class="nc"><i>123</i>&nbsp;            Desktop.getDesktop().open(myFile);</b>
+<b class="nc"><i>124</i>&nbsp;          } catch (IOException | URISyntaxException ex) {</b>
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;          }</b>
+<i>127</i>&nbsp;        }
+<i>128</i>&nbsp;      }
+<i>129</i>&nbsp;    });
+<b class="nc"><i>130</i>&nbsp;    rules.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>131</i>&nbsp;      public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>132</i>&nbsp;        rules.setOpaque(true);</b>
+<b class="nc"><i>133</i>&nbsp;        rules.setBackground(new Color(0x2D6772D5, true));</b>
+<i>134</i>&nbsp;      }
+<i>135</i>&nbsp;      public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>136</i>&nbsp;        rules.setOpaque(false);</b>
+<b class="nc"><i>137</i>&nbsp;        rules.setBackground(new Color(0,0,0,0));</b>
+<i>138</i>&nbsp;      }
+<i>139</i>&nbsp;    });
+<i>140</i>&nbsp;
+<b class="nc"><i>141</i>&nbsp;    menuBar.add(rules);</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;
+<b class="nc"><i>144</i>&nbsp;    JButton about = new JButton(&quot;About&quot;);</b>
+<b class="nc"><i>145</i>&nbsp;    about.setVerticalAlignment(TOP);</b>
+<b class="nc"><i>146</i>&nbsp;    about.setOpaque(false);</b>
+<b class="nc"><i>147</i>&nbsp;    about.setContentAreaFilled(false);</b>
+<b class="nc"><i>148</i>&nbsp;    about.setBorderPainted(false);</b>
+<b class="nc"><i>149</i>&nbsp;    about.setFont(minionProXSmall);</b>
+<b class="nc"><i>150</i>&nbsp;    about.setForeground(new Color(225, 224, 222));</b>
+<b class="nc"><i>151</i>&nbsp;    about.addActionListener(new ActionListener() {</b>
+<i>152</i>&nbsp;      @Override
+<i>153</i>&nbsp;      public void actionPerformed(ActionEvent e) {
+<b class="nc"><i>154</i>&nbsp;        new AboutPage();</b>
+<i>155</i>&nbsp;      }
+<i>156</i>&nbsp;    });
+<b class="nc"><i>157</i>&nbsp;    about.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>158</i>&nbsp;      public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>159</i>&nbsp;        about.setOpaque(true);</b>
+<b class="nc"><i>160</i>&nbsp;        about.setBackground(new Color(0x2D6772D5, true));</b>
+<i>161</i>&nbsp;      }
+<i>162</i>&nbsp;      public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>163</i>&nbsp;        about.setOpaque(false);</b>
+<b class="nc"><i>164</i>&nbsp;        about.setBackground(new Color(0,0,0,0));</b>
+<i>165</i>&nbsp;      }
+<i>166</i>&nbsp;    });
+<b class="nc"><i>167</i>&nbsp;    menuBar.add(about);</b>
+<i>168</i>&nbsp;
+<b class="nc"><i>169</i>&nbsp;    JButton players = new JButton(&quot;Players&quot;);</b>
+<b class="nc"><i>170</i>&nbsp;    players.setVerticalAlignment(TOP);</b>
+<b class="nc"><i>171</i>&nbsp;    players.setOpaque(false);</b>
+<b class="nc"><i>172</i>&nbsp;    players.setContentAreaFilled(false);</b>
+<b class="nc"><i>173</i>&nbsp;    players.setBorderPainted(false);</b>
+<b class="nc"><i>174</i>&nbsp;    players.setFont(minionProXSmall);</b>
+<b class="nc"><i>175</i>&nbsp;    players.setForeground(new Color(225, 224, 222));</b>
+<b class="nc"><i>176</i>&nbsp;    players.addActionListener(new ActionListener() {</b>
+<i>177</i>&nbsp;      @Override
+<i>178</i>&nbsp;      public void actionPerformed(ActionEvent e) {
+<b class="nc"><i>179</i>&nbsp;        new PlayersPopup();</b>
+<i>180</i>&nbsp;      }
+<i>181</i>&nbsp;    });
+<b class="nc"><i>182</i>&nbsp;    players.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>183</i>&nbsp;      public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>184</i>&nbsp;        players.setOpaque(true);</b>
+<b class="nc"><i>185</i>&nbsp;        players.setBackground(new Color(0x2D6772D5, true));</b>
+<i>186</i>&nbsp;      }
+<i>187</i>&nbsp;      public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>188</i>&nbsp;        players.setOpaque(false);</b>
+<b class="nc"><i>189</i>&nbsp;        players.setBackground(new Color(0,0,0,0));</b>
+<i>190</i>&nbsp;      }
+<i>191</i>&nbsp;    });
+<b class="nc"><i>192</i>&nbsp;    menuBar.add(players);</b>
+<i>193</i>&nbsp;
+<b class="nc"><i>194</i>&nbsp;    menuBar.setLayout(new FlowLayout(FlowLayout.LEADING));</b>
+<b class="nc"><i>195</i>&nbsp;    menuBar.setBounds((int) (35*scale), (int) ((15)*scale), (int) (1133*scale), (int) (29*scale));</b>
+<b class="nc"><i>196</i>&nbsp;    menuBar.setOpaque(false);</b>
+<i>197</i>&nbsp;
+<b class="nc"><i>198</i>&nbsp;    gamePanel.add(menuBar);</b>
+<i>199</i>&nbsp;  }
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;  private static void sceneSetup(){
+<i>202</i>&nbsp;
+<b class="nc"><i>203</i>&nbsp;    menuSetup();</b>
+<i>204</i>&nbsp;
+<b class="nc"><i>205</i>&nbsp;    ImageIcon background = new ImageIcon(GameScene.class.getResource(&quot;/Santorini Images/SchermataGioco/Sfondo.png&quot;));</b>
+<b class="nc"><i>206</i>&nbsp;    Image img = background.getImage();</b>
+<b class="nc"><i>207</i>&nbsp;    Image newImg = img.getScaledInstance( (int) (1200*scale), (int) (900*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>208</i>&nbsp;    ImageIcon backgroundResized = new ImageIcon( newImg );</b>
+<i>209</i>&nbsp;
+<b class="nc"><i>210</i>&nbsp;    gamePanel.setIcon(backgroundResized);</b>
+<b class="nc"><i>211</i>&nbsp;    gamePanel.setLayout(null);</b>
+<i>212</i>&nbsp;
+<b class="nc"><i>213</i>&nbsp;    imagesImport(myPlayer.getGod());</b>
+<b class="nc"><i>214</i>&nbsp;    myCard.setIcon(myCardIconFront);</b>
+<b class="nc"><i>215</i>&nbsp;    myCard.setBounds((int)(100*scale), (int)(550*scale), cardWidth, cardHeight);</b>
+<b class="nc"><i>216</i>&nbsp;    myCard.setOpaque(false);</b>
+<b class="nc"><i>217</i>&nbsp;    myCard.setContentAreaFilled(false);</b>
+<b class="nc"><i>218</i>&nbsp;    myCard.setBorderPainted(false);</b>
+<b class="nc"><i>219</i>&nbsp;    gamePanel.add(myCard);</b>
+<b class="nc"><i>220</i>&nbsp;    myCard.addMouseListener(new java.awt.event.MouseAdapter() {</b>
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;      public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>223</i>&nbsp;        myCard.setIcon(myCardIconBack);</b>
+<i>224</i>&nbsp;      }
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;      public void mouseExited(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>227</i>&nbsp;        myCard.setIcon(myCardIconFront);</b>
+<i>228</i>&nbsp;      }
+<i>229</i>&nbsp;    });
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;
+<b class="nc"><i>232</i>&nbsp;    createCells();</b>
+<b class="nc"><i>233</i>&nbsp;    setupBuildingLayer();</b>
+<b class="nc"><i>234</i>&nbsp;    setupPawnIcons();</b>
+<b class="nc"><i>235</i>&nbsp;    setupPhaseZone();</b>
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;  }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;  private static void imageSetup(String path){
+<b class="nc"><i>240</i>&nbsp;    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>241</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>242</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>243</i>&nbsp;    myCardIconFront = new ImageIcon(newImg1);</b>
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Turned.png&quot;);</b>
+<i>246</i>&nbsp;
+<b class="nc"><i>247</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>248</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>249</i>&nbsp;    newImg1 = img1.getScaledInstance( cardWidth, cardHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>250</i>&nbsp;    myCardIconBack = new ImageIcon(newImg1);</b>
+<i>251</i>&nbsp;  }
+<i>252</i>&nbsp;
+<i>253</i>&nbsp;  private static void imagesImport(God god){
+<i>254</i>&nbsp;
+<b class="nc"><i>255</i>&nbsp;    String prefix = &quot;/Santorini Images/SchermataSelezioneGod/&quot;;</b>
+<b class="nc"><i>256</i>&nbsp;    String suffix = &quot;.png&quot;;</b>
+<i>257</i>&nbsp;
+<b class="nc"><i>258</i>&nbsp;    imageSetup(prefix + god.getName() + suffix);</b>
+<i>259</i>&nbsp;
+<i>260</i>&nbsp;  }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;  private static void createCells(){
+<b class="nc"><i>263</i>&nbsp;    for (int i = 0; i &lt; 25; i++){</b>
+<b class="nc"><i>264</i>&nbsp;      JButton cell = new JButton();</b>
+<b class="nc"><i>265</i>&nbsp;      cell.setBounds((int)((448+140*(i%5))*scale), (int)((150+141*(i/5))*scale), cellWidth, cellHeight);</b>
+<b class="nc"><i>266</i>&nbsp;      cell.setOpaque(false);</b>
+<b class="nc"><i>267</i>&nbsp;      cell.setContentAreaFilled(false);</b>
+<b class="nc"><i>268</i>&nbsp;      cell.setBorderPainted(false);</b>
+<b class="nc"><i>269</i>&nbsp;      cell.addActionListener(cellClickedListener);</b>
+<b class="nc"><i>270</i>&nbsp;      cell.setEnabled(true);</b>
+<b class="nc"><i>271</i>&nbsp;      gamePanel.add(cell);</b>
+<b class="nc"><i>272</i>&nbsp;      cells.add(cell);</b>
+<i>273</i>&nbsp;    }
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;  }
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;  private static void setupBuildingLayer(){
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;
+<b class="nc"><i>281</i>&nbsp;    String prefix = &quot;/Santorini Images/SchermataGioco/Floor&quot;;</b>
+<b class="nc"><i>282</i>&nbsp;    String suffix = &quot;.png&quot;;</b>
+<b class="nc"><i>283</i>&nbsp;    String dome = &quot;wDome&quot;;</b>
+<i>284</i>&nbsp;
+<b class="nc"><i>285</i>&nbsp;    String path = prefix + &quot;0&quot; + dome + suffix;</b>
+<b class="nc"><i>286</i>&nbsp;    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>287</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>288</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>289</i>&nbsp;    buildingDomeIcons[0] = new ImageIcon(newImg1);</b>
+<i>290</i>&nbsp;
+<b class="nc"><i>291</i>&nbsp;    buildingIcons[0] = null;</b>
+<i>292</i>&nbsp;
+<b class="nc"><i>293</i>&nbsp;    for (int i = 1; i &lt; 4; i++) {</b>
+<i>294</i>&nbsp;
+<b class="nc"><i>295</i>&nbsp;      path = prefix + i + suffix;</b>
+<b class="nc"><i>296</i>&nbsp;      image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>297</i>&nbsp;      img1 = image.getImage();</b>
+<b class="nc"><i>298</i>&nbsp;      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i>299</i>&nbsp;      buildingIcons[i] = new ImageIcon(newImg1);</b>
+<i>300</i>&nbsp;
+<b class="nc"><i>301</i>&nbsp;      path = prefix + i + dome + suffix;</b>
+<b class="nc"><i>302</i>&nbsp;      image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>303</i>&nbsp;      img1 = image.getImage();</b>
+<b class="nc"><i>304</i>&nbsp;      newImg1 = img1.getScaledInstance(cellWidth, cellHeight, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i>305</i>&nbsp;      buildingDomeIcons[i] = new ImageIcon(newImg1);</b>
+<i>306</i>&nbsp;    }
+<i>307</i>&nbsp;
+<b class="nc"><i>308</i>&nbsp;    buildingDomeIcons[4] = buildingDomeIcons[3];</b>
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;
+<b class="nc"><i>311</i>&nbsp;    for (int i = 0; i &lt; 25; i++){</b>
+<b class="nc"><i>312</i>&nbsp;      JLabel cellSub = new JLabel();</b>
+<b class="nc"><i>313</i>&nbsp;      cellSub.setBounds((int)((448+140*(i%5))*scale), (int)((150+141*(i/5))*scale), cellWidth, cellHeight);</b>
+<b class="nc"><i>314</i>&nbsp;      cellSub.setOpaque(false);</b>
+<b class="nc"><i>315</i>&nbsp;      gamePanel.add(cellSub);</b>
+<b class="nc"><i>316</i>&nbsp;      buildIconsLayer.add(cellSub);</b>
+<i>317</i>&nbsp;    }
+<i>318</i>&nbsp;
+<i>319</i>&nbsp;  }
+<i>320</i>&nbsp;
+<i>321</i>&nbsp;  private static void setupPawnIcons(){
+<b class="nc"><i>322</i>&nbsp;    String path = &quot;/Santorini Images/SchermataGioco/SegnapostoRosso.png&quot;;</b>
+<b class="nc"><i>323</i>&nbsp;    ImageIcon image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>324</i>&nbsp;    Image img1 = image.getImage();</b>
+<b class="nc"><i>325</i>&nbsp;    Image newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>326</i>&nbsp;    redPawnIcon[0] = new ImageIcon(newImg1);</b>
+<i>327</i>&nbsp;
+<b class="nc"><i>328</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Selected.png&quot;);</b>
+<i>329</i>&nbsp;
+<b class="nc"><i>330</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>331</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>332</i>&nbsp;    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>333</i>&nbsp;    redPawnIcon[1] = new ImageIcon(newImg1);</b>
+<i>334</i>&nbsp;
+<b class="nc"><i>335</i>&nbsp;    path = &quot;/Santorini Images/SchermataGioco/SegnapostoVerde.png&quot;;</b>
+<b class="nc"><i>336</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>337</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>338</i>&nbsp;    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>339</i>&nbsp;    greenPawnIcon[0] = new ImageIcon(newImg1);</b>
+<i>340</i>&nbsp;
+<b class="nc"><i>341</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Selected.png&quot;);</b>
+<i>342</i>&nbsp;
+<b class="nc"><i>343</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>344</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>345</i>&nbsp;    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>346</i>&nbsp;    greenPawnIcon[1] = new ImageIcon(newImg1);</b>
+<i>347</i>&nbsp;
+<b class="nc"><i>348</i>&nbsp;    path = &quot;/Santorini Images/SchermataGioco/SegnapostoBlu.png&quot;;</b>
+<b class="nc"><i>349</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>350</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>351</i>&nbsp;    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>352</i>&nbsp;    bluePawnIcon[0] = new ImageIcon(newImg1);</b>
+<i>353</i>&nbsp;
+<b class="nc"><i>354</i>&nbsp;    path=path.replace(&quot;.png&quot;, &quot;Selected.png&quot;);</b>
+<i>355</i>&nbsp;
+<b class="nc"><i>356</i>&nbsp;    image = new ImageIcon(GameScene.class.getResource(path));</b>
+<b class="nc"><i>357</i>&nbsp;    img1 = image.getImage();</b>
+<b class="nc"><i>358</i>&nbsp;    newImg1 = img1.getScaledInstance( cellWidth, cellHeight,  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>359</i>&nbsp;    bluePawnIcon[1] = new ImageIcon(newImg1);</b>
+<i>360</i>&nbsp;
+<b class="nc"><i>361</i>&nbsp;    switch (myPlayer.getColor()){</b>
+<i>362</i>&nbsp;      case &quot;\u001B[31m&quot;: //red
+<b class="nc"><i>363</i>&nbsp;        myPawnIcon=redPawnIcon;</b>
+<b class="nc"><i>364</i>&nbsp;        break;</b>
+<i>365</i>&nbsp;      case &quot;\u001B[32m&quot;: //green
+<b class="nc"><i>366</i>&nbsp;        myPawnIcon=greenPawnIcon;</b>
+<b class="nc"><i>367</i>&nbsp;        break;</b>
+<i>368</i>&nbsp;      case &quot;\u001B[34m&quot;: //blue
+<b class="nc"><i>369</i>&nbsp;        myPawnIcon=bluePawnIcon;</b>
+<i>370</i>&nbsp;        break;
+<i>371</i>&nbsp;    }
+<i>372</i>&nbsp;  }
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;  private static void setupPhaseZone(){
+<b class="nc"><i>375</i>&nbsp;    phaseLabel.setVisible(false);</b>
+<b class="nc"><i>376</i>&nbsp;    gamePanel.add(phaseLabel);</b>
+<i>377</i>&nbsp;
+<b class="nc"><i>378</i>&nbsp;    phaseInfo.setVisible(false);</b>
+<b class="nc"><i>379</i>&nbsp;    gamePanel.add(phaseInfo);</b>
+<i>380</i>&nbsp;
+<b class="nc"><i>381</i>&nbsp;    phaseButton.setVisible(false);</b>
+<b class="nc"><i>382</i>&nbsp;    gamePanel.add(phaseButton);</b>
+<b class="nc"><i>383</i>&nbsp;    phaseButton.addActionListener(phaseButtonListener);</b>
+<i>384</i>&nbsp;
+<i>385</i>&nbsp;
+<b class="nc"><i>386</i>&nbsp;    divider.setFont(lillyBelle);</b>
+<b class="nc"><i>387</i>&nbsp;    divider.setHorizontalTextPosition(CENTER);</b>
+<b class="nc"><i>388</i>&nbsp;    divider.setHorizontalAlignment(CENTER);</b>
+<b class="nc"><i>389</i>&nbsp;    divider.setForeground(darkBrown);</b>
+<b class="nc"><i>390</i>&nbsp;    divider.setBounds((int)(60*scale), (int)(366*scale), (int)(240*scale), (int)(20*scale));</b>
+<b class="nc"><i>391</i>&nbsp;    divider.setVisible(false);</b>
+<b class="nc"><i>392</i>&nbsp;    gamePanel.add(divider);</b>
+<i>393</i>&nbsp;
+<b class="nc"><i>394</i>&nbsp;    ImageIcon athena = new ImageIcon(GameScene.class.getResource(&quot;/Santorini Images/SchermataGioco/AthenaFlag.png&quot;));</b>
+<b class="nc"><i>395</i>&nbsp;    Image img = athena.getImage();</b>
+<b class="nc"><i>396</i>&nbsp;    Image newImg = img.getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>397</i>&nbsp;    ImageIcon athenaIcon = new ImageIcon( newImg );</b>
+<b class="nc"><i>398</i>&nbsp;    athenaFlagImageContainer.setIcon(athenaIcon);</b>
+<b class="nc"><i>399</i>&nbsp;    athenaFlagImageContainer.setVisible(false);</b>
+<b class="nc"><i>400</i>&nbsp;    athenaFlagImageContainer.setOpaque(false);</b>
+<b class="nc"><i>401</i>&nbsp;    athenaFlagImageContainer.setBounds((int)(140*scale), (int)(380*scale), (int)(80*scale), (int)(80*scale));</b>
+<b class="nc"><i>402</i>&nbsp;    gamePanel.add(athenaFlagImageContainer);</b>
+<i>403</i>&nbsp;
+<b class="nc"><i>404</i>&nbsp;    JLabel divider2 = new JLabel(&quot;- - - - - - - - - -&quot;);</b>
+<b class="nc"><i>405</i>&nbsp;    divider2.setFont(lillyBelle);</b>
+<b class="nc"><i>406</i>&nbsp;    divider2.setHorizontalTextPosition(CENTER);</b>
+<b class="nc"><i>407</i>&nbsp;    divider2.setHorizontalAlignment(CENTER);</b>
+<b class="nc"><i>408</i>&nbsp;    divider2.setForeground(darkBrown);</b>
+<b class="nc"><i>409</i>&nbsp;    divider2.setBounds((int)(60*scale), (int)(456*scale), (int)(240*scale), (int)(20*scale));</b>
+<b class="nc"><i>410</i>&nbsp;    divider2.setVisible(true);</b>
+<b class="nc"><i>411</i>&nbsp;    gamePanel.add(divider2);</b>
+<i>412</i>&nbsp;
+<i>413</i>&nbsp;
+<b class="nc"><i>414</i>&nbsp;    meLabel.setText(&quot;&lt;html&gt;Player Info: &quot; + myPlayer.getName() + &quot;&lt;br/&gt;&lt;br/&gt;Color:      &lt;/html&gt;&quot;);</b>
+<b class="nc"><i>415</i>&nbsp;    meLabel.setFont(minionProXSmall);</b>
+<b class="nc"><i>416</i>&nbsp;    meLabel.setHorizontalTextPosition(CENTER);</b>
+<b class="nc"><i>417</i>&nbsp;    meLabel.setVerticalAlignment(1);</b>
+<b class="nc"><i>418</i>&nbsp;    meLabel.setForeground(darkBrown);</b>
+<b class="nc"><i>419</i>&nbsp;    meLabel.setBounds((int)(120*scale), (int)(480*scale), (int)(200*scale), (int)(100*scale));</b>
+<b class="nc"><i>420</i>&nbsp;    meLabel.setVisible(true);</b>
+<b class="nc"><i>421</i>&nbsp;    gamePanel.add(meLabel);</b>
+<i>422</i>&nbsp;
+<b class="nc"><i>423</i>&nbsp;    img = myPawnIcon[0].getImage().getScaledInstance( (int)(80*scale), (int)(80*scale),  java.awt.Image.SCALE_SMOOTH );</b>
+<b class="nc"><i>424</i>&nbsp;    ImageIcon myColorIcon = new ImageIcon( img );</b>
+<i>425</i>&nbsp;
+<b class="nc"><i>426</i>&nbsp;    myColor.setIcon(myColorIcon);</b>
+<b class="nc"><i>427</i>&nbsp;    myColor.setBounds((int)(170*scale), (int)(484*scale), (int)(80*scale), (int)(80*scale));</b>
+<b class="nc"><i>428</i>&nbsp;    myColor.setOpaque(false);</b>
+<b class="nc"><i>429</i>&nbsp;    myColor.setVisible(true);</b>
+<b class="nc"><i>430</i>&nbsp;    gamePanel.add(myColor);</b>
+<i>431</i>&nbsp;
+<i>432</i>&nbsp;
+<i>433</i>&nbsp;  }
+<i>434</i>&nbsp;
+<i>435</i>&nbsp;
+<i>436</i>&nbsp;
+<i>437</i>&nbsp;  // phases graphic setup
+<i>438</i>&nbsp;
+<i>439</i>&nbsp;  private static void initialPosGraphics(){
+<i>440</i>&nbsp;
+<b class="nc"><i>441</i>&nbsp;    for (int i = 0; i &lt; cells.size(); i++){</b>
+<b class="nc"><i>442</i>&nbsp;      cells.get(i).setEnabled(true);</b>
+<i>443</i>&nbsp;    }
+<i>444</i>&nbsp;
+<b class="nc"><i>445</i>&nbsp;    phaseLabel.setText(&quot;Place your pawns&quot;);</b>
+<b class="nc"><i>446</i>&nbsp;    phaseLabel.setVisible(true);</b>
+<i>447</i>&nbsp;
+<i>448</i>&nbsp;
+<b class="nc"><i>449</i>&nbsp;    phaseInfo.setText(&quot;0/2 pawns placed&quot;);</b>
+<i>450</i>&nbsp;
+<b class="nc"><i>451</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>452</i>&nbsp;
+<b class="nc"><i>453</i>&nbsp;    ImageIcon playImage = new ImageIcon(GameScene.class.getResource(&quot;/Santorini Images/SchermataGioco/PhaseButtonDone.png&quot;));</b>
+<b class="nc"><i>454</i>&nbsp;    Image img1 = playImage.getImage();</b>
+<b class="nc"><i>455</i>&nbsp;    Image newImg1 = img1.getScaledInstance( (int)(150*scale), (int)((150/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>456</i>&nbsp;    ImageIcon playImageResized = new ImageIcon(newImg1);</b>
+<b class="nc"><i>457</i>&nbsp;    phaseButton.setIcon(playImageResized);</b>
+<b class="nc"><i>458</i>&nbsp;    phaseButton.setBounds((int)(110*scale), (int)(300*scale), (int)(150*scale), (int)((150/1.80)*scale));</b>
+<b class="nc"><i>459</i>&nbsp;    phaseButton.setOpaque(false);</b>
+<b class="nc"><i>460</i>&nbsp;    phaseButton.setContentAreaFilled(false);</b>
+<b class="nc"><i>461</i>&nbsp;    phaseButton.setBorderPainted(false);</b>
+<b class="nc"><i>462</i>&nbsp;    phaseButton.setVisible(true);</b>
+<b class="nc"><i>463</i>&nbsp;    phaseButton.setEnabled(false);</b>
+<i>464</i>&nbsp;
+<i>465</i>&nbsp;
+<i>466</i>&nbsp;  }
+<i>467</i>&nbsp;
+<i>468</i>&nbsp;  private static void waitGraphics(String name){
+<b class="nc"><i>469</i>&nbsp;    phase = &quot;Wait&quot;;</b>
+<i>470</i>&nbsp;
+<b class="nc"><i>471</i>&nbsp;    for (int i = 0; i &lt; cells.size(); i++){</b>
+<b class="nc"><i>472</i>&nbsp;      cells.get(i).setEnabled(true);</b>
+<i>473</i>&nbsp;    }
+<i>474</i>&nbsp;
+<b class="nc"><i>475</i>&nbsp;    phaseLabel.setText(&quot;Wait&quot;);</b>
+<b class="nc"><i>476</i>&nbsp;    phaseLabel.setFont(lillyBelle);</b>
+<b class="nc"><i>477</i>&nbsp;    phaseLabel.setBounds((int)(60*scale), (int)(150*scale), (int)(250*scale), (int)(100*scale));</b>
+<b class="nc"><i>478</i>&nbsp;    phaseLabel.setForeground(darkBrown);</b>
+<b class="nc"><i>479</i>&nbsp;    phaseLabel.setHorizontalAlignment(CENTER);</b>
+<b class="nc"><i>480</i>&nbsp;    phaseLabel.setVisible(true);</b>
+<i>481</i>&nbsp;
+<i>482</i>&nbsp;
+<b class="nc"><i>483</i>&nbsp;    phaseInfo.setBounds((int)(55*scale), (int)(220*scale), (int)(255*scale), (int)((100)*scale));</b>
+<b class="nc"><i>484</i>&nbsp;    if (name!=null){</b>
+<b class="nc"><i>485</i>&nbsp;      phaseInfo.setText(name.toUpperCase() + &quot; is playing&quot;);</b>
+<i>486</i>&nbsp;    } else {
+<b class="nc"><i>487</i>&nbsp;      phaseInfo.setText(&quot;Other players are playing&quot;);</b>
+<i>488</i>&nbsp;    }
+<b class="nc"><i>489</i>&nbsp;    phaseInfo.setFont(minionProXSmall);</b>
+<b class="nc"><i>490</i>&nbsp;    phaseInfo.setHorizontalAlignment(CENTER);</b>
+<b class="nc"><i>491</i>&nbsp;    phaseInfo.setForeground(darkBrown);</b>
+<b class="nc"><i>492</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>493</i>&nbsp;
+<b class="nc"><i>494</i>&nbsp;    phaseButton.setVisible(false);</b>
+<i>495</i>&nbsp;  }
+<i>496</i>&nbsp;  private static void waitGraphics(){
+<b class="nc"><i>497</i>&nbsp;    waitGraphics(null);</b>
+<i>498</i>&nbsp;  }
+<i>499</i>&nbsp;
+<i>500</i>&nbsp;  private static void movePhaseGraphics(){
+<b class="nc"><i>501</i>&nbsp;    phaseLabel.setText(&quot;Move Phase&quot;);</b>
+<b class="nc"><i>502</i>&nbsp;    phaseInfo.setText(&quot;&lt;html&gt;Select one of your pawns, then&lt;br/&gt;click on a nearby spot to move.&lt;/html&gt;&quot;);</b>
+<b class="nc"><i>503</i>&nbsp;    phaseInfo.setHorizontalTextPosition(CENTER);</b>
+<b class="nc"><i>504</i>&nbsp;    athenaFlagImageContainer.setVisible(game.getAthenaFlag());</b>
+<b class="nc"><i>505</i>&nbsp;    divider.setVisible(game.getAthenaFlag());</b>
+<b class="nc"><i>506</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>507</i>&nbsp;
+<i>508</i>&nbsp;  }
+<i>509</i>&nbsp;
+<i>510</i>&nbsp;  private static void buildPhaseGraphics(){
+<b class="nc"><i>511</i>&nbsp;    phaseLabel.setText(&quot;Build Phase&quot;);</b>
+<b class="nc"><i>512</i>&nbsp;    phaseInfo.setText(&quot;Select where to build&quot;);</b>
+<b class="nc"><i>513</i>&nbsp;    phaseButton.setVisible(false);</b>
+<b class="nc"><i>514</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>515</i>&nbsp;  }
+<i>516</i>&nbsp;
+<i>517</i>&nbsp;  private static void buildFirstPhaseGraphics(){
+<b class="nc"><i>518</i>&nbsp;    phaseLabel.setText(&quot;Build Phase&quot;);</b>
+<b class="nc"><i>519</i>&nbsp;    phaseInfo.setText(&quot;&lt;html&gt;Select one of your pawns, then&lt;br/&gt;click on a nearby spot to build.&lt;/html&gt;&quot;);</b>
+<b class="nc"><i>520</i>&nbsp;    phaseButton.setVisible(false);</b>
+<b class="nc"><i>521</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>522</i>&nbsp;  }
+<i>523</i>&nbsp;
+<i>524</i>&nbsp;  private static void removeBlockPhaseGraphics(){
+<b class="nc"><i>525</i>&nbsp;    phaseLabel.setText(&quot;Remove Block Phase&quot;);</b>
+<b class="nc"><i>526</i>&nbsp;    phaseInfo.setText(&quot;&lt;html&gt;Select a floor to remove next&lt;br/&gt; to the pawn you didn&#39;t move.&lt;/html&gt;&quot;);</b>
+<b class="nc"><i>527</i>&nbsp;    phaseButton.setVisible(false);</b>
+<b class="nc"><i>528</i>&nbsp;    phaseInfo.setVisible(true);</b>
+<i>529</i>&nbsp;
+<i>530</i>&nbsp;  }
+<i>531</i>&nbsp;
+<i>532</i>&nbsp;
+<i>533</i>&nbsp;
+<i>534</i>&nbsp;  // actions
+<i>535</i>&nbsp;
+<b class="nc"><i>536</i>&nbsp;  static ActionListener cellClickedListener = e -&gt; {</b>
+<b class="nc"><i>537</i>&nbsp;    JButton clickedCell = (JButton) e.getSource();</b>
+<b class="nc"><i>538</i>&nbsp;    if (clickedCell!=null){</b>
+<b class="nc"><i>539</i>&nbsp;      switch (phase){</b>
+<i>540</i>&nbsp;        case &quot;Initial Positioning&quot;:
+<b class="nc"><i>541</i>&nbsp;          if(clickedCell.getIcon()==null || clickedCell.getIcon().equals(myPawnIcon[0])){</b>
+<b class="nc"><i>542</i>&nbsp;            pawnPositioning(clickedCell);</b>
+<b class="nc"><i>543</i>&nbsp;            break;</b>
+<i>544</i>&nbsp;          }
+<i>545</i>&nbsp;        case &quot;Stall&quot;:
+<b class="nc"><i>546</i>&nbsp;          break;</b>
+<i>547</i>&nbsp;        case &quot;Move Phase&quot;:
+<b class="nc"><i>548</i>&nbsp;          movePhaseClick(clickedCell);</b>
+<b class="nc"><i>549</i>&nbsp;          break;</b>
+<i>550</i>&nbsp;        case &quot;Build Phase&quot;:
+<b class="nc"><i>551</i>&nbsp;          buildPhaseClick(clickedCell);</b>
+<b class="nc"><i>552</i>&nbsp;          break;</b>
+<i>553</i>&nbsp;        case &quot;Move Phase 2&quot;:
+<b class="nc"><i>554</i>&nbsp;          movePhase2Click(clickedCell);</b>
+<b class="nc"><i>555</i>&nbsp;          break;</b>
+<i>556</i>&nbsp;        case &quot;Power&quot;:
+<b class="nc"><i>557</i>&nbsp;          break;</b>
+<i>558</i>&nbsp;        case &quot;Build Phase 2&quot;:
+<b class="nc"><i>559</i>&nbsp;          buildPhase2Click(clickedCell);</b>
+<b class="nc"><i>560</i>&nbsp;          break;</b>
+<i>561</i>&nbsp;        case &quot;BuildFirst&quot;:
+<b class="nc"><i>562</i>&nbsp;          buildFirstPhaseClick(clickedCell);</b>
+<b class="nc"><i>563</i>&nbsp;          break;</b>
+<i>564</i>&nbsp;        case &quot;aresPower&quot;:
+<b class="nc"><i>565</i>&nbsp;          removeBuildPhaseClick(clickedCell);</b>
+<i>566</i>&nbsp;          break;
+<i>567</i>&nbsp;      }
+<i>568</i>&nbsp;    }
+<i>569</i>&nbsp;
+<i>570</i>&nbsp;  };
+<b class="nc"><i>571</i>&nbsp;  static ActionListener phaseButtonListener = e -&gt;{</b>
+<b class="nc"><i>572</i>&nbsp;    switch (phase){</b>
+<i>573</i>&nbsp;      case (&quot;Initial Positioning&quot;):
+<b class="nc"><i>574</i>&nbsp;        position1[0]= selectedCells.get(0)%5;</b>
+<b class="nc"><i>575</i>&nbsp;        position1[1]= selectedCells.get(0)/5;</b>
+<b class="nc"><i>576</i>&nbsp;        position2[0]= selectedCells.get(1)%5;</b>
+<b class="nc"><i>577</i>&nbsp;        position2[1]= selectedCells.get(1)/5;</b>
+<i>578</i>&nbsp;
+<i>579</i>&nbsp;
+<i>580</i>&nbsp;
+<b class="nc"><i>581</i>&nbsp;        synchronized(lockFirstPositioning){</b>
+<b class="nc"><i>582</i>&nbsp;          ServerAdapterGui.flagForFirstPositioning.set(1);</b>
+<b class="nc"><i>583</i>&nbsp;          lockFirstPositioning.notifyAll();</b>
+<b class="nc"><i>584</i>&nbsp;        }</b>
+<i>585</i>&nbsp;
+<b class="nc"><i>586</i>&nbsp;        waitGraphics();</b>
+<i>587</i>&nbsp;
+<i>588</i>&nbsp;        break;
+<i>589</i>&nbsp;
+<i>590</i>&nbsp;    }
+<i>591</i>&nbsp;
+<i>592</i>&nbsp;  };
+<i>593</i>&nbsp;
+<i>594</i>&nbsp;  /**Methods invoked by the cell&#39;s listener, based on the current phase
+<i>595</i>&nbsp;   *
+<i>596</i>&nbsp;   * @param clickedCell :JButton the clicked button(cell)
+<i>597</i>&nbsp;   */
+<i>598</i>&nbsp;  private static void movePhaseClick(JButton clickedCell){
+<b class="nc"><i>599</i>&nbsp;    if(clickedCell.getIcon()!=null &amp;&amp; clickedCell.getIcon().equals(myPawnIcon[0])){</b>
+<b class="nc"><i>600</i>&nbsp;      if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>601</i>&nbsp;      clickedCell.setIcon(myPawnIcon[1]);</b>
+<b class="nc"><i>602</i>&nbsp;      int i = cells.indexOf(clickedCell);</b>
+<b class="nc"><i>603</i>&nbsp;      activePawn = game.getMap()[i%5][i/5].getIsFull();</b>
+<b class="nc"><i>604</i>&nbsp;    }</b>
+<b class="nc"><i>605</i>&nbsp;    else if (clickedCell.getIcon()!=null &amp;&amp; clickedCell.getIcon().equals(myPawnIcon[1])) {</b>
+<b class="nc"><i>606</i>&nbsp;      cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>607</i>&nbsp;      activePawn = null;</b>
+<i>608</i>&nbsp;
+<i>609</i>&nbsp;    }
+<b class="nc"><i>610</i>&nbsp;    else if(activePawn!=null){</b>
+<b class="nc"><i>611</i>&nbsp;      phase = &quot;Stall&quot;;</b>
+<b class="nc"><i>612</i>&nbsp;      String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);</b>
+<b class="nc"><i>613</i>&nbsp;      Boolean valid=false;</b>
+<b class="nc"><i>614</i>&nbsp;      if(direction!=null) {</b>
+<i>615</i>&nbsp;        try {
+<b class="nc"><i>616</i>&nbsp;          valid = (Boolean) ServerAdapterGui.toServerGetObject(&quot;checkCanMove&quot;+direction, game, activePawn, null);</b>
+<b class="nc"><i>617</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>618</i>&nbsp;          ex.printStackTrace();</b>
+<b class="nc"><i>619</i>&nbsp;        }</b>
+<i>620</i>&nbsp;
+<b class="nc"><i>621</i>&nbsp;        if(valid){</b>
+<b class="nc"><i>622</i>&nbsp;          activePawn.moves(getX(clickedCell), getY(clickedCell));</b>
+<b class="nc"><i>623</i>&nbsp;          synchronized(lockActivePawn) {</b>
+<b class="nc"><i>624</i>&nbsp;            flagForActivePawn.set(1);</b>
+<b class="nc"><i>625</i>&nbsp;            lockActivePawn.notifyAll();</b>
+<b class="nc"><i>626</i>&nbsp;          }</b>
+<i>627</i>&nbsp;        } else {
+<b class="nc"><i>628</i>&nbsp;          new Toast(&quot;Invalid Move&quot;, gamePanel, 2000);</b>
+<b class="nc"><i>629</i>&nbsp;          phase = &quot;Move Phase&quot;;</b>
+<i>630</i>&nbsp;        }
+<i>631</i>&nbsp;
+<i>632</i>&nbsp;      }
+<i>633</i>&nbsp;    }
+<i>634</i>&nbsp;  }
+<i>635</i>&nbsp;  private static void movePhase2Click(JButton clickedCell){
+<i>636</i>&nbsp;
+<b class="nc"><i>637</i>&nbsp;    if(clickedCell.getIcon()==null){</b>
+<b class="nc"><i>638</i>&nbsp;      phase = &quot;Stall&quot;;</b>
+<b class="nc"><i>639</i>&nbsp;      String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);</b>
+<b class="nc"><i>640</i>&nbsp;      Boolean valid=false;</b>
+<b class="nc"><i>641</i>&nbsp;      if(direction!=null) {</b>
+<i>642</i>&nbsp;        try {
+<b class="nc"><i>643</i>&nbsp;          valid = (Boolean) ServerAdapterGui.toServerGetObject(&quot;checkCanMove&quot;+direction, game, activePawn, restrictedCell);</b>
+<b class="nc"><i>644</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>645</i>&nbsp;          ex.printStackTrace();</b>
+<b class="nc"><i>646</i>&nbsp;        }</b>
+<i>647</i>&nbsp;
+<b class="nc"><i>648</i>&nbsp;        if(valid){</b>
+<b class="nc"><i>649</i>&nbsp;          activePawn.moves(getX(clickedCell), getY(clickedCell));</b>
+<b class="nc"><i>650</i>&nbsp;          synchronized(lockMove2) {</b>
+<b class="nc"><i>651</i>&nbsp;            flagForMove2.set(1);</b>
+<b class="nc"><i>652</i>&nbsp;            lockMove2.notifyAll();</b>
+<b class="nc"><i>653</i>&nbsp;          }</b>
+<i>654</i>&nbsp;        } else {
+<b class="nc"><i>655</i>&nbsp;          new Toast(&quot;Invalid Move&quot;, gamePanel, 2000);</b>
+<b class="nc"><i>656</i>&nbsp;          phase = &quot;Move Phase 2&quot;;</b>
+<i>657</i>&nbsp;        }
+<i>658</i>&nbsp;
+<i>659</i>&nbsp;      }
+<i>660</i>&nbsp;    }
+<i>661</i>&nbsp;  }
+<i>662</i>&nbsp;  private static void buildPhaseClick(JButton clickedCell){
+<b class="nc"><i>663</i>&nbsp;    String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);</b>
+<b class="nc"><i>664</i>&nbsp;    Boolean valid1=false;</b>
+<b class="nc"><i>665</i>&nbsp;    if(direction!=null) {</b>
+<b class="nc"><i>666</i>&nbsp;      phase = &quot;stall&quot;;</b>
+<i>667</i>&nbsp;      try {
+<b class="nc"><i>668</i>&nbsp;        valid1 = (Boolean) ServerAdapterGui.toServerGetObject(&quot;checkCanBuild&quot; + direction, game, activePawn, null, true);</b>
+<b class="nc"><i>669</i>&nbsp;      } catch (IOException ex) {</b>
+<b class="nc"><i>670</i>&nbsp;        ex.printStackTrace();</b>
+<b class="nc"><i>671</i>&nbsp;      }</b>
+<i>672</i>&nbsp;    }
+<b class="nc"><i>673</i>&nbsp;    if(valid1!=null &amp;&amp; valid1){</b>
+<b class="nc"><i>674</i>&nbsp;      buildLocation [0]= getX(clickedCell);</b>
+<b class="nc"><i>675</i>&nbsp;      buildLocation [1]= getY(clickedCell);</b>
+<b class="nc"><i>676</i>&nbsp;      activePawn=null;</b>
+<b class="nc"><i>677</i>&nbsp;      waitGraphics();</b>
+<i>678</i>&nbsp;
+<b class="nc"><i>679</i>&nbsp;      synchronized(lockBuilding) {</b>
+<b class="nc"><i>680</i>&nbsp;        flagForBuilding.set(1);</b>
+<b class="nc"><i>681</i>&nbsp;        lockBuilding.notifyAll();</b>
+<b class="nc"><i>682</i>&nbsp;      }</b>
+<i>683</i>&nbsp;    } else {
+<b class="nc"><i>684</i>&nbsp;      new Toast(&quot;Invalid Build Location&quot;, gamePanel, 2000);</b>
+<b class="nc"><i>685</i>&nbsp;      phase = &quot;Build Phase&quot;;</b>
+<i>686</i>&nbsp;    }
+<i>687</i>&nbsp;  }
+<i>688</i>&nbsp;  private static void buildPhase2Click(JButton clickedCell){
+<b class="nc"><i>689</i>&nbsp;    String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);</b>
+<b class="nc"><i>690</i>&nbsp;    Boolean valid1=false;</b>
+<b class="nc"><i>691</i>&nbsp;    if(direction!=null) {</b>
+<b class="nc"><i>692</i>&nbsp;      phase = &quot;stall&quot;;</b>
+<i>693</i>&nbsp;      try {
+<b class="nc"><i>694</i>&nbsp;        valid1 = (Boolean) ServerAdapterGui.toServerGetObject(&quot;checkCanBuild&quot; + direction, game, activePawn, restrictedCell, bordersAllowed);</b>
+<b class="nc"><i>695</i>&nbsp;      } catch (IOException ex) {</b>
+<b class="nc"><i>696</i>&nbsp;        ex.printStackTrace();</b>
+<b class="nc"><i>697</i>&nbsp;      }</b>
+<i>698</i>&nbsp;    }
+<b class="nc"><i>699</i>&nbsp;    if(valid1){</b>
+<b class="nc"><i>700</i>&nbsp;      buildLocation [0]= getX(clickedCell);</b>
+<b class="nc"><i>701</i>&nbsp;      buildLocation [1]= getY(clickedCell);</b>
+<b class="nc"><i>702</i>&nbsp;      activePawn=null;</b>
+<b class="nc"><i>703</i>&nbsp;      waitGraphics();</b>
+<i>704</i>&nbsp;
+<b class="nc"><i>705</i>&nbsp;      synchronized(lockBuilding) {</b>
+<b class="nc"><i>706</i>&nbsp;        flagForBuilding.set(1);</b>
+<b class="nc"><i>707</i>&nbsp;        lockBuilding.notifyAll();</b>
+<b class="nc"><i>708</i>&nbsp;      }</b>
+<i>709</i>&nbsp;    } else {
+<b class="nc"><i>710</i>&nbsp;      new Toast(&quot;Invalid Build Location&quot;, gamePanel, 2000);</b>
+<b class="nc"><i>711</i>&nbsp;      phase = &quot;Build Phase 2&quot;;</b>
+<i>712</i>&nbsp;    }
+<i>713</i>&nbsp;  }
+<i>714</i>&nbsp;  private static void buildFirstPhaseClick(JButton clickedCell){
+<b class="nc"><i>715</i>&nbsp;    if(clickedCell.getIcon()!=null &amp;&amp; clickedCell.getIcon().equals(myPawnIcon[0])){</b>
+<b class="nc"><i>716</i>&nbsp;      if(activePawn!=null) cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>717</i>&nbsp;      clickedCell.setIcon(myPawnIcon[1]);</b>
+<b class="nc"><i>718</i>&nbsp;      int i = cells.indexOf(clickedCell);</b>
+<b class="nc"><i>719</i>&nbsp;      activePawn = game.getMap()[i%5][i/5].getIsFull();</b>
+<b class="nc"><i>720</i>&nbsp;    }</b>
+<b class="nc"><i>721</i>&nbsp;    else if (clickedCell.getIcon()!=null &amp;&amp; clickedCell.getIcon().equals(myPawnIcon[1])) {</b>
+<b class="nc"><i>722</i>&nbsp;      cells.get(activePawn.getX() + activePawn.getY() * 5).setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>723</i>&nbsp;      activePawn = null;</b>
+<i>724</i>&nbsp;
+<i>725</i>&nbsp;    }
+<b class="nc"><i>726</i>&nbsp;    else if(activePawn!=null){</b>
+<b class="nc"><i>727</i>&nbsp;      phase = &quot;stall&quot;;</b>
+<b class="nc"><i>728</i>&nbsp;      String direction = direction(cells.get(activePawn.getX()+activePawn.getY()*5), clickedCell);</b>
+<b class="nc"><i>729</i>&nbsp;      Boolean valid=false;</b>
+<b class="nc"><i>730</i>&nbsp;      if(direction!=null) {</b>
+<i>731</i>&nbsp;        try {
+<b class="nc"><i>732</i>&nbsp;          valid = (Boolean) ServerAdapterGui.toServerGetObject(&quot;checkCanBuild&quot;+direction, game, activePawn, null, true);</b>
+<b class="nc"><i>733</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>734</i>&nbsp;          ex.printStackTrace();</b>
+<b class="nc"><i>735</i>&nbsp;        }</b>
+<i>736</i>&nbsp;
+<b class="nc"><i>737</i>&nbsp;        if(valid){</b>
+<b class="nc"><i>738</i>&nbsp;          buildLocation [0]= getX(clickedCell);</b>
+<b class="nc"><i>739</i>&nbsp;          buildLocation [1]= getY(clickedCell);</b>
+<b class="nc"><i>740</i>&nbsp;          synchronized(lockActivePawn) {</b>
+<b class="nc"><i>741</i>&nbsp;            flagForActivePawn.set(1);</b>
+<b class="nc"><i>742</i>&nbsp;            lockActivePawn.notifyAll();</b>
+<b class="nc"><i>743</i>&nbsp;          }</b>
+<i>744</i>&nbsp;        } else {
+<b class="nc"><i>745</i>&nbsp;          new Toast(&quot;Invalid Move&quot;, gamePanel, 2000);</b>
+<b class="nc"><i>746</i>&nbsp;          phase = &quot;BuildFirst&quot;;</b>
+<i>747</i>&nbsp;        }
+<i>748</i>&nbsp;      }
+<i>749</i>&nbsp;    }
+<i>750</i>&nbsp;  }
+<i>751</i>&nbsp;  private static void pawnPositioning(JButton selectedCell){
+<b class="nc"><i>752</i>&nbsp;    int i = cells.indexOf(selectedCell);</b>
+<i>753</i>&nbsp;
+<b class="nc"><i>754</i>&nbsp;    if (!selectedCells.contains(i) &amp;&amp; selectedCells.size()&lt;2){</b>
+<b class="nc"><i>755</i>&nbsp;      selectedCells.add(i);</b>
+<b class="nc"><i>756</i>&nbsp;      selectedCell.setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>757</i>&nbsp;      phaseInfo.setText(selectedCells.size() + &quot;/2 pawns placed&quot;);</b>
+<b class="nc"><i>758</i>&nbsp;      if (selectedCells.size()==2) phaseButton.setEnabled(true);</b>
+<b class="nc"><i>759</i>&nbsp;    } else if (selectedCells.contains(i)){</b>
+<b class="nc"><i>760</i>&nbsp;      selectedCells.remove(((Integer) i));</b>
+<b class="nc"><i>761</i>&nbsp;      selectedCell.setIcon(null);</b>
+<b class="nc"><i>762</i>&nbsp;      phaseInfo.setText(selectedCells.size() + &quot;/2 pawns placed&quot;);</b>
+<b class="nc"><i>763</i>&nbsp;      phaseButton.setEnabled(false);</b>
+<i>764</i>&nbsp;    }
+<i>765</i>&nbsp;
+<i>766</i>&nbsp;  }
+<i>767</i>&nbsp;  private static void removeBuildPhaseClick(JButton clickedCell){
+<i>768</i>&nbsp;
+<b class="nc"><i>769</i>&nbsp;    if (near(clickedCell, cells.get(activePawn.getX()+(activePawn.getY()*5))) &amp;&amp; !(getX(clickedCell)==activePawn.getX()</b>
+<b class="nc"><i>770</i>&nbsp;            &amp;&amp; getY(clickedCell)==activePawn.getY()) &amp;&amp; (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getIsFull()==null</b>
+<b class="nc"><i>771</i>&nbsp;            &amp;&amp;  (game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getFloor()&gt;0 &amp;&amp;</b>
+<b class="nc"><i>772</i>&nbsp;            !(game.getMap()[getX(clickedCell)] [getY(clickedCell)]).getHasDome()){</b>
+<i>773</i>&nbsp;
+<b class="nc"><i>774</i>&nbsp;      phase = &quot;stall&quot;;</b>
+<b class="nc"><i>775</i>&nbsp;      deleteCoords[0]=getX(clickedCell);</b>
+<b class="nc"><i>776</i>&nbsp;      deleteCoords[1]=getY(clickedCell);</b>
+<b class="nc"><i>777</i>&nbsp;      cells.get(activePawn.getX() + (activePawn.getY()*5)).setIcon(myPawnIcon[0]);</b>
+<b class="nc"><i>778</i>&nbsp;      activePawn=null;</b>
+<i>779</i>&nbsp;
+<b class="nc"><i>780</i>&nbsp;      synchronized(lockAresPower) {</b>
+<b class="nc"><i>781</i>&nbsp;        flagForAresPower.set(1);</b>
+<b class="nc"><i>782</i>&nbsp;        lockAresPower.notifyAll();</b>
+<b class="nc"><i>783</i>&nbsp;      }</b>
+<i>784</i>&nbsp;
+<i>785</i>&nbsp;    }
+<i>786</i>&nbsp;    else
+<b class="nc"><i>787</i>&nbsp;      new Toast(&quot;Invalid Location&quot;, gamePanel, 2000);</b>
+<i>788</i>&nbsp;
+<i>789</i>&nbsp;  }
+<i>790</i>&nbsp;
+<i>791</i>&nbsp;
+<i>792</i>&nbsp;  //events
+<i>793</i>&nbsp;
+<i>794</i>&nbsp;  /**Method that handle phases, and the received parameters from the server
+<i>795</i>&nbsp;   *
+<i>796</i>&nbsp;   * @param newPhase :String the new phase we are going into
+<i>797</i>&nbsp;   * @param parameters :ArrayList parameters useful for the methods that are being called
+<i>798</i>&nbsp;   * @return Boolean (used to let the server know if the player decided to use the ability of his god)
+<i>799</i>&nbsp;   */
+<i>800</i>&nbsp;  public static Boolean messageReceived(String newPhase, ArrayList&lt;Object&gt; parameters){
+<b class="nc"><i>801</i>&nbsp;    if (newPhase!=null){</b>
+<b class="nc"><i>802</i>&nbsp;      switch (newPhase){</b>
+<i>803</i>&nbsp;        case &quot;Initial Positioning&quot;:
+<b class="nc"><i>804</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>805</i>&nbsp;          phase = newPhase;</b>
+<b class="nc"><i>806</i>&nbsp;          initialPosGraphics();</b>
+<b class="nc"><i>807</i>&nbsp;          break;</b>
+<i>808</i>&nbsp;        case &quot;Move Phase&quot;:
+<b class="nc"><i>809</i>&nbsp;          phase = newPhase;</b>
+<b class="nc"><i>810</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>811</i>&nbsp;          movePhaseGraphics();</b>
+<b class="nc"><i>812</i>&nbsp;          break;</b>
+<i>813</i>&nbsp;        case &quot;Move Phase 2&quot;:
+<b class="nc"><i>814</i>&nbsp;          phase = &quot;Move Phase 2&quot;;</b>
+<b class="nc"><i>815</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>816</i>&nbsp;          activePawn= (Pawn) parameters.get(1);</b>
+<b class="nc"><i>817</i>&nbsp;          restrictedCell= (Cell) parameters.get(2);</b>
+<b class="nc"><i>818</i>&nbsp;          movePhaseGraphics();</b>
+<b class="nc"><i>819</i>&nbsp;          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);</b>
+<b class="nc"><i>820</i>&nbsp;          break;</b>
+<i>821</i>&nbsp;        case &quot;Build Phase&quot;:
+<b class="nc"><i>822</i>&nbsp;          phase = newPhase;</b>
+<b class="nc"><i>823</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>824</i>&nbsp;          buildPhaseGraphics();</b>
+<b class="nc"><i>825</i>&nbsp;          break;</b>
+<i>826</i>&nbsp;        case &quot;Refresh Screen&quot;:
+<b class="nc"><i>827</i>&nbsp;          if(myPlayer!=null)</b>
+<b class="nc"><i>828</i>&nbsp;          refreshScreen((Game) parameters.get(0));</b>
+<i>829</i>&nbsp;          break;
+<i>830</i>&nbsp;        case &quot;Disconnection&quot;:
+<b class="nc"><i>831</i>&nbsp;          new DisconnectedPopup(window);</b>
+<b class="nc"><i>832</i>&nbsp;          break;</b>
+<i>833</i>&nbsp;        case &quot;Endgame&quot;:
+<b class="nc"><i>834</i>&nbsp;          new PopupWin(window, (Player) parameters.get(0));</b>
+<b class="nc"><i>835</i>&nbsp;          break;</b>
+<i>836</i>&nbsp;        case &quot;Remove Player&quot;:
+<b class="nc"><i>837</i>&nbsp;          new PopupRemovedPlayer(window, (Player) parameters.get(0));</b>
+<b class="nc"><i>838</i>&nbsp;          break;</b>
+<i>839</i>&nbsp;        case &quot;Power&quot;:
+<b class="nc"><i>840</i>&nbsp;          phase = newPhase;</b>
+<b class="nc"><i>841</i>&nbsp;          wantsToUsePower=askPower();</b>
+<b class="nc"><i>842</i>&nbsp;          return wantsToUsePower;</b>
+<i>843</i>&nbsp;        case &quot;Build Phase 2&quot;:
+<b class="nc"><i>844</i>&nbsp;          phase = &quot;Build Phase 2&quot;;</b>
+<b class="nc"><i>845</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>846</i>&nbsp;          activePawn= (Pawn) parameters.get(1);</b>
+<b class="nc"><i>847</i>&nbsp;          if (parameters.get(4) instanceof Cell) restrictedCell= (Cell) parameters.get(4);</b>
+<b class="nc"><i>848</i>&nbsp;          else bordersAllowed = (Boolean) parameters.get(4);</b>
+<b class="nc"><i>849</i>&nbsp;          buildPhaseGraphics();</b>
+<i>850</i>&nbsp;          //cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);
+<b class="nc"><i>851</i>&nbsp;          break;</b>
+<i>852</i>&nbsp;        case &quot;Playing Player&quot;:
+<b class="nc"><i>853</i>&nbsp;          waitGraphics((String) parameters.get(0));</b>
+<b class="nc"><i>854</i>&nbsp;          break;</b>
+<i>855</i>&nbsp;        case &quot;Wait&quot;:
+<b class="nc"><i>856</i>&nbsp;          waitGraphics();</b>
+<b class="nc"><i>857</i>&nbsp;          break;</b>
+<i>858</i>&nbsp;        case&quot;Lobby Is Full&quot;:
+<b class="nc"><i>859</i>&nbsp;          new LobbyIsFullPopup(window);</b>
+<i>860</i>&nbsp;        case &quot;BuildFirst&quot;:
+<b class="nc"><i>861</i>&nbsp;          game = (Game) parameters.get(0);</b>
+<b class="nc"><i>862</i>&nbsp;          buildFirstPhaseGraphics();</b>
+<b class="nc"><i>863</i>&nbsp;          phase=newPhase;</b>
+<b class="nc"><i>864</i>&nbsp;          break;</b>
+<i>865</i>&nbsp;        case&quot;aresPower&quot;:
+<b class="nc"><i>866</i>&nbsp;          removeBlockPhaseGraphics();</b>
+<b class="nc"><i>867</i>&nbsp;          phase=newPhase;</b>
+<b class="nc"><i>868</i>&nbsp;          activePawn= (Pawn) parameters.get(1);</b>
+<b class="nc"><i>869</i>&nbsp;          game= (Game) parameters.get(0);</b>
+<b class="nc"><i>870</i>&nbsp;          cells.get(activePawn.getX()+(activePawn.getY()*5)).setIcon(myPawnIcon[1]);</b>
+<i>871</i>&nbsp;          break;
+<i>872</i>&nbsp;      }
+<i>873</i>&nbsp;    }
+<b class="nc"><i>874</i>&nbsp;    return false;</b>
+<i>875</i>&nbsp;  }
+<i>876</i>&nbsp;
+<i>877</i>&nbsp;
+<i>878</i>&nbsp;
+<i>879</i>&nbsp;  // logic
+<i>880</i>&nbsp;
+<i>881</i>&nbsp;  /**Method to know if two buttons are near each other in the grid
+<i>882</i>&nbsp;   *
+<i>883</i>&nbsp;   * @param cell1 :JButton first button
+<i>884</i>&nbsp;   * @param cell2 :JButton second button
+<i>885</i>&nbsp;   * @return Boolean (true if the 2 cells are close, false otherwise)
+<i>886</i>&nbsp;   */
+<i>887</i>&nbsp;  private static boolean near (JButton cell1, JButton cell2){
+<b class="nc"><i>888</i>&nbsp;    if (getX(cell1)- getX(cell2)&gt;=-1 &amp;&amp; getX(cell1)-getX(cell2)&lt;=1)</b>
+<b class="nc"><i>889</i>&nbsp;      if (getY(cell1)- getY(cell2)&gt;=-1 &amp;&amp; getY(cell1)-getY(cell2)&lt;=1) return true;</b>
+<b class="nc"><i>890</i>&nbsp;    return false;</b>
+<i>891</i>&nbsp;  }
+<i>892</i>&nbsp;
+<i>893</i>&nbsp;  /**Method to know where is &quot;newCell&quot; compared to &quot;centralCell&quot;, only if they are close(invoke &#39;near&#39; method)
+<i>894</i>&nbsp;   *
+<i>895</i>&nbsp;   * @param centralCell :JButton point of reference for our direction
+<i>896</i>&nbsp;   * @param newCell :JButton cell whose position we want
+<i>897</i>&nbsp;   * @return String (the direction expressed with cardinal points: E,W,S,N,NE,.... Null if the cells aren&#39;t close)
+<i>898</i>&nbsp;   */
+<i>899</i>&nbsp;  private static String direction (JButton centralCell, JButton newCell){
+<b class="nc"><i>900</i>&nbsp;    if (near(centralCell, newCell)){</b>
+<b class="nc"><i>901</i>&nbsp;      switch (getX(centralCell)-getX(newCell)){</b>
+<i>902</i>&nbsp;        case 1:
+<b class="nc"><i>903</i>&nbsp;          switch (getY(centralCell)-getY(newCell)){</b>
+<i>904</i>&nbsp;            case 1:
+<b class="nc"><i>905</i>&nbsp;              return &quot;NW&quot;;</b>
+<i>906</i>&nbsp;            case 0:
+<b class="nc"><i>907</i>&nbsp;              return &quot;W&quot;;</b>
+<i>908</i>&nbsp;            case -1:
+<b class="nc"><i>909</i>&nbsp;              return &quot;SW&quot;;</b>
+<i>910</i>&nbsp;          }
+<b class="nc"><i>911</i>&nbsp;          break;</b>
+<i>912</i>&nbsp;        case 0:
+<b class="nc"><i>913</i>&nbsp;          switch (getY(centralCell)-getY(newCell)){</b>
+<i>914</i>&nbsp;            case 1:
+<b class="nc"><i>915</i>&nbsp;              return &quot;N&quot;;</b>
+<i>916</i>&nbsp;            case 0:
+<b class="nc"><i>917</i>&nbsp;              return &quot;Below&quot;;</b>
+<i>918</i>&nbsp;            case -1:
+<b class="nc"><i>919</i>&nbsp;              return &quot;S&quot;;</b>
+<i>920</i>&nbsp;          }
+<b class="nc"><i>921</i>&nbsp;          break;</b>
+<i>922</i>&nbsp;        case -1:
+<b class="nc"><i>923</i>&nbsp;          switch (getY(centralCell)-getY(newCell)){</b>
+<i>924</i>&nbsp;            case 1:
+<b class="nc"><i>925</i>&nbsp;              return &quot;NE&quot;;</b>
+<i>926</i>&nbsp;            case 0:
+<b class="nc"><i>927</i>&nbsp;              return &quot;E&quot;;</b>
+<i>928</i>&nbsp;            case -1:
+<b class="nc"><i>929</i>&nbsp;              return &quot;SE&quot;;</b>
+<i>930</i>&nbsp;          }
+<i>931</i>&nbsp;          break;
+<i>932</i>&nbsp;      }
+<i>933</i>&nbsp;    }
+<b class="nc"><i>934</i>&nbsp;    return null;</b>
+<i>935</i>&nbsp;  }
+<i>936</i>&nbsp;
+<i>937</i>&nbsp;
+<i>938</i>&nbsp;
+<i>939</i>&nbsp;  // utilities
+<i>940</i>&nbsp;
+<i>941</i>&nbsp;  /**Method to refresh the screen with the latest info about the board
+<i>942</i>&nbsp;   *
+<i>943</i>&nbsp;   * @param game :Game current status of the game
+<i>944</i>&nbsp;   */
+<i>945</i>&nbsp;  public static void refreshScreen(Game game){
+<b class="nc"><i>946</i>&nbsp;    for (int i=0; i&lt;25; i++){</b>
+<b class="nc"><i>947</i>&nbsp;      Cell cell = game.getMap()[i%5][i/5];</b>
+<b class="nc"><i>948</i>&nbsp;      if (cell.getHasDome()) buildIconsLayer.get(i).setIcon(buildingDomeIcons[cell.getFloor()]);</b>
+<b class="nc"><i>949</i>&nbsp;      else buildIconsLayer.get(i).setIcon(buildingIcons[cell.getFloor()]);</b>
+<i>950</i>&nbsp;
+<b class="nc"><i>951</i>&nbsp;      if (cell.getIsFull()!=null) {</b>
+<b class="nc"><i>952</i>&nbsp;        switch (cell.getIsFull().getPlayer().getColor()) {</b>
+<i>953</i>&nbsp;          case (&quot;\u001B[31m&quot;):
+<b class="nc"><i>954</i>&nbsp;            if (activePawn!=null &amp;&amp; i==activePawn.getX()+(activePawn.getY()*5)){</b>
+<b class="nc"><i>955</i>&nbsp;              cells.get(i).setIcon(redPawnIcon[1]);</b>
+<i>956</i>&nbsp;            }
+<i>957</i>&nbsp;            else
+<b class="nc"><i>958</i>&nbsp;              cells.get(i).setIcon(redPawnIcon[0]);</b>
+<b class="nc"><i>959</i>&nbsp;            break;</b>
+<i>960</i>&nbsp;          case (&quot;\u001B[32m&quot;):
+<b class="nc"><i>961</i>&nbsp;            if (activePawn!=null &amp;&amp;  i==activePawn.getX()+(activePawn.getY()*5))</b>
+<b class="nc"><i>962</i>&nbsp;              cells.get(i).setIcon(greenPawnIcon[1]);</b>
+<i>963</i>&nbsp;            else
+<b class="nc"><i>964</i>&nbsp;              cells.get(i).setIcon(greenPawnIcon[0]);</b>
+<b class="nc"><i>965</i>&nbsp;            break;</b>
+<i>966</i>&nbsp;          case (&quot;\u001B[34m&quot;):
+<b class="nc"><i>967</i>&nbsp;            if (activePawn!=null &amp;&amp;  i==activePawn.getX()+(activePawn.getY()*5))</b>
+<b class="nc"><i>968</i>&nbsp;              cells.get(i).setIcon(bluePawnIcon[1]);</b>
+<i>969</i>&nbsp;            else
+<b class="nc"><i>970</i>&nbsp;              cells.get(i).setIcon(bluePawnIcon[0]);</b>
+<b class="nc"><i>971</i>&nbsp;            break;</b>
+<i>972</i>&nbsp;        }
+<i>973</i>&nbsp;      }
+<i>974</i>&nbsp;      else {
+<b class="nc"><i>975</i>&nbsp;        cells.get(i).setIcon(null);</b>
+<i>976</i>&nbsp;      }
+<i>977</i>&nbsp;    }
+<i>978</i>&nbsp;
+<i>979</i>&nbsp;
+<i>980</i>&nbsp;  }
+<i>981</i>&nbsp;
+<i>982</i>&nbsp;  /** Method to know the pawn position
+<i>983</i>&nbsp;   *
+<i>984</i>&nbsp;   * @param first :Boolean to know if you are looking for the first or the second pawn
+<i>985</i>&nbsp;   * @return int[] Array of int containing the pawn position
+<i>986</i>&nbsp;   */
+<i>987</i>&nbsp;  public static int[] getCoords (Boolean first){
+<b class="nc"><i>988</i>&nbsp;    if (first) return position1;</b>
+<b class="nc"><i>989</i>&nbsp;    else return position2;</b>
+<i>990</i>&nbsp;  }
+<i>991</i>&nbsp;
+<i>992</i>&nbsp;  /** Method to know the cell selected in the building phase
+<i>993</i>&nbsp;   *
+<i>994</i>&nbsp;   * @return int[] Array of int containing the position of the selected cell where to build
+<i>995</i>&nbsp;   */
+<i>996</i>&nbsp;  public static int[] getBuildLocation(){
+<b class="nc"><i>997</i>&nbsp;    return buildLocation;}</b>
+<i>998</i>&nbsp;
+<i>999</i>&nbsp;  /** Method to know the active pawn
+<i>1000</i>&nbsp;   *
+<i>1001</i>&nbsp;   * @return Pawn active pawn
+<i>1002</i>&nbsp;   */
+<b class="nc"><i>1003</i>&nbsp;  public static  Pawn getActivePawn(){ return activePawn; }</b>
+<i>1004</i>&nbsp;
+<i>1005</i>&nbsp;  /**Method to know the corresponding X coordinate of a button on the board
+<i>1006</i>&nbsp;   *
+<i>1007</i>&nbsp;   * @param cell :JButton
+<i>1008</i>&nbsp;   * @return int x coord. of the button
+<i>1009</i>&nbsp;   */
+<i>1010</i>&nbsp;  private static int getX (JButton cell){
+<b class="nc"><i>1011</i>&nbsp;    return cells.indexOf(cell)%5;</b>
+<i>1012</i>&nbsp;  }
+<i>1013</i>&nbsp;
+<i>1014</i>&nbsp;  /**Method to know the corresponding Y coordinate of a button on the board
+<i>1015</i>&nbsp;   *
+<i>1016</i>&nbsp;   * @param cell :JButton
+<i>1017</i>&nbsp;   * @return int Y coord. of the button
+<i>1018</i>&nbsp;   */
+<i>1019</i>&nbsp;  private static int getY (JButton cell){
+<b class="nc"><i>1020</i>&nbsp;    return cells.indexOf(cell)/5;</b>
+<i>1021</i>&nbsp;  }
+<i>1022</i>&nbsp;
+<i>1023</i>&nbsp;  public static Boolean getWantsToUsePower() {
+<b class="nc"><i>1024</i>&nbsp;    return wantsToUsePower;</b>
+<i>1025</i>&nbsp;  }
+<i>1026</i>&nbsp;
+<b class="nc"><i>1027</i>&nbsp;  public static  int[] getDeleteCoords(){ return deleteCoords; }</b>
+<i>1028</i>&nbsp;
+<i>1029</i>&nbsp;  /**Method to ask the player if he wants to use the power of his god
+<i>1030</i>&nbsp;   *
+<i>1031</i>&nbsp;   * @return Boolean, true if he wants to use the power, false otherwise.
+<i>1032</i>&nbsp;   */
+<i>1033</i>&nbsp;  private static Boolean askPower(){
+<b class="nc"><i>1034</i>&nbsp;    final Object lock = new Object();</b>
+<b class="nc"><i>1035</i>&nbsp;    AtomicInteger flagForLock = new AtomicInteger(0);</b>
+<i>1036</i>&nbsp;
+<i>1037</i>&nbsp;
+<b class="nc"><i>1038</i>&nbsp;    final Boolean[] result = new Boolean[1];</b>
+<b class="nc"><i>1039</i>&nbsp;    ImageIcon playImage = new ImageIcon(GameScene.class.getResource(&quot;/Santorini Images/SchermataGioco/PhaseButtonYes.png&quot;));</b>
+<b class="nc"><i>1040</i>&nbsp;    Image img1 = playImage.getImage();</b>
+<b class="nc"><i>1041</i>&nbsp;    Image newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>1042</i>&nbsp;    ImageIcon yesIcon = new ImageIcon(newImg1);</b>
+<i>1043</i>&nbsp;
+<b class="nc"><i>1044</i>&nbsp;    playImage = new ImageIcon(GameScene.class.getResource(&quot;/Santorini Images/SchermataGioco/PhaseButtonNo.png&quot;));</b>
+<b class="nc"><i>1045</i>&nbsp;    img1 = playImage.getImage();</b>
+<b class="nc"><i>1046</i>&nbsp;    newImg1 = img1.getScaledInstance( (int)(75*scale), (int)((75/1.80)*scale),  java.awt.Image.SCALE_SMOOTH ) ;</b>
+<b class="nc"><i>1047</i>&nbsp;    ImageIcon noIcon = new ImageIcon(newImg1);</b>
+<i>1048</i>&nbsp;
+<b class="nc"><i>1049</i>&nbsp;    phaseInfo.setText(&quot;Use power?&quot;);</b>
+<i>1050</i>&nbsp;
+<b class="nc"><i>1051</i>&nbsp;    JButton yesButton = new JButton();</b>
+<b class="nc"><i>1052</i>&nbsp;    yesButton.setBounds((int)(95*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));</b>
+<b class="nc"><i>1053</i>&nbsp;    yesButton.setIcon(yesIcon);</b>
+<b class="nc"><i>1054</i>&nbsp;    yesButton.setVisible(true);</b>
+<i>1055</i>&nbsp;
+<b class="nc"><i>1056</i>&nbsp;    JButton noButton = new JButton();</b>
+<b class="nc"><i>1057</i>&nbsp;    noButton.setBounds((int)(195*scale), (int)(320*scale), (int)(75*scale), (int)((75/1.80)*scale));</b>
+<b class="nc"><i>1058</i>&nbsp;    noButton.setIcon(noIcon);</b>
+<b class="nc"><i>1059</i>&nbsp;    noButton.setVisible(true);</b>
+<i>1060</i>&nbsp;
+<i>1061</i>&nbsp;
+<i>1062</i>&nbsp;
+<b class="nc"><i>1063</i>&nbsp;    gamePanel.add(yesButton);</b>
+<b class="nc"><i>1064</i>&nbsp;    gamePanel.add(noButton);</b>
+<i>1065</i>&nbsp;
+<b class="nc"><i>1066</i>&nbsp;    gamePanel.revalidate();</b>
+<b class="nc"><i>1067</i>&nbsp;    gamePanel.repaint();</b>
+<i>1068</i>&nbsp;
+<i>1069</i>&nbsp;
+<b class="nc"><i>1070</i>&nbsp;    yesButton.addActionListener(e -&gt; {</b>
+<i>1071</i>&nbsp;
+<b class="nc"><i>1072</i>&nbsp;      phaseInfo.setVisible(false);</b>
+<b class="nc"><i>1073</i>&nbsp;      yesButton.setVisible(false);</b>
+<b class="nc"><i>1074</i>&nbsp;      noButton.setVisible(false);</b>
+<b class="nc"><i>1075</i>&nbsp;      gamePanel.remove(yesButton);</b>
+<b class="nc"><i>1076</i>&nbsp;      gamePanel.remove(noButton);</b>
+<b class="nc"><i>1077</i>&nbsp;      result[0] =true;</b>
+<b class="nc"><i>1078</i>&nbsp;      synchronized(lock){</b>
+<b class="nc"><i>1079</i>&nbsp;        flagForLock.set(1);</b>
+<b class="nc"><i>1080</i>&nbsp;        lock.notifyAll();</b>
+<b class="nc"><i>1081</i>&nbsp;      }</b>
+<i>1082</i>&nbsp;    });
+<b class="nc"><i>1083</i>&nbsp;    noButton.addActionListener(e -&gt; {</b>
+<i>1084</i>&nbsp;
+<i>1085</i>&nbsp;      //Do Something
+<i>1086</i>&nbsp;
+<b class="nc"><i>1087</i>&nbsp;      phaseInfo.setVisible(false);</b>
+<b class="nc"><i>1088</i>&nbsp;      yesButton.setVisible(false);</b>
+<b class="nc"><i>1089</i>&nbsp;      noButton.setVisible(false);</b>
+<b class="nc"><i>1090</i>&nbsp;      gamePanel.remove(yesButton);</b>
+<b class="nc"><i>1091</i>&nbsp;      gamePanel.remove(noButton);</b>
+<b class="nc"><i>1092</i>&nbsp;      result[0]= false;</b>
+<b class="nc"><i>1093</i>&nbsp;      synchronized(lock){</b>
+<b class="nc"><i>1094</i>&nbsp;        flagForLock.set(1);</b>
+<b class="nc"><i>1095</i>&nbsp;        lock.notifyAll();</b>
+<b class="nc"><i>1096</i>&nbsp;      }</b>
+<i>1097</i>&nbsp;    });
+<i>1098</i>&nbsp;
+<b class="nc"><i>1099</i>&nbsp;    synchronized (lock){</b>
+<b class="nc"><i>1100</i>&nbsp;      while(flagForLock.get()==0){</b>
+<i>1101</i>&nbsp;        try {
+<b class="nc"><i>1102</i>&nbsp;          lock.wait();</b>
+<b class="nc"><i>1103</i>&nbsp;        }catch (InterruptedException e){}</b>
+<i>1104</i>&nbsp;
+<i>1105</i>&nbsp;      }
+<i>1106</i>&nbsp;
+<b class="nc"><i>1107</i>&nbsp;    }</b>
+<i>1108</i>&nbsp;
+<b class="nc"><i>1109</i>&nbsp;    return result[0];</b>
+<i>1110</i>&nbsp;  }
+<i>1111</i>&nbsp;}
+<i>1112</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

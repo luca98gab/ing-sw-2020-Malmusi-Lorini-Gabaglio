@@ -1,0 +1,514 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServerAdapterGui</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServerAdapterGui (it.polimi.ingsw.PSP32.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServerAdapterGui</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 263)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.IOException;
+<i>4</i>&nbsp;import java.io.ObjectInputStream;
+<i>5</i>&nbsp;import java.io.ObjectOutputStream;
+<i>6</i>&nbsp;import java.net.Socket;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;import java.util.concurrent.*;
+<i>9</i>&nbsp;import java.util.concurrent.atomic.AtomicInteger;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import it.polimi.ingsw.PSP32.exceptions.LobbyIsFullException;
+<i>12</i>&nbsp;import it.polimi.ingsw.PSP32.model.*;
+<i>13</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.scenes.*;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;@SuppressWarnings({&quot;unchecked&quot;, &quot;unused&quot;})
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public class ServerAdapterGui
+<i>18</i>&nbsp;{
+<i>19</i>&nbsp;  private Socket server;
+<i>20</i>&nbsp;  private static ObjectOutputStream outputStm;
+<i>21</i>&nbsp;  private static ObjectInputStream inputStm;
+<b class="nc"><i>22</i>&nbsp;  private ExecutorService executionQueue = Executors.newSingleThreadExecutor();</b>
+<b class="nc"><i>23</i>&nbsp;  public static final Object lockPlayer = new Object();</b>
+<b class="nc"><i>24</i>&nbsp;  public static AtomicInteger flagForPlayer = new AtomicInteger(0);</b>
+<b class="nc"><i>25</i>&nbsp;  public static final Object lockNum = new Object();</b>
+<b class="nc"><i>26</i>&nbsp;  public static AtomicInteger flagForNum = new AtomicInteger(0);</b>
+<b class="nc"><i>27</i>&nbsp;  public static final Object lockGods = new Object();</b>
+<b class="nc"><i>28</i>&nbsp;  public static AtomicInteger flagForGods = new AtomicInteger(0);</b>
+<b class="nc"><i>29</i>&nbsp;  public static final Object lockOwnGod = new Object();</b>
+<b class="nc"><i>30</i>&nbsp;  public static AtomicInteger flagForOwnGod = new AtomicInteger(0);</b>
+<b class="nc"><i>31</i>&nbsp;  public static final Object lockFirstPositioning = new Object();</b>
+<b class="nc"><i>32</i>&nbsp;  public static AtomicInteger flagForFirstPositioning = new AtomicInteger(0);</b>
+<b class="nc"><i>33</i>&nbsp;  public static final Object lockActivePawn = new Object();</b>
+<b class="nc"><i>34</i>&nbsp;  public static AtomicInteger flagForActivePawn = new AtomicInteger(0);</b>
+<b class="nc"><i>35</i>&nbsp;  public static final Object lockBuilding = new Object();</b>
+<b class="nc"><i>36</i>&nbsp;  public static AtomicInteger flagForBuilding = new AtomicInteger(0);</b>
+<b class="nc"><i>37</i>&nbsp;  public static final Object lockMove2 = new Object();</b>
+<b class="nc"><i>38</i>&nbsp;  public static AtomicInteger flagForMove2 = new AtomicInteger(0);</b>
+<b class="nc"><i>39</i>&nbsp;  public static final Object lockAresPower = new Object();</b>
+<b class="nc"><i>40</i>&nbsp;  public static AtomicInteger flagForAresPower = new AtomicInteger(0);</b>
+<b class="nc"><i>41</i>&nbsp;  static boolean firstTime= true;</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;  public ServerAdapterGui(Socket server) throws IOException {</b>
+<b class="nc"><i>46</i>&nbsp;    this.server = server;</b>
+<b class="nc"><i>47</i>&nbsp;    outputStm = new ObjectOutputStream(server.getOutputStream());</b>
+<b class="nc"><i>48</i>&nbsp;    inputStm = new ObjectInputStream(server.getInputStream());</b>
+<i>49</i>&nbsp;  }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  public void stop() {
+<b class="nc"><i>52</i>&nbsp;    executionQueue.execute(() -&gt; {</b>
+<i>53</i>&nbsp;      try {
+<b class="nc"><i>54</i>&nbsp;        server.close();</b>
+<b class="nc"><i>55</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>56</i>&nbsp;        e.printStackTrace();</b>
+<b class="nc"><i>57</i>&nbsp;      }</b>
+<i>58</i>&nbsp;    });
+<b class="nc"><i>59</i>&nbsp;    executionQueue.shutdown();</b>
+<i>60</i>&nbsp;  }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;  public Future&lt;String&gt; requestConversion(String input) {
+<b class="nc"><i>64</i>&nbsp;    return executionQueue.submit(() -&gt; {</b>
+<b class="nc"><i>65</i>&nbsp;      outputStm.writeObject(input);</b>
+<b class="nc"><i>66</i>&nbsp;      return (String)inputStm.readObject();</b>
+<i>67</i>&nbsp;    });
+<i>68</i>&nbsp;  }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;  public void requestSend(String input) {
+<b class="nc"><i>71</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>72</i>&nbsp;      try {
+<b class="nc"><i>73</i>&nbsp;        outputStm.writeObject(input);</b>
+<b class="nc"><i>74</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>75</i>&nbsp;        e.printStackTrace();</b>
+<b class="nc"><i>76</i>&nbsp;      }</b>
+<i>77</i>&nbsp;    });
+<i>78</i>&nbsp;  }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;  public Future&lt;String&gt; requestRead()
+<i>81</i>&nbsp;  {
+<b class="nc"><i>82</i>&nbsp;    return executionQueue.submit(() -&gt; (String)inputStm.readObject());</b>
+<i>83</i>&nbsp;  }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;  /** Method to answer to the server
+<i>86</i>&nbsp;   *
+<i>87</i>&nbsp;   * @return Boolean (False= keep answering to the server, True= close the client )
+<i>88</i>&nbsp;   * @throws ExecutionException
+<i>89</i>&nbsp;   * @throws InterruptedException
+<i>90</i>&nbsp;   */
+<i>91</i>&nbsp;  public Boolean answerToServer() throws ExecutionException, InterruptedException {
+<i>92</i>&nbsp;
+<b class="nc"><i>93</i>&nbsp;    Object incomingObject = executionQueue.submit(() -&gt; inputStm.readObject()).get();</b>
+<b class="nc"><i>94</i>&nbsp;    Message message = (Message)incomingObject;</b>
+<i>95</i>&nbsp;
+<b class="nc"><i>96</i>&nbsp;    if (message.getTypeOfMessage()!=null &amp;&amp; message.getTypeOfMessage().equals(&quot;StringInfoToPrint&quot;) &amp;&amp; message.getResult().equals(&quot;Lobby is full\n&quot;)) GameScene.messageReceived(&quot;Lobby Is Full&quot;, message.getParameters());</b>
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;    switch (message.getMethodName()){</b>
+<i>99</i>&nbsp;      case &quot;getNumOfPlayers&quot;:
+<b class="nc"><i>100</i>&nbsp;        PlayerCreationScene playerCreationScene = new PlayerCreationScene();</b>
+<b class="nc"><i>101</i>&nbsp;        playerCreationScene.show();</b>
+<b class="nc"><i>102</i>&nbsp;        synchronized (lockNum) {</b>
+<b class="nc"><i>103</i>&nbsp;          while (flagForNum.get() == 0) {</b>
+<i>104</i>&nbsp;            try {
+<b class="nc"><i>105</i>&nbsp;              lockNum.wait();</b>
+<b class="nc"><i>106</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>107</i>&nbsp;          }
+<b class="nc"><i>108</i>&nbsp;        }</b>
+<b class="nc"><i>109</i>&nbsp;        int n = PlayerCreationScene.getPlayerNum();</b>
+<b class="nc"><i>110</i>&nbsp;        sendResultMessage(n);</b>
+<b class="nc"><i>111</i>&nbsp;        break;</b>
+<i>112</i>&nbsp;      case &quot;createPlayer&quot;:
+<b class="nc"><i>113</i>&nbsp;        if( ((CopyOnWriteArrayList&lt;Player&gt;) message.getParameters().get(0)).size() != 0  ) {</b>
+<b class="nc"><i>114</i>&nbsp;          PlayerCreationScene2 playerCreationScene2 = new PlayerCreationScene2(((CopyOnWriteArrayList&lt;Player&gt;) message.getParameters().get(0)));</b>
+<b class="nc"><i>115</i>&nbsp;          playerCreationScene2.show();</b>
+<b class="nc"><i>116</i>&nbsp;          synchronized (lockPlayer) {</b>
+<b class="nc"><i>117</i>&nbsp;            while (flagForPlayer.get() == 0) {</b>
+<i>118</i>&nbsp;              try {
+<b class="nc"><i>119</i>&nbsp;                lockPlayer.wait();</b>
+<b class="nc"><i>120</i>&nbsp;              } catch (InterruptedException e) {}</b>
+<i>121</i>&nbsp;            }
+<b class="nc"><i>122</i>&nbsp;          }</b>
+<b class="nc"><i>123</i>&nbsp;          Player p = PlayerCreationScene2.getPlayer();</b>
+<b class="nc"><i>124</i>&nbsp;          sendResultMessage(p);</b>
+<b class="nc"><i>125</i>&nbsp;          break;</b>
+<i>126</i>&nbsp;        }
+<b class="nc"><i>127</i>&nbsp;        else sendResultMessage(PlayerCreationScene.getPlayer());</b>
+<b class="nc"><i>128</i>&nbsp;        break;</b>
+<i>129</i>&nbsp;      case &quot;gameGodsPicking&quot;:
+<b class="nc"><i>130</i>&nbsp;       GodPickingScene godSelectionScene = new GodPickingScene (((ArrayList&lt;Player&gt;) message.getParameters().get(0)).size(), ((God[]) message.getParameters().get(1)));</b>
+<b class="nc"><i>131</i>&nbsp;       godSelectionScene.show();</b>
+<i>132</i>&nbsp;
+<b class="nc"><i>133</i>&nbsp;        synchronized (lockGods) {</b>
+<b class="nc"><i>134</i>&nbsp;          while (flagForGods.get() == 0) {</b>
+<i>135</i>&nbsp;            try {
+<b class="nc"><i>136</i>&nbsp;              lockGods.wait();</b>
+<b class="nc"><i>137</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>138</i>&nbsp;          }
+<b class="nc"><i>139</i>&nbsp;        }</b>
+<b class="nc"><i>140</i>&nbsp;        God[] g = GodPickingScene.getSelectedGods();</b>
+<b class="nc"><i>141</i>&nbsp;        sendResultMessage(g);</b>
+<b class="nc"><i>142</i>&nbsp;        break;</b>
+<i>143</i>&nbsp;      case &quot;ownGodSelection&quot;:
+<b class="nc"><i>144</i>&nbsp;        GodPickingScene2 ownGodSelection = new GodPickingScene2 (((ArrayList&lt;God&gt;) message.getParameters().get(1)));</b>
+<b class="nc"><i>145</i>&nbsp;        ownGodSelection.show();</b>
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;        synchronized (lockOwnGod) {</b>
+<b class="nc"><i>148</i>&nbsp;          while (flagForOwnGod.get() == 0) {</b>
+<i>149</i>&nbsp;            try {
+<b class="nc"><i>150</i>&nbsp;              lockOwnGod.wait();</b>
+<b class="nc"><i>151</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>152</i>&nbsp;          }
+<b class="nc"><i>153</i>&nbsp;        }</b>
+<b class="nc"><i>154</i>&nbsp;        God[] god =  {GodPickingScene2.getGod()};</b>
+<b class="nc"><i>155</i>&nbsp;        sendResultMessage(god);</b>
+<b class="nc"><i>156</i>&nbsp;        Player player = (Player) message.getParameters().get(0);</b>
+<b class="nc"><i>157</i>&nbsp;        player.setGod(god[0]);</b>
+<b class="nc"><i>158</i>&nbsp;        GameScene gameScene = new GameScene(player);</b>
+<b class="nc"><i>159</i>&nbsp;        gameScene.show();</b>
+<b class="nc"><i>160</i>&nbsp;        break;</b>
+<i>161</i>&nbsp;      case &quot;getPawnInitialPosition&quot;:
+<b class="nc"><i>162</i>&nbsp;        if (firstTime) {</b>
+<b class="nc"><i>163</i>&nbsp;          Player player1 = (Player) message.getParameters().get(1);</b>
+<b class="nc"><i>164</i>&nbsp;          if (((Game) message.getParameters().get(0)).getPlayerList().get(0).equals(player1)){</b>
+<b class="nc"><i>165</i>&nbsp;            GameScene gameScene1 = new GameScene(player1);</b>
+<b class="nc"><i>166</i>&nbsp;            gameScene1.show();</b>
+<i>167</i>&nbsp;          }
+<b class="nc"><i>168</i>&nbsp;          GameScene.messageReceived(&quot;Refresh Screen&quot;, message.getParameters());</b>
+<b class="nc"><i>169</i>&nbsp;          GameScene.messageReceived(&quot;Initial Positioning&quot;, message.getParameters());</b>
+<i>170</i>&nbsp;        }
+<b class="nc"><i>171</i>&nbsp;        synchronized (lockFirstPositioning) {</b>
+<b class="nc"><i>172</i>&nbsp;          while (flagForFirstPositioning.get() == 0) {</b>
+<i>173</i>&nbsp;            try {
+<b class="nc"><i>174</i>&nbsp;              lockFirstPositioning.wait();</b>
+<b class="nc"><i>175</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>176</i>&nbsp;          }
+<b class="nc"><i>177</i>&nbsp;        }</b>
+<b class="nc"><i>178</i>&nbsp;       sendResultMessage(GameScene.getCoords(firstTime));</b>
+<b class="nc"><i>179</i>&nbsp;        firstTime=false;</b>
+<b class="nc"><i>180</i>&nbsp;        break;</b>
+<i>181</i>&nbsp;      case &quot;printBoardColored&quot;:
+<b class="nc"><i>182</i>&nbsp;        GameScene.messageReceived(&quot;Refresh Screen&quot;, message.getParameters());</b>
+<b class="nc"><i>183</i>&nbsp;        break;</b>
+<i>184</i>&nbsp;      case &quot;getActivePawn&quot;:
+<b class="nc"><i>185</i>&nbsp;        if(((Player) message.getParameters().get(1)).getGod().getName().equals(&quot;Prometheus&quot;))</b>
+<b class="nc"><i>186</i>&nbsp;          if(GameScene.messageReceived(&quot;Power&quot;, message.getParameters())){</b>
+<b class="nc"><i>187</i>&nbsp;              GameScene.messageReceived(&quot;BuildFirst&quot;, message.getParameters());</b>
+<b class="nc"><i>188</i>&nbsp;            synchronized (lockActivePawn) {</b>
+<b class="nc"><i>189</i>&nbsp;              while (flagForActivePawn.get() == 0) {</b>
+<i>190</i>&nbsp;                try {
+<b class="nc"><i>191</i>&nbsp;                  lockActivePawn.wait();</b>
+<b class="nc"><i>192</i>&nbsp;                } catch (InterruptedException e) {}</b>
+<i>193</i>&nbsp;              }
+<b class="nc"><i>194</i>&nbsp;            }</b>
+<b class="nc"><i>195</i>&nbsp;            flagForActivePawn.set(0);</b>
+<b class="nc"><i>196</i>&nbsp;            sendResultMessage(GameScene.getActivePawn());</b>
+<b class="nc"><i>197</i>&nbsp;            break;</b>
+<i>198</i>&nbsp;          }
+<b class="nc"><i>199</i>&nbsp;        GameScene.messageReceived(&quot;Move Phase&quot;, message.getParameters());</b>
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;        synchronized (lockActivePawn) {</b>
+<b class="nc"><i>202</i>&nbsp;          while (flagForActivePawn.get() == 0) {</b>
+<i>203</i>&nbsp;            try {
+<b class="nc"><i>204</i>&nbsp;              lockActivePawn.wait();</b>
+<b class="nc"><i>205</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>206</i>&nbsp;          }
+<b class="nc"><i>207</i>&nbsp;        }</b>
+<b class="nc"><i>208</i>&nbsp;        flagForActivePawn.set(0);</b>
+<b class="nc"><i>209</i>&nbsp;        Pawn pawn = GameScene.getActivePawn();</b>
+<b class="nc"><i>210</i>&nbsp;        sendResultMessage(pawn);</b>
+<b class="nc"><i>211</i>&nbsp;        break;</b>
+<i>212</i>&nbsp;      case &quot;wantsToUsePower&quot;:
+<b class="nc"><i>213</i>&nbsp;        if(((Player) message.getParameters().get(0)).getGod().getName().equals(&quot;Ares&quot;)) {</b>
+<b class="nc"><i>214</i>&nbsp;          sendResultMessage(GameScene.messageReceived(&quot;Power&quot;, message.getParameters()));</b>
+<b class="nc"><i>215</i>&nbsp;          break;</b>
+<i>216</i>&nbsp;        }
+<b class="nc"><i>217</i>&nbsp;        Boolean bool1=GameScene.getWantsToUsePower();</b>
+<b class="nc"><i>218</i>&nbsp;        sendResultMessage(bool1);</b>
+<b class="nc"><i>219</i>&nbsp;        break;</b>
+<i>220</i>&nbsp;      case &quot;waitForBuildCommand&quot;:
+<i>221</i>&nbsp;        Boolean power1;
+<b class="nc"><i>222</i>&nbsp;        if ((Boolean) message.getParameters().get(2)){</b>
+<b class="nc"><i>223</i>&nbsp;          power1 = GameScene.messageReceived(&quot;Power&quot;, message.getParameters());</b>
+<b class="nc"><i>224</i>&nbsp;          GameScene.messageReceived(&quot;Build Phase&quot;, message.getParameters());</b>
+<b class="nc"><i>225</i>&nbsp;          synchronized (lockBuilding) {</b>
+<b class="nc"><i>226</i>&nbsp;            while (flagForBuilding.get() == 0) {</b>
+<i>227</i>&nbsp;              try {
+<b class="nc"><i>228</i>&nbsp;                lockBuilding.wait();</b>
+<b class="nc"><i>229</i>&nbsp;              } catch (InterruptedException e) {</b>
+<b class="nc"><i>230</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i>231</i>&nbsp;              }</b>
+<i>232</i>&nbsp;            }
+<b class="nc"><i>233</i>&nbsp;            flagForBuilding.set(0);</b>
+<b class="nc"><i>234</i>&nbsp;          }</b>
+<b class="nc"><i>235</i>&nbsp;          sendResultMessage(power1);</b>
+<b class="nc"><i>236</i>&nbsp;          break;</b>
+<i>237</i>&nbsp;        }
+<b class="nc"><i>238</i>&nbsp;        else if ((message.getParameters().get(3)!=null &amp;&amp; ((Boolean) message.getParameters().get(3))) || (message.getParameters().get(4)!=null &amp;&amp;  (!(Boolean) message.getParameters().get(4)))){</b>
+<b class="nc"><i>239</i>&nbsp;          power1 = GameScene.messageReceived(&quot;Power&quot;, message.getParameters());</b>
+<b class="nc"><i>240</i>&nbsp;          if (power1){</b>
+<b class="nc"><i>241</i>&nbsp;          GameScene.messageReceived(&quot;Build Phase 2&quot;, message.getParameters());</b>
+<b class="nc"><i>242</i>&nbsp;          synchronized (lockBuilding) {</b>
+<b class="nc"><i>243</i>&nbsp;            while (flagForBuilding.get() == 0) {</b>
+<i>244</i>&nbsp;              try {
+<b class="nc"><i>245</i>&nbsp;                lockBuilding.wait();</b>
+<b class="nc"><i>246</i>&nbsp;              } catch (InterruptedException e) {</b>
+<b class="nc"><i>247</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i>248</i>&nbsp;              }</b>
+<i>249</i>&nbsp;            }
+<b class="nc"><i>250</i>&nbsp;            flagForBuilding.set(0);</b>
+<b class="nc"><i>251</i>&nbsp;          }</b>
+<b class="nc"><i>252</i>&nbsp;            GameScene.messageReceived(&quot;Wait&quot;, message.getParameters()) ;</b>
+<b class="nc"><i>253</i>&nbsp;            sendResultMessage(!power1);</b>
+<b class="nc"><i>254</i>&nbsp;          break;</b>
+<i>255</i>&nbsp;          }
+<i>256</i>&nbsp;          else {
+<b class="nc"><i>257</i>&nbsp;            GameScene.messageReceived(&quot;Wait&quot;, message.getParameters()) ;</b>
+<b class="nc"><i>258</i>&nbsp;            sendResultMessage(!power1);</b>
+<b class="nc"><i>259</i>&nbsp;            break;</b>
+<i>260</i>&nbsp;          }
+<i>261</i>&nbsp;        }
+<i>262</i>&nbsp;
+<i>263</i>&nbsp;        else {
+<b class="nc"><i>264</i>&nbsp;          GameScene.messageReceived(&quot;Build Phase&quot;, message.getParameters());</b>
+<b class="nc"><i>265</i>&nbsp;          synchronized (lockBuilding) {</b>
+<b class="nc"><i>266</i>&nbsp;            while (flagForBuilding.get() == 0) {</b>
+<i>267</i>&nbsp;              try {
+<b class="nc"><i>268</i>&nbsp;                lockBuilding.wait();</b>
+<b class="nc"><i>269</i>&nbsp;              } catch (InterruptedException e) {</b>
+<b class="nc"><i>270</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i>271</i>&nbsp;              }</b>
+<i>272</i>&nbsp;            }
+<b class="nc"><i>273</i>&nbsp;            flagForBuilding.set(0);</b>
+<b class="nc"><i>274</i>&nbsp;          }</b>
+<b class="nc"><i>275</i>&nbsp;          sendResultMessage(false);</b>
+<i>276</i>&nbsp;        }
+<b class="nc"><i>277</i>&nbsp;        break;</b>
+<i>278</i>&nbsp;      case &quot;getBuildLocationViaArrows&quot;:
+<b class="nc"><i>279</i>&nbsp;        sendResultMessage(GameScene.getBuildLocation());</b>
+<b class="nc"><i>280</i>&nbsp;        break;</b>
+<i>281</i>&nbsp;      case &quot;waitForMoveCommand&quot;:
+<b class="nc"><i>282</i>&nbsp;        if((Boolean) message.getParameters().get(3))</b>
+<i>283</i>&nbsp;        {
+<b class="nc"><i>284</i>&nbsp;          Boolean power =GameScene.messageReceived(&quot;Power&quot;, message.getParameters());</b>
+<b class="nc"><i>285</i>&nbsp;          sendResultMessage( power);</b>
+<b class="nc"><i>286</i>&nbsp;          break;</b>
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;        }
+<b class="nc"><i>289</i>&nbsp;        sendResultMessage(true);</b>
+<b class="nc"><i>290</i>&nbsp;        break;</b>
+<i>291</i>&nbsp;      case &quot;getValidMoveViaArrows&quot;:
+<b class="nc"><i>292</i>&nbsp;        if (!(Boolean) message.getParameters().get(3)){</b>
+<b class="nc"><i>293</i>&nbsp;        GameScene.messageReceived(&quot;Move Phase 2&quot;, message.getParameters());</b>
+<b class="nc"><i>294</i>&nbsp;        synchronized (lockMove2) {</b>
+<b class="nc"><i>295</i>&nbsp;          while (flagForMove2.get() == 0) {</b>
+<i>296</i>&nbsp;            try {
+<b class="nc"><i>297</i>&nbsp;              lockMove2.wait();</b>
+<b class="nc"><i>298</i>&nbsp;            } catch (InterruptedException e) {</b>
+<b class="nc"><i>299</i>&nbsp;              e.printStackTrace();</b>
+<b class="nc"><i>300</i>&nbsp;            }</b>
+<i>301</i>&nbsp;          }
+<b class="nc"><i>302</i>&nbsp;        }</b>
+<b class="nc"><i>303</i>&nbsp;          flagForMove2.set(0);</b>
+<b class="nc"><i>304</i>&nbsp;        int x[] = {GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()};</b>
+<b class="nc"><i>305</i>&nbsp;          sendResultMessage(x);</b>
+<b class="nc"><i>306</i>&nbsp;          break;</b>
+<i>307</i>&nbsp;        }
+<b class="nc"><i>308</i>&nbsp;        else if (((Pawn) message.getParameters().get(1)).getPlayer().getGod().getName().equals(&quot;Prometheus&quot;) &amp;&amp; GameScene.getWantsToUsePower()){</b>
+<b class="nc"><i>309</i>&nbsp;          GameScene.messageReceived(&quot;Move Phase 2&quot;, message.getParameters());</b>
+<b class="nc"><i>310</i>&nbsp;          synchronized (lockMove2) {</b>
+<b class="nc"><i>311</i>&nbsp;            while (flagForMove2.get() == 0) {</b>
+<i>312</i>&nbsp;              try {
+<b class="nc"><i>313</i>&nbsp;                lockMove2.wait();</b>
+<b class="nc"><i>314</i>&nbsp;              } catch (InterruptedException e) {</b>
+<b class="nc"><i>315</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i>316</i>&nbsp;              }</b>
+<i>317</i>&nbsp;            }
+<b class="nc"><i>318</i>&nbsp;          }</b>
+<b class="nc"><i>319</i>&nbsp;          flagForMove2.set(0);</b>
+<b class="nc"><i>320</i>&nbsp;          sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});</b>
+<i>321</i>&nbsp;        }
+<b class="nc"><i>322</i>&nbsp;        else sendResultMessage(new int[]{GameScene.getActivePawn().getX(), GameScene.getActivePawn().getY()});</b>
+<b class="nc"><i>323</i>&nbsp;        break;</b>
+<i>324</i>&nbsp;      case &quot;askBuildTwice&quot;:
+<i>325</i>&nbsp;
+<b class="nc"><i>326</i>&nbsp;        sendResultMessage(GameScene.messageReceived(&quot;Power&quot;, message.getParameters()));</b>
+<b class="nc"><i>327</i>&nbsp;        GameScene.messageReceived(&quot;Wait&quot;, message.getParameters()) ;</b>
+<b class="nc"><i>328</i>&nbsp;        break;</b>
+<i>329</i>&nbsp;      case &quot;endGameGraphics&quot;:
+<b class="nc"><i>330</i>&nbsp;        GameScene.messageReceived(&quot;Endgame&quot;, message.getParameters());</b>
+<b class="nc"><i>331</i>&nbsp;        return true;</b>
+<i>332</i>&nbsp;      case &quot;removedPlayerGraphics&quot;:
+<b class="nc"><i>333</i>&nbsp;        GameScene.messageReceived(&quot;Remove Player&quot;, message.getParameters());</b>
+<b class="nc"><i>334</i>&nbsp;        break;</b>
+<i>335</i>&nbsp;      case &quot;waitTurnMessage&quot;:
+<b class="nc"><i>336</i>&nbsp;        GameScene.messageReceived(&quot;Playing Player&quot;, message.getParameters());</b>
+<i>337</i>&nbsp;      //  System.out.println(&quot;\n&quot;+ message.getParameters().get(1) +message.getParameters().get(0)+ &quot;\u001b[0m &quot;+ &quot;is playing his turn...&quot;);
+<b class="nc"><i>338</i>&nbsp;        break;</b>
+<i>339</i>&nbsp;      case &quot;Disconnection&quot;:
+<b class="nc"><i>340</i>&nbsp;        GameScene.messageReceived(&quot;Disconnection&quot;, null);</b>
+<b class="nc"><i>341</i>&nbsp;        return true;</b>
+<i>342</i>&nbsp;      case &quot;aresPower&quot;:
+<b class="nc"><i>343</i>&nbsp;        GameScene.messageReceived(&quot;aresPower&quot;, message.getParameters());</b>
+<b class="nc"><i>344</i>&nbsp;        synchronized (lockAresPower) {</b>
+<b class="nc"><i>345</i>&nbsp;          while (flagForAresPower.get() == 0) {</b>
+<i>346</i>&nbsp;            try {
+<b class="nc"><i>347</i>&nbsp;              lockAresPower.wait();</b>
+<b class="nc"><i>348</i>&nbsp;            } catch (InterruptedException e) {}</b>
+<i>349</i>&nbsp;          }
+<b class="nc"><i>350</i>&nbsp;        }</b>
+<b class="nc"><i>351</i>&nbsp;        flagForAresPower.set(0);</b>
+<i>352</i>&nbsp;
+<b class="nc"><i>353</i>&nbsp;        sendResultMessage(GameScene.getDeleteCoords());</b>
+<i>354</i>&nbsp;        break;
+<i>355</i>&nbsp;
+<i>356</i>&nbsp;    }
+<b class="nc"><i>357</i>&nbsp;    return false;</b>
+<i>358</i>&nbsp;  }
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;  public void requestSendObject(Object object)
+<i>361</i>&nbsp;  {
+<b class="nc"><i>362</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>363</i>&nbsp;      try {
+<b class="nc"><i>364</i>&nbsp;        outputStm.reset();</b>
+<b class="nc"><i>365</i>&nbsp;        outputStm.writeObject(object);</b>
+<b class="nc"><i>366</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>367</i>&nbsp;        e.printStackTrace();</b>
+<b class="nc"><i>368</i>&nbsp;      }</b>
+<i>369</i>&nbsp;    });
+<i>370</i>&nbsp;  }
+<i>371</i>&nbsp;
+<i>372</i>&nbsp;  /** Method to send to the server the answer to a request
+<i>373</i>&nbsp;   *
+<i>374</i>&nbsp;   * @param object : Object the result
+<i>375</i>&nbsp;   */
+<i>376</i>&nbsp;  public void sendResultMessage(Object object) {
+<b class="nc"><i>377</i>&nbsp;    executionQueue.submit(() -&gt; {</b>
+<i>378</i>&nbsp;      try {
+<b class="nc"><i>379</i>&nbsp;        outputStm.reset();</b>
+<b class="nc"><i>380</i>&nbsp;        Message message = new Message(null, null, &quot;Result&quot;, object);</b>
+<b class="nc"><i>381</i>&nbsp;        outputStm.writeObject(message);</b>
+<b class="nc"><i>382</i>&nbsp;      } catch (IOException e) {</b>
+<b class="nc"><i>383</i>&nbsp;        System.out.println(&quot;Connection dropped&quot;);</b>
+<b class="nc"><i>384</i>&nbsp;      }</b>
+<i>385</i>&nbsp;    });
+<i>386</i>&nbsp;  }
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;  /** Method to ask to the server something (Overload)
+<i>389</i>&nbsp;   *
+<i>390</i>&nbsp;   * @param methodName : String the name of the method to call
+<i>391</i>&nbsp;   * @param par1 : Object possible parameter for the method to call
+<i>392</i>&nbsp;   * @param par2: Object possible parameter for the method to call
+<i>393</i>&nbsp;   * @param par3: Object possible parameter for the method to call
+<i>394</i>&nbsp;   * @param par4: Object possible parameter for the method to call
+<i>395</i>&nbsp;   * @return :
+<i>396</i>&nbsp;   * @throws IOException
+<i>397</i>&nbsp;   */
+<i>398</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3, Object par4) throws IOException {
+<b class="nc"><i>399</i>&nbsp;    ArrayList&lt;Object&gt; parameters = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>400</i>&nbsp;    parameters.add(par1);</b>
+<b class="nc"><i>401</i>&nbsp;    parameters.add(par2);</b>
+<b class="nc"><i>402</i>&nbsp;    parameters.add(par3);</b>
+<b class="nc"><i>403</i>&nbsp;    parameters.add(par4);</b>
+<b class="nc"><i>404</i>&nbsp;    Message outboundMessage = new Message(methodName, parameters, &quot;Request&quot;, null);</b>
+<b class="nc"><i>405</i>&nbsp;    outputStm.reset();</b>
+<b class="nc"><i>406</i>&nbsp;    outputStm.writeObject(outboundMessage);</b>
+<b class="nc"><i>407</i>&nbsp;    Object object = null;</b>
+<i>408</i>&nbsp;    try {
+<b class="nc"><i>409</i>&nbsp;      Message inboundMessage = (Message) inputStm.readObject();</b>
+<b class="nc"><i>410</i>&nbsp;      if (inboundMessage.getTypeOfMessage()!=null &amp;&amp; inboundMessage.getTypeOfMessage().equals(&quot;Result&quot;)){</b>
+<b class="nc"><i>411</i>&nbsp;        object = inboundMessage.getResult();</b>
+<i>412</i>&nbsp;      }
+<b class="nc"><i>413</i>&nbsp;    } catch (ClassNotFoundException | ClassCastException | NullPointerException e) {</b>
+<b class="nc"><i>414</i>&nbsp;      e.printStackTrace();</b>
+<b class="nc"><i>415</i>&nbsp;      System.out.println(&quot;invalid stream from server&quot;);</b>
+<b class="nc"><i>416</i>&nbsp;    }</b>
+<b class="nc"><i>417</i>&nbsp;    return object;</b>
+<i>418</i>&nbsp;  }
+<i>419</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2, Object par3) throws IOException {
+<b class="nc"><i>420</i>&nbsp;    return toServerGetObject(methodName, par1, par2, par3, null);</b>
+<i>421</i>&nbsp;  }
+<i>422</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par1, Object par2) throws IOException {
+<b class="nc"><i>423</i>&nbsp;    return toServerGetObject(methodName, par1, par2, null, null);</b>
+<i>424</i>&nbsp;  }
+<i>425</i>&nbsp;  public static Object toServerGetObject(String methodName, Object par) throws IOException {
+<b class="nc"><i>426</i>&nbsp;    return toServerGetObject(methodName, par, null, null, null);</b>
+<i>427</i>&nbsp;  }
+<i>428</i>&nbsp;}
+<i>429</i>&nbsp;
+<i>430</i>&nbsp;
+<i>431</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>

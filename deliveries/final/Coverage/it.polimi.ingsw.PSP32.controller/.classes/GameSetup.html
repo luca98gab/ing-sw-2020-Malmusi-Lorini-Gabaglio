@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameSetup</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.PSP32.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameSetup (it.polimi.ingsw.PSP32.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameSetup</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,8%
+  </span>
+  <span class="absValue">
+    (46/ 53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.PSP32.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.PSP32.model.Game;
+<i>4</i>&nbsp;import it.polimi.ingsw.PSP32.model.God;
+<i>5</i>&nbsp;import it.polimi.ingsw.PSP32.model.Pawn;
+<i>6</i>&nbsp;import it.polimi.ingsw.PSP32.model.Player;
+<i>7</i>&nbsp;import it.polimi.ingsw.PSP32.server.ClientHandler;
+<i>8</i>&nbsp;import it.polimi.ingsw.PSP32.view.gui.scenes.GameScene;
+<i>9</i>&nbsp;import jdk.jshell.execution.Util;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.io.*;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.Arrays;
+<i>14</i>&nbsp;
+<b class="nc"><i>15</i>&nbsp;public class GameSetup {</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /** Method for the initial picking of the gods in the game:
+<i>20</i>&nbsp;     *  -Imports Gods from file
+<i>21</i>&nbsp;     *  -Selection of the 2/3 cards in the game
+<i>22</i>&nbsp;     *  -God picking by every player
+<i>23</i>&nbsp;     *  -Adds God information to the related Player object
+<i>24</i>&nbsp;     *
+<i>25</i>&nbsp;     * @param playersList : type Player[] array containing the players in the game
+<i>26</i>&nbsp;     * @throws IOException
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    public static void godPicking(ArrayList&lt;Player&gt; playersList) throws IOException {
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;        God[] allGodsList = allGods();</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;        for (int i=1; i&lt;playersList.size(); i++)</b>
+<b class="fc"><i>33</i>&nbsp;            playersList.get(i).getRelatedClient().toClientVoid(&quot;waitGodsPicking&quot;, playersList.get(0).getName(), playersList.get(0).getColor());</b>
+<b class="fc"><i>34</i>&nbsp;        God[] gameGods = (God []) playersList.get(0).getRelatedClient().toClientGetObject(&quot;gameGodsPicking&quot;, playersList, allGodsList);</b>
+<b class="fc"><i>35</i>&nbsp;        ArrayList&lt;God&gt; remainingGods = new ArrayList&lt;&gt;(Arrays.asList(gameGods));</b>
+<i>36</i>&nbsp;
+<b class="fc"><i>37</i>&nbsp;        for (int j = 1; j &lt; playersList.size(); j++){</b>
+<b class="fc"><i>38</i>&nbsp;            for(int z = 0; z&lt; playersList.size(); z++) {</b>
+<b class="fc"><i>39</i>&nbsp;                if (z != j)</b>
+<b class="fc"><i>40</i>&nbsp;                    playersList.get(z).getRelatedClient().toClientVoid(&quot;waitOwnGodSelection&quot;, playersList.get(j).getName(), playersList.get(j).getColor());</b>
+<i>41</i>&nbsp;            }
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;            God selection = ((God [])playersList.get(j).getRelatedClient().toClientGetObject(&quot;ownGodSelection&quot;, playersList.get(j), remainingGods))[0];</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;            for (int i = 0; i &lt; remainingGods.size(); i++){</b>
+<b class="fc"><i>46</i>&nbsp;                if (remainingGods.get(i).equals(selection)){</b>
+<b class="fc"><i>47</i>&nbsp;                    remainingGods.remove(remainingGods.get(i));</b>
+<i>48</i>&nbsp;                }
+<i>49</i>&nbsp;            }
+<b class="fc"><i>50</i>&nbsp;            playersList.get(j).setGod(selection);</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;        }
+<i>54</i>&nbsp;
+<b class="fc"><i>55</i>&nbsp;        playersList.get(0).setGod(remainingGods.get(0));</b>
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;        playersList.get(0).getRelatedClient().toClientVoid(&quot;player1GodAssignment&quot;, playersList.get(0), remainingGods.get(0));</b>
+<i>58</i>&nbsp;        //LocalCli.player1GodAssignment(playersList.get(0), remainingGods.get(0));
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /** Method to read from the Gods.txt file located in /src and to store the data in God objects.
+<i>63</i>&nbsp;     * The file has to be filled as following:
+<i>64</i>&nbsp;     *
+<i>65</i>&nbsp;     * Line 0: Int      //number of gods written in it
+<i>66</i>&nbsp;     * Line 1:
+<i>67</i>&nbsp;     * Line 2: String   //name of the god
+<i>68</i>&nbsp;     * Line 3: String   //description
+<i>69</i>&nbsp;     * -----Repeat from Line 1------
+<i>70</i>&nbsp;     *
+<i>71</i>&nbsp;     * Every God occupies 3 lines in the file: empty/name/description
+<i>72</i>&nbsp;     *
+<i>73</i>&nbsp;     * @return God[] : Array containing all the gods that can be used in the game
+<i>74</i>&nbsp;     */
+<i>75</i>&nbsp;    private static God[] allGods(){
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;        try {
+<b class="fc"><i>78</i>&nbsp;            InputStream is = GameSetup.class.getResourceAsStream(&quot;/Santorini Images/Gods.txt&quot;);</b>
+<b class="fc"><i>79</i>&nbsp;            InputStreamReader isr = new InputStreamReader(is);</b>
+<b class="fc"><i>80</i>&nbsp;            BufferedReader b = new BufferedReader(isr);</b>
+<b class="fc"><i>81</i>&nbsp;            int godsNum = Integer.parseInt(b.readLine());</b>
+<i>82</i>&nbsp;            String string;
+<b class="fc"><i>83</i>&nbsp;            God[] allGods = new God[godsNum];</b>
+<b class="fc"><i>84</i>&nbsp;            for (int i = 0; i &lt; godsNum; i++){</b>
+<i>85</i>&nbsp;                String name;
+<i>86</i>&nbsp;                String ability;
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;                string = b.readLine();</b>
+<b class="fc"><i>89</i>&nbsp;                if (string == null) break;</b>
+<b class="fc"><i>90</i>&nbsp;                string = b.readLine();</b>
+<b class="fc"><i>91</i>&nbsp;                if (string == null) break;</b>
+<b class="fc"><i>92</i>&nbsp;                name = string;</b>
+<b class="fc"><i>93</i>&nbsp;                string = b.readLine();</b>
+<b class="fc"><i>94</i>&nbsp;                if (string == null) break;</b>
+<b class="fc"><i>95</i>&nbsp;                ability = string;</b>
+<i>96</i>&nbsp;
+<b class="fc"><i>97</i>&nbsp;                allGods[i] = new God(name, ability);</b>
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;            }
+<b class="fc"><i>100</i>&nbsp;            System.out.println(&quot;Gods imported&quot;);</b>
+<b class="fc"><i>101</i>&nbsp;            return allGods;</b>
+<i>102</i>&nbsp;
+<b class="nc"><i>103</i>&nbsp;        } catch (FileNotFoundException e) {</b>
+<b class="nc"><i>104</i>&nbsp;            System.out.println(&quot;FILE NOT FOUND&quot;);</b>
+<b class="nc"><i>105</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i>106</i>&nbsp;            System.out.println(&quot;ERROR IN IO&quot;);</b>
+<b class="nc"><i>107</i>&nbsp;        }</b>
+<b class="nc"><i>108</i>&nbsp;        return null;</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;    /** Method to manage the initial positioning of the pawns
+<i>112</i>&nbsp;     *
+<i>113</i>&nbsp;     * @param game : Game current game
+<i>114</i>&nbsp;     * @throws IOException
+<i>115</i>&nbsp;     */
+<i>116</i>&nbsp;    public static void firstPawnPositioning(Game game) throws IOException {
+<i>117</i>&nbsp;
+<b class="fc"><i>118</i>&nbsp;        Utility utility = new Utility();</b>
+<i>119</i>&nbsp;
+<b class="fc"><i>120</i>&nbsp;        for (int i = 0; i &lt; game.getPlayerList().size(); i++){</b>
+<i>121</i>&nbsp;
+<b class="fc"><i>122</i>&nbsp;            ClientHandler client = game.getPlayerList().get(i).getRelatedClient();</b>
+<i>123</i>&nbsp;
+<b class="fc"><i>124</i>&nbsp;            client.toClientVoid(&quot;printTurnInfo&quot;, game.getPlayerList().get(i));</b>
+<i>125</i>&nbsp;
+<b class="fc"><i>126</i>&nbsp;            utility.toAllClientsVoid(game,&quot;printBoardColored&quot;, game);</b>
+<i>127</i>&nbsp;
+<b class="fc"><i>128</i>&nbsp;            for (int j = 0; j &lt; 2; j++) {</b>
+<i>129</i>&nbsp;
+<b class="fc"><i>130</i>&nbsp;                int[] coordinates = (int []) client.toClientGetObject(&quot;getPawnInitialPosition&quot;,game, game.getPlayerList().get(i));</b>
+<b class="fc"><i>131</i>&nbsp;                int x = coordinates[0];</b>
+<b class="fc"><i>132</i>&nbsp;                int y = coordinates[1];</b>
+<b class="fc"><i>133</i>&nbsp;                game.getPlayerList().get(i).getPawns()[j] = new Pawn(x, y, j+1, game.getPlayerList().get(i));</b>
+<b class="fc"><i>134</i>&nbsp;                game.getMap()[x][y].setIsFull(game.getPlayerList().get(i).getPawns()[j]);</b>
+<i>135</i>&nbsp;            }
+<i>136</i>&nbsp;        }
+<b class="fc"><i>137</i>&nbsp;    }</b>
+<i>138</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 14:28</div>
+</div>
+</body>
+</html>
