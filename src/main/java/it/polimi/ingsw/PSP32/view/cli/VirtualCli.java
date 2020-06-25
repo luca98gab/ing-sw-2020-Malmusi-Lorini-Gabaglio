@@ -157,7 +157,7 @@ public class VirtualCli implements Runnable {
     /** Method for the god selection of each player
      *
      * @param player: player that's selecting the god
-     * @param gameGods: ArrayList<God> list of gods selected for this game
+     * @param gameGods: ArrayList list of gods selected for this game
      * @return God: selected god
      */
     public static God ownGodSelection(Player player, ArrayList<God> gameGods){
@@ -393,7 +393,7 @@ public class VirtualCli implements Runnable {
      *
      * @param game: Game
      * @param pawn: Pawn, active pawn
-     * @return: int[], the coords of the block the player wants to remove
+     * @return int[], the coords of the block the player wants to remove
      */
     public static int[] aresPower(Game game, Pawn pawn){
         int x=0;

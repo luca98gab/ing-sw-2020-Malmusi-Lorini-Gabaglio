@@ -11,9 +11,6 @@ import java.io.IOException;
 public class CheckCanBuild {
 
 
-
-
-
     /** A series of methods to check for valid build locations
      *
      * @param game : Game

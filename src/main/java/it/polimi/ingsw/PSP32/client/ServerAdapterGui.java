@@ -87,8 +87,6 @@ public class ServerAdapterGui
    * @return Boolean (False= keep answering to the server, True= close the client )
    * @throws ExecutionException
    * @throws InterruptedException
-   * @throws IOException
-   * @throws LobbyIsFullException
    */
   public Boolean answerToServer() throws ExecutionException, InterruptedException {
 

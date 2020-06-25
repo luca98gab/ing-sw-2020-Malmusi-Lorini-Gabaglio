@@ -794,7 +794,7 @@ public class GameScene extends Gui{
   /**Method that handle phases, and the received parameters from the server
    *
    * @param newPhase :String the new phase we are going into
-   * @param parameters :ArrayList<Object> parameters useful for the methods that are being called
+   * @param parameters :ArrayList parameters useful for the methods that are being called
    * @return Boolean (used to let the server know if the player decided to use the ability of his god)
    */
   public static Boolean messageReceived(String newPhase, ArrayList<Object> parameters){
