@@ -21,6 +21,13 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.io.InputStream;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.awt.Desktop;
 
 import static it.polimi.ingsw.PSP32.client.ServerAdapterGui.*;
 import static javax.swing.SwingConstants.*;
@@ -119,9 +126,15 @@ public class GameScene extends Gui{
       public void actionPerformed(ActionEvent e) {
         if (Desktop.isDesktopSupported()) {
           try {
-            File myFile = new File(getClass().getResource("/Santorini Images/Santorini Rulebook.pdf").toURI());
-            Desktop.getDesktop().open(myFile);
-          } catch (IOException | URISyntaxException ex) {
+            Path tempOutput = Files.createTempFile("TempManual", ".pdf");
+            tempOutput.toFile().deleteOnExit();
+            System.out.println("tempOutput: " + tempOutput);
+            try (InputStream is = getClass().getResourceAsStream("/Santorini Images/Santorini Rulebook.pdf")) {
+              Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+            }
+            Desktop.getDesktop().open(tempOutput.toFile());
+
+          } catch (IOException ex) {
 
           }
         }
