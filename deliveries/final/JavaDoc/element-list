@@ -1,0 +1,10 @@
+it.polimi.ingsw.PSP32.client
+it.polimi.ingsw.PSP32.controller
+it.polimi.ingsw.PSP32.exceptions
+it.polimi.ingsw.PSP32.model
+it.polimi.ingsw.PSP32.server
+it.polimi.ingsw.PSP32.view.cli
+it.polimi.ingsw.PSP32.view.gui
+it.polimi.ingsw.PSP32.view.gui.components.gameSceneComponents
+it.polimi.ingsw.PSP32.view.gui.components.generic
+it.polimi.ingsw.PSP32.view.gui.scenes
