@@ -138,7 +138,7 @@ public class CheckHasLost {
     }
 
     Boolean checkHasLostForBuild(Game game, Pawn pawn, Boolean demeter, Cell cell) throws IOException {
-        return checkHasLostForBuild(game, pawn, false, null, true);
+        return checkHasLostForBuild(game, pawn, demeter, cell, true);
     }
 
     Boolean checkHasLostForBuild(Game game, Pawn pawn) throws IOException {
