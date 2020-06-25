@@ -31,8 +31,10 @@ public class Server implements Runnable {
   public static int playerNum = 0;
   public static final Object lockNum = new Object();
   public static final Object lockPlayer = new Object();
+  public static final Object lockUnwanted = new Object();
   public static AtomicInteger flagForSync = new AtomicInteger();
-  public static volatile Boolean exit;
+  public static AtomicInteger flagForEnded = new AtomicInteger();
+  public static volatile Boolean exit, continueUnwantedClientHandler=true;
   public static AtomicInteger flagForTimeout = new AtomicInteger();
   private int timeout=20000;
 
@@ -60,7 +62,8 @@ public class Server implements Runnable {
 
   @Override
   public void run() {
-
+    continueUnwantedClientHandler = true;
+    flagForEnded.set(0);
     serverWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     serverWindow.setResizable(false);
     serverWindow.setIconImage((new ImageIcon(getClass().getResource("/Santorini Images/GameIconServer.jpeg")).getImage()));
@@ -246,6 +249,16 @@ public class Server implements Runnable {
           playerNum=0;
           clients.clear();
           exit=false;
+          continueUnwantedClientHandler = false;
+          synchronized (lockUnwanted) {
+              while (flagForEnded.get() == 0) {
+                  try {
+                      lockUnwanted.wait();
+                  } catch (InterruptedException e) {
+                      e.printStackTrace();
+                  }
+              }
+          }
       }while (true);
      // System.exit(0);
   }

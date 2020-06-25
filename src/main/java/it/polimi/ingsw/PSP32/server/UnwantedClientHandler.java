@@ -21,13 +21,17 @@ public class UnwantedClientHandler implements Runnable
   @Override
   public void run()
   {
-    while (true){
+    while (Server.continueUnwantedClientHandler){
       try {
         Socket client = socket.accept();
         handleClientConnection(client);
       } catch (IOException e) {
 
       }
+    }
+    synchronized (Server.lockUnwanted){
+      Server.flagForEnded.set(1);
+      Server.lockUnwanted.notifyAll();
     }
   }
 
@@ -44,6 +48,7 @@ public class UnwantedClientHandler implements Runnable
 
     String str = "Lobby is full\n";
     Message message = new Message(    null, null, "StringInfoToPrint", str);
+    output.reset();
     output.writeObject(message);
 
     client.close();
