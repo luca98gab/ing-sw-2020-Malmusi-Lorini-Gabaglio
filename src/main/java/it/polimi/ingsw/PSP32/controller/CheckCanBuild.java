@@ -16,6 +16,7 @@ public class CheckCanBuild {
      * @param game : Game
      * @param pawn : Pawn active pawn
      * @param restriction : Cell possible restricted cells
+     * @param edgeCellsAllowed: Boolean, boolean to know if the border cells are allowed
      * @return Boolean (True= you can build there, False= you can't build there)
      */
 

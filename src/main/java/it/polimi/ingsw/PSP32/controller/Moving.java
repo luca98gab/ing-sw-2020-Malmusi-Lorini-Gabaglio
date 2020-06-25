@@ -28,7 +28,7 @@ public class Moving {
 
     /** Method that manages the move phase, handling the various gods powers
      *
-     * @param game
+     * @param game: Current game
      * @param player : Player current player
      * @return Pawn: return the pawn that just moved
      * @throws IOException

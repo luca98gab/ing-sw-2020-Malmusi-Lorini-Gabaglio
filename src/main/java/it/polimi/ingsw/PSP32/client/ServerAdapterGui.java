@@ -389,9 +389,9 @@ public class ServerAdapterGui
    *
    * @param methodName : String the name of the method to call
    * @param par1 : Object possible parameter for the method to call
-   * @param par2
-   * @param par3
-   * @param par4
+   * @param par2: Object possible parameter for the method to call
+   * @param par3: Object possible parameter for the method to call
+   * @param par4: Object possible parameter for the method to call
    * @return :
    * @throws IOException
    */

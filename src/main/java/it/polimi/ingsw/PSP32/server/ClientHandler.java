@@ -75,7 +75,7 @@ public class ClientHandler implements Runnable
    *
    * @param methodName : String name of the method to call client-side
    * @param par1: Object possible parameter for the method
-   * @param par2
+   * @param par2: Object possible parameter for the method
    * @throws IOException
    */
   public void toClientVoid(String methodName, Object par1, Object par2) throws IOException {
@@ -97,9 +97,11 @@ public class ClientHandler implements Runnable
    *
    * @param methodName : String name of the method to call client-side
    * @param par1: Object possible parameter for the method
-   * @param par2
-   * @param par3
-   * @param par4
+   * @param par2 parameter for the Client (IF NEEDED)
+   * @param par3 parameter for the Client (IF NEEDED)
+   * @param par4 parameter for the Client (IF NEEDED)
+   * @param par5 parameter for the Client (IF NEEDED)
+   * @return Object, the object returned from the client
    * @throws IOException
    */
   public Object toClientGetObject(String methodName, Object par1, Object par2, Object par3, Object par4, Object par5) throws IOException {

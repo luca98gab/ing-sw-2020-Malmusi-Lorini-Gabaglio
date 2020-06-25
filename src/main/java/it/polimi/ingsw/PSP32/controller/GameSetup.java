@@ -23,6 +23,7 @@ public class GameSetup {
      *  -Adds God information to the related Player object
      *
      * @param playersList : type Player[] array containing the players in the game
+     * @throws IOException
      */
     public static void godPicking(ArrayList<Player> playersList) throws IOException {
 

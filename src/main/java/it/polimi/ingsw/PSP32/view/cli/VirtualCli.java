@@ -65,8 +65,8 @@ public class VirtualCli implements Runnable {
 
     /** Method that creates the Player object asking the parameters to the user.
      *
-     * !!! Does not check for duplicated names or colors
-     *
+     * @param num: number of maxplayer of the game
+     * @param playerList : list of players
      * @return Player type: object of the newly created player
      */
     public static Player createPlayer(CopyOnWriteArrayList<Player> playerList, int num ) throws IOException {
@@ -300,7 +300,10 @@ public class VirtualCli implements Runnable {
      * @param game: Game
      * @param pawn: Pawn selected pawn
      * @param restriction: Cell possible restricted cells
+     * @param edgeCellsAllowed: Boolean
+     *
      * @return Cell selected cell to build on
+     * @throws IOException
      */
     public static int[] getBuildLocationViaArrows(Game game, Pawn pawn, Cell restriction, Boolean edgeCellsAllowed) throws IOException {
         int x=0, y=0;
@@ -499,6 +502,7 @@ public class VirtualCli implements Runnable {
      * @param canContainSymbols boolean for symbols
      * @param minLength min length of the word
      * @param maxLength max length of the word
+     * @param customErrorMessage : possible output message
      * @return  String : valid value from input
      */
     protected static String checkForValidStringInput(Boolean canContainNumbers, Boolean canContainSymbols, int minLength, int maxLength, String customErrorMessage){
