@@ -82,18 +82,16 @@ $ java -jar Santorini.jar CLI
 * Command Line Interface
 * Graphic User Interface
 
-### Working on:
 
-* Testing
-* Javadoc
-
-### Todo list:
+## Documentation: 
 
 * UML
+* Testing (with JUnit 4) 
+* Javadoc
+
 
 ### Possible Future Features:
 
-* Advanced rules
 * 4 players
 * Multiple games on the same server
 * In-Game Chat
