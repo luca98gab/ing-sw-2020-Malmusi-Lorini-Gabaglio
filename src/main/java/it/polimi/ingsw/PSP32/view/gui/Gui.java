@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 
-public class Gui implements Runnable {
+public class Gui {
 
   public static JFrame window = new JFrame("Santorini");
 
@@ -51,33 +51,6 @@ public class Gui implements Runnable {
 
     window.pack();
     window.setLocationRelativeTo(null);
-  }
-
-  @Override
-  public void run() {
-    try {
-      setupWindow();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (FontFormatException e) {
-      e.printStackTrace();
-    }
-
-    ArrayList<Player> players = new ArrayList<>();
-    players.add( new Player("Gio", "\u001B[31m", new God("Apollo", null)));
-
-
-
-    GodPickingScene scene = new GodPickingScene(2, null);
-    scene.show();
-
-
-  }
-
-  public static void main(String[] args )
-  {
-    Gui gui = new Gui();
-    gui.run();
   }
 
 

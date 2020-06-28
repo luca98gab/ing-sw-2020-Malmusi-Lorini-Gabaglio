@@ -641,7 +641,8 @@ public class GameScene extends Gui{
           new Toast("Invalid Move", gamePanel, 2000);
           phase = "Move Phase";
         }
-
+      } else {
+        phase = "Move Phase";
       }
     }
   }
@@ -669,7 +670,7 @@ public class GameScene extends Gui{
           phase = "Move Phase 2";
         }
 
-      }
+      } else phase = "Move Phase 2";
     }
   }
   private static void buildPhaseClick(JButton clickedCell){

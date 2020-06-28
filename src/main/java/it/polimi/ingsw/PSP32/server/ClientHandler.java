@@ -112,7 +112,7 @@ public class ClientHandler implements Runnable
     parameters.add(3, par4);
     parameters.add(4, par5);
     Message outboundMessage = new Message(methodName, parameters, "Request", null);
-      output.reset();
+    output.reset();
     output.writeObject(outboundMessage);
     Object object= null;
     try {
